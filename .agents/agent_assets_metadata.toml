@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "onFuxsS86CUQVe0sDIkIe"
+uri = "file://artifacts/binaka-game/public/banner-promo.png"
+type = "image"
+title = "promo banner box"
+
+[[generated]]
+id = "JfrmneHZNHpRXaaD9ZeRl"
+uri = "file://artifacts/binaka-game/public/icon-slots.png"
+type = "image"
+title = "slot machine icon"
+
+[[generated]]
+id = "has9JbTvQOTZSQyvbMDDN"
+uri = "file://artifacts/binaka-game/public/icon-wheel.png"
+type = "image"
+title = "wheel of fortune icon"
+
+[[generated]]
+id = "tlwD9zzA3bvWmZjJ1lhbP"
+uri = "file://artifacts/binaka-game/public/icon-scratch.png"
+type = "image"
+title = "scratch card icon"

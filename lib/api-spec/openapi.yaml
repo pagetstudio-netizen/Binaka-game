@@ -1,22 +1,30 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: BINAKA GAME API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: auth
+  - name: users
+  - name: wallet
+  - name: games
+  - name: referral
+  - name: notifications
+  - name: bonus
+  - name: vip
+  - name: admin
+  - name: winners
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +32,1108 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      operationId: updateMe
+      tags: [users]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /wallet/balance:
+    get:
+      operationId: getBalance
+      tags: [wallet]
+      summary: Get wallet balance and summary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletSummary"
+
+  /wallet/transactions:
+    get:
+      operationId: getTransactions
+      tags: [wallet]
+      summary: Get transaction history
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionList"
+
+  /wallet/deposit:
+    post:
+      operationId: createDeposit
+      tags: [wallet]
+      summary: Create a deposit request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DepositInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+  /wallet/withdraw:
+    post:
+      operationId: createWithdrawal
+      tags: [wallet]
+      summary: Create a withdrawal request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+  /games/slots/play:
+    post:
+      operationId: playSlots
+      tags: [games]
+      summary: Play slot machine
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GamePlayInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SlotsResult"
+
+  /games/slots/history:
+    get:
+      operationId: getSlotsHistory
+      tags: [games]
+      summary: Get slot machine history
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameHistoryList"
+
+  /games/wheel/play:
+    post:
+      operationId: playWheel
+      tags: [games]
+      summary: Spin the wheel of fortune
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GamePlayInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WheelResult"
+
+  /games/wheel/history:
+    get:
+      operationId: getWheelHistory
+      tags: [games]
+      summary: Get wheel history
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameHistoryList"
+
+  /games/scratch/play:
+    post:
+      operationId: playScratch
+      tags: [games]
+      summary: Play scratch card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScratchInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScratchResult"
+
+  /games/scratch/history:
+    get:
+      operationId: getScratchHistory
+      tags: [games]
+      summary: Get scratch card history
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameHistoryList"
+
+  /winners/recent:
+    get:
+      operationId: getRecentWinners
+      tags: [winners]
+      summary: Get recent winners
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WinnerList"
+
+  /referral/info:
+    get:
+      operationId: getReferralInfo
+      tags: [referral]
+      summary: Get referral info
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferralInfo"
+
+  /referral/commissions:
+    get:
+      operationId: getReferralCommissions
+      tags: [referral]
+      summary: Get referral commission history
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommissionList"
+
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [notifications]
+      summary: Get notifications
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationList"
+
+  /notifications/{id}/read:
+    patch:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /bonus/claim-daily:
+    post:
+      operationId: claimDailyBonus
+      tags: [bonus]
+      summary: Claim daily bonus
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BonusResult"
+
+  /bonus/list:
+    get:
+      operationId: getBonusList
+      tags: [bonus]
+      summary: Get available bonuses
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BonusList"
+
+  /vip/info:
+    get:
+      operationId: getVipInfo
+      tags: [vip]
+      summary: Get VIP status and benefits
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VipInfo"
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Get admin dashboard stats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminStats"
+
+  /admin/users:
+    get:
+      operationId: getAdminUsers
+      tags: [admin]
+      summary: Get all users (admin)
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUserList"
+
+  /admin/users/{id}/balance:
+    patch:
+      operationId: updateUserBalance
+      tags: [admin]
+      summary: Update user balance (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BalanceUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /admin/users/{id}/status:
+    patch:
+      operationId: updateUserStatus
+      tags: [admin]
+      summary: Block/unblock user (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /admin/games/config:
+    get:
+      operationId: getGamesConfig
+      tags: [admin]
+      summary: Get games configuration (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GamesConfig"
+    patch:
+      operationId: updateGamesConfig
+      tags: [admin]
+      summary: Update games configuration (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GamesConfigUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GamesConfig"
+
+  /admin/transactions:
+    get:
+      operationId: getAdminTransactions
+      tags: [admin]
+      summary: Get all transactions (admin)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionList"
+
+  /admin/transactions/{id}/approve:
+    patch:
+      operationId: approveTransaction
+      tags: [admin]
+      summary: Approve a transaction (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+  /admin/transactions/{id}/reject:
+    patch:
+      operationId: rejectTransaction
+      tags: [admin]
+      summary: Reject a transaction (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    RegisterInput:
+      type: object
+      required: [fullName, phone, password, country]
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: ["string", "null"]
+        password:
+          type: string
+        country:
+          type: string
+        referralCode:
+          type: ["string", "null"]
+
+    LoginInput:
+      type: object
+      required: [phone, password]
+      properties:
+        phone:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    User:
+      type: object
+      required: [id, fullName, phone, country, balance, vipLevel, isVerified, isBlocked, referralCode, createdAt]
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: ["string", "null"]
+        country:
+          type: string
+        balance:
+          type: number
+        vipLevel:
+          type: integer
+        isVerified:
+          type: boolean
+        isBlocked:
+          type: boolean
+        isAdmin:
+          type: boolean
+        referralCode:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    UserUpdate:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        country:
+          type: string
+        avatarUrl:
+          type: string
+
+    WalletSummary:
+      type: object
+      required: [balance, totalDeposited, totalWithdrawn, totalWon, totalBet]
+      properties:
+        balance:
+          type: number
+        totalDeposited:
+          type: number
+        totalWithdrawn:
+          type: number
+        totalWon:
+          type: number
+        totalBet:
+          type: number
+        pendingDeposits:
+          type: number
+        pendingWithdrawals:
+          type: number
+
+    Transaction:
+      type: object
+      required: [id, userId, type, amount, status, method, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+        amount:
+          type: number
+        status:
+          type: string
+        method:
+          type: ["string", "null"]
+        reference:
+          type: ["string", "null"]
+        note:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    TransactionList:
+      type: object
+      required: [transactions, total]
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        total:
+          type: integer
+
+    DepositInput:
+      type: object
+      required: [amount, method]
+      properties:
+        amount:
+          type: number
+        method:
+          type: string
+        phone:
+          type: ["string", "null"]
+        walletAddress:
+          type: ["string", "null"]
+
+    WithdrawInput:
+      type: object
+      required: [amount, method]
+      properties:
+        amount:
+          type: number
+        method:
+          type: string
+        phone:
+          type: ["string", "null"]
+        walletAddress:
+          type: ["string", "null"]
+
+    GamePlayInput:
+      type: object
+      required: [betAmount]
+      properties:
+        betAmount:
+          type: number
+
+    ScratchInput:
+      type: object
+      required: [betAmount, cardType]
+      properties:
+        betAmount:
+          type: number
+        cardType:
+          type: string
+
+    SlotsResult:
+      type: object
+      required: [reels, won, winAmount, multiplier, newBalance]
+      properties:
+        reels:
+          type: array
+          items:
+            type: string
+        won:
+          type: boolean
+        winAmount:
+          type: number
+        multiplier:
+          type: number
+        newBalance:
+          type: number
+        gameId:
+          type: integer
+
+    WheelResult:
+      type: object
+      required: [segment, prize, won, winAmount, newBalance, spinAngle]
+      properties:
+        segment:
+          type: integer
+        prize:
+          type: string
+        won:
+          type: boolean
+        winAmount:
+          type: number
+        newBalance:
+          type: number
+        spinAngle:
+          type: number
+        gameId:
+          type: integer
+
+    ScratchResult:
+      type: object
+      required: [symbols, won, winAmount, newBalance, cardType]
+      properties:
+        symbols:
+          type: array
+          items:
+            type: string
+        won:
+          type: boolean
+        winAmount:
+          type: number
+        newBalance:
+          type: number
+        cardType:
+          type: string
+        gameId:
+          type: integer
+
+    GameHistory:
+      type: object
+      required: [id, gameType, betAmount, winAmount, won, createdAt]
+      properties:
+        id:
+          type: integer
+        gameType:
+          type: string
+        betAmount:
+          type: number
+        winAmount:
+          type: number
+        won:
+          type: boolean
+        multiplier:
+          type: ["number", "null"]
+        details:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    GameHistoryList:
+      type: object
+      required: [games, total]
+      properties:
+        games:
+          type: array
+          items:
+            $ref: "#/components/schemas/GameHistory"
+        total:
+          type: integer
+
+    Winner:
+      type: object
+      required: [id, username, gameType, winAmount, createdAt]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        gameType:
+          type: string
+        winAmount:
+          type: number
+        multiplier:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+
+    WinnerList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Winner"
+
+    ReferralInfo:
+      type: object
+      required: [referralCode, referralLink, totalInvited, totalEarned, commissionRate]
+      properties:
+        referralCode:
+          type: string
+        referralLink:
+          type: string
+        totalInvited:
+          type: integer
+        totalEarned:
+          type: number
+        commissionRate:
+          type: number
+
+    Commission:
+      type: object
+      required: [id, referredUser, amount, createdAt]
+      properties:
+        id:
+          type: integer
+        referredUser:
+          type: string
+        amount:
+          type: number
+        createdAt:
+          type: string
+
+    CommissionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Commission"
+
+    Notification:
+      type: object
+      required: [id, title, message, type, isRead, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        isRead:
+          type: boolean
+        createdAt:
+          type: string
+
+    NotificationList:
+      type: object
+      required: [notifications, unreadCount]
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+        unreadCount:
+          type: integer
+
+    BonusResult:
+      type: object
+      required: [amount, newBalance, message]
+      properties:
+        amount:
+          type: number
+        newBalance:
+          type: number
+        message:
+          type: string
+
+    Bonus:
+      type: object
+      required: [id, title, description, amount, type, isActive]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        type:
+          type: string
+        isActive:
+          type: boolean
+
+    BonusList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Bonus"
+
+    VipLevel:
+      type: object
+      required: [level, name, dailyBonus, cashbackRate, maxWithdrawal, badge]
+      properties:
+        level:
+          type: integer
+        name:
+          type: string
+        dailyBonus:
+          type: number
+        cashbackRate:
+          type: number
+        maxWithdrawal:
+          type: number
+        badge:
+          type: string
+        minXp:
+          type: number
+
+    VipInfo:
+      type: object
+      required: [currentLevel, currentXp, nextLevelXp, levels]
+      properties:
+        currentLevel:
+          type: integer
+        currentXp:
+          type: number
+        nextLevelXp:
+          type: number
+        levels:
+          type: array
+          items:
+            $ref: "#/components/schemas/VipLevel"
+
+    AdminStats:
+      type: object
+      required: [totalUsers, activeUsers, totalDeposited, totalWithdrawn, platformRevenue, todaySignups, todayDeposits, todayWithdrawals, totalGamesPlayed]
+      properties:
+        totalUsers:
+          type: integer
+        activeUsers:
+          type: integer
+        totalDeposited:
+          type: number
+        totalWithdrawn:
+          type: number
+        platformRevenue:
+          type: number
+        todaySignups:
+          type: integer
+        todayDeposits:
+          type: number
+        todayWithdrawals:
+          type: number
+        totalGamesPlayed:
+          type: integer
+
+    AdminUser:
+      type: object
+      required: [id, fullName, phone, country, balance, vipLevel, isVerified, isBlocked, isAdmin, referralCode, createdAt]
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: ["string", "null"]
+        country:
+          type: string
+        balance:
+          type: number
+        vipLevel:
+          type: integer
+        isVerified:
+          type: boolean
+        isBlocked:
+          type: boolean
+        isAdmin:
+          type: boolean
+        referralCode:
+          type: string
+        createdAt:
+          type: string
+
+    AdminUserList:
+      type: object
+      required: [users, total]
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminUser"
+        total:
+          type: integer
+
+    BalanceUpdate:
+      type: object
+      required: [amount, operation]
+      properties:
+        amount:
+          type: number
+        operation:
+          type: string
+        note:
+          type: ["string", "null"]
+
+    StatusUpdate:
+      type: object
+      required: [isBlocked]
+      properties:
+        isBlocked:
+          type: boolean
+
+    GameConfig:
+      type: object
+      required: [gameType, minBet, maxBet, rtp, isActive]
+      properties:
+        gameType:
+          type: string
+        minBet:
+          type: number
+        maxBet:
+          type: number
+        rtp:
+          type: number
+        isActive:
+          type: boolean
+        winProbability:
+          type: number
+
+    GamesConfig:
+      type: object
+      required: [slots, wheel, scratch]
+      properties:
+        slots:
+          $ref: "#/components/schemas/GameConfig"
+        wheel:
+          $ref: "#/components/schemas/GameConfig"
+        scratch:
+          $ref: "#/components/schemas/GameConfig"
+
+    GamesConfigUpdate:
+      type: object
+      properties:
+        slots:
+          $ref: "#/components/schemas/GameConfig"
+        wheel:
+          $ref: "#/components/schemas/GameConfig"
+        scratch:
+          $ref: "#/components/schemas/GameConfig"
