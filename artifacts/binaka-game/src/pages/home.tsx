@@ -1,9 +1,9 @@
 import { useAuth } from "@/lib/auth";
 import { Link } from "wouter";
 import { Bell, Menu, Eye, EyeOff, Gamepad2 } from "lucide-react";
-import { useGetBalance, getGetBalanceQueryKey, useGetRecentWinners, getGetRecentWinnersQueryKey } from "@workspace/api-client-react";
+import { useGetBalance, getGetBalanceQueryKey, useGetRecentWinners, getGetRecentWinnersQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
@@ -20,6 +20,7 @@ export default function Home() {
   const { user } = useAuth();
   const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
   const { data: winners } = useGetRecentWinners({ limit: 5 }, { query: { queryKey: getGetRecentWinnersQueryKey({ limit: 5 }) } });
+  const { data: txData } = useGetTransactions({ limit: 5 }, { query: { queryKey: getGetTransactionsQueryKey({ limit: 5 }) } });
 
   const [showBalance, setShowBalance] = useState(true);
 
@@ -172,6 +173,48 @@ export default function Home() {
             <GameCard href="/games/slots" image={iconSlots} name="Jackpot" />
             <GameCard href="/games/wheel" image={iconWheel} name="Roue" />
             <GameCard href="/games/scratch" image={iconScratch} name="Gratter" />
+          </div>
+        </div>
+
+        {/* Last 5 Transactions */}
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-lg">DERNIÈRES TRANSACTIONS</h3>
+            <Link href="/wallet" className="text-sm font-medium text-primary">Voir tout</Link>
+          </div>
+          <div className="bg-card rounded-xl border border-border overflow-hidden divide-y divide-border">
+            {txData?.transactions?.length ? txData.transactions.slice(0, 5).map((tx) => {
+              const isDebit = tx.type === "withdrawal";
+              const icon = isDebit ? iconWithdraw : iconDeposit;
+              const color = isDebit ? "#f59e0b" : "#22c55e";
+              const sign = isDebit ? "-" : "+";
+              const label = tx.type === "deposit" ? "Dépôt" : tx.type === "withdrawal" ? "Retrait" : tx.type;
+              const statusColor = tx.status === "completed" ? "text-green-500" : tx.status === "pending" ? "text-amber-500" : "text-red-500";
+              const statusLabel = tx.status === "completed" ? "Complété" : tx.status === "pending" ? "En attente" : "Échoué";
+              return (
+                <div key={tx.id} className="p-3 flex items-center justify-between gap-3">
+                  <div
+                    className="h-9 w-9 rounded-xl flex-shrink-0 flex items-center justify-center"
+                    style={{ background: `${color}22`, border: `1.5px solid ${color}44` }}
+                  >
+                    <div style={{ width: 20, height: 20, backgroundColor: color, maskImage: `url(${icon})`, WebkitMaskImage: `url(${icon})`, maskSize: "contain", WebkitMaskSize: "contain", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm">{label}</div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-medium ${statusColor}`}>{statusLabel}</span>
+                      {tx.method && <span className="text-xs text-muted-foreground">· {tx.method}</span>}
+                    </div>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="font-bold text-sm" style={{ color }}>{sign}{tx.amount.toLocaleString("fr-FR")} FCFA</div>
+                    <div className="text-xs text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</div>
+                  </div>
+                </div>
+              );
+            }) : (
+              <div className="p-4 text-center text-sm text-muted-foreground">Aucune transaction pour le moment</div>
+            )}
           </div>
         </div>
 
