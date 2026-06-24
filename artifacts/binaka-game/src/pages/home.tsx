@@ -1,20 +1,21 @@
 import { useAuth } from "@/lib/auth";
 import { Link } from "wouter";
-import { Bell, Menu, Eye, EyeOff, Plus, Minus, History, Users, Gift, HelpCircle, Gamepad2 } from "lucide-react";
+import { Bell, Menu, Eye, EyeOff, History, Users, Gift, HelpCircle, Gamepad2 } from "lucide-react";
 import { useGetBalance, getGetBalanceQueryKey, useGetRecentWinners, getGetRecentWinnersQueryKey } from "@workspace/api-client-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
+import iconDeposit from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
+import iconWithdraw from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
+import cardBg from "@assets/20260617_124349_1782318016151.png";
 
 export default function Home() {
   const { user } = useAuth();
   const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
   const { data: winners } = useGetRecentWinners({ limit: 5 }, { query: { queryKey: getGetRecentWinnersQueryKey({ limit: 5 }) } });
-  
+
   const [showBalance, setShowBalance] = useState(true);
 
   if (!user) return null;
@@ -40,12 +41,14 @@ export default function Home() {
       </header>
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        {/* User Card */}
+        {/* User info */}
         <div className="px-4 pt-4 pb-2">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 border-2 border-primary">
               <AvatarImage src={user.avatarUrl || ""} />
-              <AvatarFallback className="bg-primary/20 text-primary font-bold">{user.fullName.substring(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarFallback className="bg-primary/20 text-primary font-bold">
+                {user.fullName.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <h2 className="font-bold text-lg leading-tight">Bonjour, {user.fullName}</h2>
@@ -55,38 +58,68 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {/* <Progress value={45} className="h-1.5" /> */}
         </div>
 
         {/* Balance Card */}
         <div className="px-4 py-2">
-          <div className="bg-gradient-to-br from-primary to-green-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
-            <div className="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-            <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-black/10 rounded-full blur-2xl"></div>
-            
+          <div
+            className="rounded-2xl p-5 text-white shadow-lg relative overflow-hidden"
+            style={{ background: "linear-gradient(135deg, #16a34a 0%, #15803d 60%, #166534 100%)" }}
+          >
+            {/* Decorative lines image */}
+            <img
+              src={cardBg}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+              style={{ mixBlendMode: "overlay" }}
+            />
+            {/* Glow blobs */}
+            <div className="absolute -right-8 -top-8 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -left-8 -bottom-8 w-36 h-36 bg-black/10 rounded-full blur-2xl pointer-events-none" />
+
             <div className="relative z-10">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-sm font-medium opacity-90">SOLDE PRINCIPAL</span>
-                <button onClick={() => setShowBalance(!showBalance)} className="p-1 opacity-80 hover:opacity-100 transition-opacity">
+                <span className="text-xs font-bold tracking-widest opacity-80 uppercase">Solde Principal</span>
+                <button
+                  onClick={() => setShowBalance(!showBalance)}
+                  className="p-1 opacity-80 hover:opacity-100 transition-opacity"
+                >
                   {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
+
               <div className="text-3xl font-extrabold mb-5 flex items-baseline gap-1">
-                {showBalance ? (wallet?.balance?.toLocaleString() || "0") : "••••••"}
-                <span className="text-lg font-bold opacity-90">FCFA</span>
+                {showBalance ? (wallet?.balance?.toLocaleString("fr-FR") ?? "0") : "••••••"}
+                <span className="text-lg font-bold opacity-80">FCFA</span>
               </div>
-              
+
+              {/* Deposit / Withdraw buttons with custom icons */}
               <div className="flex gap-3">
-                <Button asChild variant="secondary" className="flex-1 font-bold text-primary bg-white hover:bg-white/90">
-                  <Link href="/deposit">
-                    <Plus className="mr-1 h-4 w-4" /> DÉPÔT
-                  </Link>
-                </Button>
-                <Button asChild className="flex-1 font-bold bg-amber-500 text-white hover:bg-amber-600 border-none">
-                  <Link href="/withdraw">
-                    <Minus className="mr-1 h-4 w-4" /> RETRAIT
-                  </Link>
-                </Button>
+                <Link
+                  href="/deposit"
+                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl font-bold text-sm bg-white text-green-700 hover:bg-white/90 transition-all active:scale-95 shadow"
+                >
+                  <img
+                    src={iconDeposit}
+                    alt="Dépôt"
+                    className="w-5 h-5 object-contain"
+                    style={{ filter: "invert(27%) sepia(80%) saturate(500%) hue-rotate(100deg) brightness(0.85)" }}
+                  />
+                  DÉPÔT
+                </Link>
+                <Link
+                  href="/withdraw"
+                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl font-bold text-sm bg-amber-500 text-white hover:bg-amber-600 transition-all active:scale-95 shadow"
+                >
+                  <img
+                    src={iconWithdraw}
+                    alt="Retrait"
+                    className="w-5 h-5 object-contain"
+                    style={{ filter: "invert(1) brightness(1.2)" }}
+                  />
+                  RETRAIT
+                </Link>
               </div>
             </div>
           </div>
@@ -102,17 +135,23 @@ export default function Home() {
 
         {/* Promo Banner */}
         <div className="px-4 py-2">
-          <div className="rounded-xl overflow-hidden shadow-md relative" style={{background: "linear-gradient(135deg, #16a34a 0%, #065f46 100%)", minHeight: "90px"}}>
-            <div className="absolute -right-8 -top-8 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+          <div
+            className="rounded-xl overflow-hidden shadow-md relative"
+            style={{ background: "linear-gradient(135deg, #16a34a 0%, #065f46 100%)", minHeight: "90px" }}
+          >
+            <div className="absolute -right-8 -top-8 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
             <div className="absolute -right-4 top-4 text-6xl select-none pointer-events-none opacity-30">🎁</div>
             <div className="relative z-10 flex items-center p-5 gap-4">
               <div className="flex-1 text-white">
                 <div className="text-xs font-semibold uppercase tracking-wider opacity-80 mb-0.5">Offre Parrainage</div>
                 <h3 className="font-extrabold text-xl leading-tight mb-1">Invitez & Gagnez</h3>
                 <p className="text-sm opacity-90 mb-3">10% sur chaque dépôt de vos filleuls</p>
-                <Button size="sm" asChild className="bg-amber-500 hover:bg-amber-600 text-white h-7 text-xs px-3 rounded-full">
-                  <Link href="/referral">En savoir plus</Link>
-                </Button>
+                <Link
+                  href="/referral"
+                  className="inline-flex items-center h-7 px-3 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors"
+                >
+                  En savoir plus
+                </Link>
               </div>
               <div className="text-7xl select-none hidden sm:block">💰</div>
             </div>
@@ -127,7 +166,6 @@ export default function Home() {
               Voir tout <Gamepad2 className="ml-1 w-4 h-4" />
             </Link>
           </div>
-          
           <div className="grid grid-cols-3 gap-3">
             <GameCard href="/games/slots" image={iconSlots} name="Jackpot" />
             <GameCard href="/games/wheel" image={iconWheel} name="Roue" />
@@ -144,16 +182,16 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={winner.avatarUrl || ""} />
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary">{winner.username.substring(0,2)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                      {winner.username.substring(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="font-semibold text-sm">{winner.username}</div>
                     <div className="text-xs text-muted-foreground">{winner.gameType}</div>
                   </div>
                 </div>
-                <div className="font-bold text-green-600">
-                  +{winner.winAmount.toLocaleString()} FCFA
-                </div>
+                <div className="font-bold text-green-600">+{winner.winAmount.toLocaleString()} FCFA</div>
               </div>
             )) : (
               <div className="p-4 text-center text-sm text-muted-foreground">Aucun gagnant pour le moment</div>
@@ -165,7 +203,7 @@ export default function Home() {
   );
 }
 
-function QuickAction({ icon, label, href }: { icon: React.ReactNode, label: string, href: string }) {
+function QuickAction({ icon, label, href }: { icon: React.ReactNode; label: string; href: string }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors">
       <div className="h-12 w-12 rounded-full bg-card shadow-sm border border-border flex items-center justify-center">
@@ -176,7 +214,7 @@ function QuickAction({ icon, label, href }: { icon: React.ReactNode, label: stri
   );
 }
 
-function GameCard({ href, image, name }: { href: string, image: string, name: string }) {
+function GameCard({ href, image, name }: { href: string; image: string; name: string }) {
   return (
     <Link href={href} className="flex flex-col gap-2 group">
       <div className="aspect-square rounded-2xl overflow-hidden shadow-md border border-border group-hover:scale-105 transition-transform duration-300">
