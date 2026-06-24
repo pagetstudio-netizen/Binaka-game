@@ -1,5 +1,6 @@
 import { useAuth } from "@/lib/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getUserAvatar } from "@/lib/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Settings, HelpCircle, LogOut, ChevronRight, User as UserIcon } from "lucide-react";
@@ -16,8 +17,7 @@ export default function Account() {
 
       <div className="flex items-center gap-4 bg-card p-4 rounded-2xl border border-border shadow-sm">
         <Avatar className="h-16 w-16 border-2 border-primary">
-          <AvatarImage src={user.avatarUrl || ""} />
-          <AvatarFallback className="bg-primary/20 text-primary text-xl font-bold">{user.fullName.substring(0, 2).toUpperCase()}</AvatarFallback>
+          <AvatarImage src={getUserAvatar(user.id, user.avatarUrl)} className="object-cover" />
         </Avatar>
         <div className="flex-1">
           <h2 className="font-bold text-lg">{user.fullName}</h2>

@@ -5,7 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, User, Mail, Globe, Camera, Loader2, CheckCircle2 } from "lucide-react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getUserAvatar } from "@/lib/user-avatar";
 
 const COUNTRIES = [
   "Togo", "Bénin", "Côte d'Ivoire", "Sénégal", "Mali", "Burkina Faso",
@@ -63,10 +64,7 @@ export default function AccountProfile() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-3">
           <div className="relative">
             <Avatar className="h-24 w-24 border-4 border-primary shadow-lg">
-              <AvatarImage src={user.avatarUrl || ""} />
-              <AvatarFallback className="bg-primary/20 text-primary text-3xl font-bold">
-                {user.fullName.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
+              <AvatarImage src={getUserAvatar(user.id, user.avatarUrl)} className="object-cover" />
             </Avatar>
             <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-md">
               <Camera className="w-4 h-4 text-white" />

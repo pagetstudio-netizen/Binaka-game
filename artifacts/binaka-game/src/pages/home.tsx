@@ -14,6 +14,7 @@ import iconHistorique from "@assets/téléchargement_(72)_1782317985494.png";
 import iconParrainage from "@assets/téléchargement_(70)_1782317985777.png";
 import iconBonus from "@assets/téléchargement_(66)_1782317985807.png";
 import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782317985826.png";
+import { getUserAvatar } from "@/lib/user-avatar";
 
 export default function Home() {
   const { user } = useAuth();
@@ -49,10 +50,7 @@ export default function Home() {
         <div className="px-4 pt-4 pb-2">
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 border-2 border-primary">
-              <AvatarImage src={user.avatarUrl || ""} />
-              <AvatarFallback className="bg-primary/20 text-primary font-bold">
-                {user.fullName.substring(0, 2).toUpperCase()}
-              </AvatarFallback>
+              <AvatarImage src={getUserAvatar(user.id, user.avatarUrl)} className="object-cover" />
             </Avatar>
             <div className="flex-1">
               <h2 className="font-bold text-lg leading-tight">Bonjour, {user.fullName}</h2>
@@ -185,10 +183,7 @@ export default function Home() {
               <div key={winner.id} className="p-3 flex items-center justify-between hover:bg-muted/50 transition-colors">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={winner.avatarUrl || ""} />
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                      {winner.username.substring(0, 2)}
-                    </AvatarFallback>
+                    <AvatarImage src={getUserAvatar(winner.id, winner.avatarUrl)} className="object-cover" />
                   </Avatar>
                   <div>
                     <div className="font-semibold text-sm">{winner.username}</div>
