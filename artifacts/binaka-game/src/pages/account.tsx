@@ -30,9 +30,9 @@ export default function Account() {
       </div>
 
       <div className="space-y-3">
-        <AccountItem icon={<UserIcon />} label="Informations Personnelles" href="#" />
-        <AccountItem icon={<Shield />} label="Sécurité et Mot de passe" href="#" />
-        <AccountItem icon={<Settings />} label="Paramètres de l'application" href="#" />
+        <AccountItem icon={<UserIcon />} label="Informations Personnelles" href="/account/profile" />
+        <AccountItem icon={<Shield />} label="Sécurité et Mot de passe" href="/account/security" />
+        <AccountItem icon={<Settings />} label="Paramètres de l'application" href="/account/settings" />
         <AccountItem icon={<HelpCircle />} label="Centre d'aide" href="/support" />
       </div>
 

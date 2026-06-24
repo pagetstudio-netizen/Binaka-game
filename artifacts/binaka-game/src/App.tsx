@@ -17,6 +17,9 @@ import Deposit from "@/pages/deposit";
 import Withdraw from "@/pages/withdraw";
 import Promotions from "@/pages/promotions";
 import Account from "@/pages/account";
+import AccountProfile from "@/pages/account-profile";
+import AccountSecurity from "@/pages/account-security";
+import AccountSettings from "@/pages/account-settings";
 import Referral from "@/pages/referral";
 import Notifications from "@/pages/notifications";
 import Vip from "@/pages/vip";
@@ -38,6 +41,9 @@ function MainRoutes() {
         <Route path="/wallet" component={Wallet} />
         <Route path="/promotions" component={Promotions} />
         <Route path="/account" component={Account} />
+        <Route path="/account/profile" component={AccountProfile} />
+        <Route path="/account/security" component={AccountSecurity} />
+        <Route path="/account/settings" component={AccountSettings} />
         <Route path="/referral" component={Referral} />
         <Route path="/notifications" component={Notifications} />
         <Route path="/vip" component={Vip} />
