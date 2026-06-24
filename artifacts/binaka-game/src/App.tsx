@@ -36,8 +36,6 @@ function MainRoutes() {
         <Route path="/games/wheel" component={Wheel} />
         <Route path="/games/scratch" component={Scratch} />
         <Route path="/wallet" component={Wallet} />
-        <Route path="/deposit" component={Deposit} />
-        <Route path="/withdraw" component={Withdraw} />
         <Route path="/promotions" component={Promotions} />
         <Route path="/account" component={Account} />
         <Route path="/referral" component={Referral} />
@@ -56,6 +54,8 @@ function Router() {
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/deposit" component={Deposit} />
+      <Route path="/withdraw" component={Withdraw} />
       <Route component={MainRoutes} />
     </Switch>
   );
