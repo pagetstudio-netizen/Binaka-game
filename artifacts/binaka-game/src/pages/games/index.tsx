@@ -1,6 +1,9 @@
 import { Link } from "wouter";
 import { Gamepad2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import iconSlots from "@assets/icon-slots.png";
+import iconWheel from "@assets/icon-wheel.png";
+import iconScratch from "@assets/icon-scratch.png";
 
 export default function Games() {
   return (
@@ -13,8 +16,7 @@ export default function Games() {
       <div className="p-4 space-y-4">
         <GameListCard 
           href="/games/slots" 
-          emoji="🎰"
-          gradient="from-purple-600 to-purple-900"
+          image={iconSlots}
           title="Slot Machine Jackpot" 
           desc="Alignez les symboles et gagnez jusqu'à x50 votre mise !"
           minBet="100 FCFA"
@@ -24,8 +26,7 @@ export default function Games() {
         
         <GameListCard 
           href="/games/wheel" 
-          emoji="🎡"
-          gradient="from-blue-500 to-blue-800"
+          image={iconWheel}
           title="Roue de la Fortune" 
           desc="Tournez la roue et tentez de remporter le grand prix."
           minBet="200 FCFA"
@@ -35,8 +36,7 @@ export default function Games() {
         
         <GameListCard 
           href="/games/scratch" 
-          emoji="🎟"
-          gradient="from-amber-500 to-orange-700"
+          image={iconScratch}
           title="Cartes à Gratter" 
           desc="Découvrez 3 symboles identiques pour gagner instantanément."
           minBet="500 FCFA"
@@ -48,12 +48,12 @@ export default function Games() {
   );
 }
 
-function GameListCard({ href, emoji, gradient, title, desc, minBet, color, accent }: any) {
+function GameListCard({ href, image, title, desc, minBet, color, accent }: any) {
   return (
     <div className={`rounded-2xl overflow-hidden border border-border shadow-sm ${color} flex flex-col`}>
-      <div className={`h-32 w-full relative bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-        <span className="text-6xl">{emoji}</span>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+      <div className="h-40 w-full relative">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-3">
           <h3 className="font-bold text-white text-lg">{title}</h3>
         </div>
       </div>

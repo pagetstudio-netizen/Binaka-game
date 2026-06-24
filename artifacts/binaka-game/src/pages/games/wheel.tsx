@@ -167,7 +167,7 @@ export default function Wheel() {
           {history?.games?.map((game) => (
             <div key={game.id} className="flex justify-between items-center text-sm bg-black/20 p-2 rounded-lg">
               <span className="text-white/60 text-xs">Mise: {game.betAmount}</span>
-              <span className="font-medium">{game.details}</span>
+              <span className="font-medium">{typeof game.details === 'object' ? (game.details as any)?.prize || '—' : String(game.details ?? '—')}</span>
               <span className={`font-bold ${game.won ? 'text-green-400' : 'text-red-400'}`}>
                 {game.won ? `+${game.winAmount}` : `-${game.betAmount}`}
               </span>

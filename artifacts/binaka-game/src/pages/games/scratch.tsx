@@ -166,7 +166,7 @@ export default function Scratch() {
           {history?.games?.map((game) => (
             <div key={game.id} className="flex justify-between items-center text-sm bg-black/20 p-2 rounded-lg">
               <div className="flex flex-col">
-                <span className="text-white/60 text-xs">{game.details}</span>
+                <span className="text-white/60 text-xs">{typeof game.details === 'object' ? (game.details as any)?.cardType || '—' : String(game.details ?? '—')}</span>
               </div>
               <span className={`font-bold ${game.won ? 'text-green-400' : 'text-red-400'}`}>
                 {game.won ? `+${game.winAmount}` : `-${game.betAmount}`}

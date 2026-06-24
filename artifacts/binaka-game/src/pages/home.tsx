@@ -6,6 +6,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import iconSlots from "@assets/icon-slots.png";
+import iconWheel from "@assets/icon-wheel.png";
+import iconScratch from "@assets/icon-scratch.png";
 
 export default function Home() {
   const { user } = useAuth();
@@ -126,9 +129,9 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-3 gap-3">
-            <GameCard href="/games/slots" emoji="🎰" bg="from-purple-600 to-purple-900" name="Jackpot" />
-            <GameCard href="/games/wheel" emoji="🎡" bg="from-blue-500 to-blue-800" name="Roue" />
-            <GameCard href="/games/scratch" emoji="🎟" bg="from-amber-500 to-orange-700" name="Gratter" />
+            <GameCard href="/games/slots" image={iconSlots} name="Jackpot" />
+            <GameCard href="/games/wheel" image={iconWheel} name="Roue" />
+            <GameCard href="/games/scratch" image={iconScratch} name="Gratter" />
           </div>
         </div>
 
@@ -173,11 +176,11 @@ function QuickAction({ icon, label, href }: { icon: React.ReactNode, label: stri
   );
 }
 
-function GameCard({ href, emoji, bg, name }: { href: string, emoji: string, bg: string, name: string }) {
+function GameCard({ href, image, name }: { href: string, image: string, name: string }) {
   return (
     <Link href={href} className="flex flex-col gap-2 group">
-      <div className={`aspect-square rounded-2xl overflow-hidden shadow-md bg-gradient-to-br ${bg} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
-        <span className="text-4xl">{emoji}</span>
+      <div className="aspect-square rounded-2xl overflow-hidden shadow-md border border-border group-hover:scale-105 transition-transform duration-300">
+        <img src={image} alt={name} className="w-full h-full object-cover" />
       </div>
       <span className="text-xs font-bold text-center">{name}</span>
     </Link>

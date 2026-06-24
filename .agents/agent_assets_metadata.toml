@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "onFuxsS86CUQVe0sDIkIe"
@@ -24,3 +23,39 @@ id = "tlwD9zzA3bvWmZjJ1lhbP"
 uri = "file://artifacts/binaka-game/public/icon-scratch.png"
 type = "image"
 title = "scratch card icon"
+
+[[generated]]
+id = "x3XaKFQqjBg8qxYpViOfj"
+uri = "file://attached_assets/icon-slots.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "bIIPZpjKIg9d5pAgeOwZw"
+uri = "file://attached_assets/icon-wheel.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "egRHWbnEzVw4kWbkTB3iv"
+uri = "file://attached_assets/icon-scratch.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "h6iFATu7aIsonGXlhDAV8"
+uri = "file://attached_assets/icon-slots.png"
+type = "image"
+title = "🎰 Slot Machine"
+
+[[outputs]]
+id = "Gc4HMlvqLZyfUPogoMIW4"
+uri = "file://attached_assets/icon-wheel.png"
+type = "image"
+title = "🎡 Roue de la Fortune"
+
+[[outputs]]
+id = "AqDZsIXJmgLTwQ09H91OI"
+uri = "file://attached_assets/icon-scratch.png"
+type = "image"
+title = "🎟 Carte à Gratter"

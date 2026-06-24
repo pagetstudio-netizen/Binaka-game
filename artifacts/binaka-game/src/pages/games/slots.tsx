@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { usePlaySlots, useGetSlotsHistory, getGetSlotsHistoryQueryKey, getGetBalanceQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Loader2, Coins } from "lucide-react";
+import { ArrowLeft, Loader2, History } from "lucide-react";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
@@ -155,7 +155,7 @@ export default function Slots() {
             <div key={game.id} className="flex justify-between items-center text-sm bg-black/20 p-2 rounded-lg">
               <div className="flex flex-col">
                 <span className="text-white/60 text-xs">Mise: {game.betAmount}</span>
-                <span className="tracking-widest">{game.details}</span>
+                <span className="tracking-widest text-sm">{typeof game.details === 'object' ? (game.details as any)?.symbols?.join(' ') || '—' : String(game.details ?? '—')}</span>
               </div>
               <span className={`font-bold ${game.won ? 'text-green-400' : 'text-red-400'}`}>
                 {game.won ? `+${game.winAmount}` : `-${game.betAmount}`}
