@@ -3,56 +3,25 @@ import { useCreateDeposit, useGetBalance, getGetBalanceQueryKey } from "@workspa
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Link, useLocation } from "wouter";
-import { ArrowLeft, Loader2, ChevronRight, CheckCircle2 } from "lucide-react";
+import { useLocation } from "wouter";
+import { ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import cryptoIcon from "@assets/cryptocurrency-3d-icon-png-download-5701572_1782317809007.png";
+import mobileMoneyIcon from "@assets/20260619_074037_1782317822572.png";
 
-type Step = "method" | "operator" | "form" | "success";
+type Step = "method" | "form" | "success";
 
-const MOBILE_OPERATORS = [
-  {
-    id: "TMONEY",
-    name: "TMoney",
-    desc: "Togocel Mobile Money",
-    min: 1000,
-    max: 2000000,
-    color: "#e11d48",
-    emoji: "📱",
-  },
-  {
-    id: "FLOOZ",
-    name: "Moov Flooz",
-    desc: "Moov Africa Mobile Money",
-    min: 1000,
-    max: 2000000,
-    color: "#2563eb",
-    emoji: "📲",
-  },
-  {
-    id: "ORANGE_MONEY",
-    name: "Orange Money",
-    desc: "Orange Mobile Money",
-    min: 1000,
-    max: 2000000,
-    color: "#ea580c",
-    emoji: "💰",
-  },
-  {
-    id: "MTN_MOMO",
-    name: "MTN MoMo",
-    desc: "MTN Mobile Money",
-    min: 1000,
-    max: 2000000,
-    color: "#ca8a04",
-    emoji: "📳",
-  },
-];
+const QUICK_AMOUNTS = [1000, 2000, 5000, 10000, 20000, 50000];
 
-const QUICK_AMOUNTS = [1000, 2000, 5000, 10000];
+const pageVariants = {
+  initial: { opacity: 0, x: 40 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -40 },
+};
 
 export default function Deposit() {
   const [step, setStep] = useState<Step>("method");
-  const [selectedOperator, setSelectedOperator] = useState(MOBILE_OPERATORS[0]);
+  const [payMethod, setPayMethod] = useState<"MOBILE_MONEY" | "CRYPTO">("MOBILE_MONEY");
   const [amount, setAmount] = useState("");
   const [phone, setPhone] = useState("");
 
@@ -61,20 +30,34 @@ export default function Deposit() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
+  const handleBack = () => {
+    if (step === "method") setLocation("/");
+    else if (step === "form") setStep("method");
+    else setLocation("/");
+  };
+
+  const handleSelectMethod = (method: "MOBILE_MONEY" | "CRYPTO") => {
+    if (method === "CRYPTO") {
+      toast({ title: "Crypto Monnaie", description: "La recharge USDT sera bientôt disponible. Contactez le support." });
+      return;
+    }
+    setPayMethod(method);
+    setStep("form");
+  };
+
   const handleDeposit = async () => {
     const amt = Number(amount);
-    if (!amount || isNaN(amt) || amt < selectedOperator.min) {
-      toast({ title: "Montant invalide", description: `Le montant minimum est de ${selectedOperator.min.toLocaleString()} FCFA`, variant: "destructive" });
+    if (!amount || isNaN(amt) || amt < 1000) {
+      toast({ title: "Montant invalide", description: "Le montant minimum est de 1 000 FCFA", variant: "destructive" });
       return;
     }
     if (!phone) {
       toast({ title: "Numéro requis", description: "Veuillez entrer votre numéro de téléphone", variant: "destructive" });
       return;
     }
-
     try {
       await createDeposit.mutateAsync({
-        data: { amount: amt, method: selectedOperator.id, phone, walletAddress: null }
+        data: { amount: amt, method: payMethod, phone, walletAddress: null }
       });
       setStep("success");
     } catch (error: any) {
@@ -82,147 +65,139 @@ export default function Deposit() {
     }
   };
 
-  const handleCryptoDeposit = async () => {
-    toast({ title: "Crypto", description: "Fonctionnalité USDT bientôt disponible. Contactez le support.", });
-  };
-
-  const pageVariants = {
-    initial: { opacity: 0, x: 40 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -40 },
-  };
-
   return (
-    <div className="flex flex-col flex-1 w-full bg-slate-50 min-h-[100dvh]">
+    <div
+      className="flex flex-col w-full min-h-[100dvh]"
+      style={{ background: "linear-gradient(160deg, #0d1117 0%, #0f1f3d 50%, #0d1117 100%)" }}
+    >
       {/* Header */}
-      <header className="px-4 py-4 bg-white border-b border-slate-100 flex items-center gap-3 sticky top-0 z-10 shadow-sm">
+      <header className="px-4 pt-10 pb-4 flex items-center gap-3 relative">
         <button
-          onClick={() => {
-            if (step === "method") setLocation("/");
-            else if (step === "operator") setStep("method");
-            else if (step === "form") setStep("operator");
-            else setLocation("/");
-          }}
-          className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+          onClick={handleBack}
+          className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-slate-700" />
+          <ArrowLeft className="w-5 h-5 text-white" />
         </button>
-        <h1 className="text-lg font-bold flex-1 text-center text-slate-800">Recharger</h1>
+        <h1 className="text-lg font-extrabold text-white flex-1 text-center tracking-wide">
+          {step === "method" ? "Recharger" : step === "form" ? "Mobile Money" : "Succès"}
+        </h1>
         <div className="w-9" />
       </header>
 
-      {/* Balance Bar */}
-      <div className="mx-4 mt-4 bg-white rounded-2xl px-5 py-3 flex items-center justify-between shadow-sm border border-slate-100">
-        <span className="text-sm font-semibold text-slate-500">Solde</span>
-        <span className="text-lg font-extrabold text-amber-500">
-          {(wallet?.balance ?? 0).toLocaleString("fr-FR")}
-          <span className="text-sm font-bold text-slate-400 ml-1">FCFA</span>
-        </span>
+      {/* Balance pill */}
+      <div className="mx-4 mb-6">
+        <div
+          className="rounded-2xl px-5 py-3 flex items-center justify-between"
+          style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+        >
+          <span className="text-sm font-semibold text-white/60">Solde disponible</span>
+          <span className="text-lg font-extrabold text-amber-400">
+            {(wallet?.balance ?? 0).toLocaleString("fr-FR")}
+            <span className="text-sm font-bold text-white/40 ml-1">FCFA</span>
+          </span>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4">
+      {/* Content */}
+      <div className="flex-1 px-4 pb-8">
         <AnimatePresence mode="wait">
 
-          {/* STEP 1 — Choix du mode de paiement */}
+          {/* ÉTAPE 1 — Choix méthode */}
           {step === "method" && (
-            <motion.div key="method" {...pageVariants} transition={{ duration: 0.22 }} className="space-y-4">
-              <p className="text-sm text-slate-500 font-medium mt-2">Choisissez votre mode de recharge</p>
+            <motion.div key="method" {...pageVariants} transition={{ duration: 0.25 }} className="space-y-4">
+              <p className="text-white/60 text-sm font-medium text-center mb-6">
+                Choisissez votre mode de recharge
+              </p>
 
-              {/* Mobile Money Card */}
+              {/* Mobile Money */}
               <button
-                onClick={() => setStep("operator")}
-                className="w-full bg-white rounded-2xl p-5 flex items-center gap-4 border border-slate-100 shadow-sm hover:border-green-400 hover:shadow-md transition-all group"
+                onClick={() => handleSelectMethod("MOBILE_MONEY")}
+                className="w-full rounded-3xl p-6 flex flex-col items-center gap-4 transition-all active:scale-95 hover:scale-[1.02]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(16,185,129,0.08) 100%)",
+                  border: "1.5px solid rgba(34,197,94,0.4)",
+                  boxShadow: "0 8px 32px rgba(34,197,94,0.15)",
+                }}
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <span className="text-2xl">📱</span>
+                <img
+                  src={mobileMoneyIcon}
+                  alt="Mobile Money"
+                  className="w-40 h-auto object-contain drop-shadow-xl"
+                />
+                <div className="text-center">
+                  <div className="text-xl font-extrabold text-white tracking-wide">MOBILE MONEY</div>
+                  <div className="text-sm text-white/50 mt-1">TMoney · Flooz · Airtel Money</div>
+                  <div className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold text-green-400" style={{ background: "rgba(34,197,94,0.12)" }}>
+                    Min: 1 000 FCFA
+                  </div>
                 </div>
-                <div className="flex-1 text-left">
-                  <div className="font-bold text-slate-800 text-base">Mobile Money</div>
-                  <div className="text-xs text-slate-500 mt-0.5">TMoney · Flooz · Orange · MTN</div>
-                  <div className="text-xs font-semibold text-green-600 mt-1">Min: 1 000 FCFA</div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-green-500 transition-colors" />
               </button>
 
-              {/* Crypto Card */}
+              {/* Crypto */}
               <button
-                onClick={handleCryptoDeposit}
-                className="w-full bg-white rounded-2xl p-5 flex items-center gap-4 border border-slate-100 shadow-sm hover:border-amber-400 hover:shadow-md transition-all group"
+                onClick={() => handleSelectMethod("CRYPTO")}
+                className="w-full rounded-3xl p-6 flex flex-col items-center gap-4 transition-all active:scale-95 hover:scale-[1.02]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(251,191,36,0.15) 0%, rgba(245,158,11,0.08) 100%)",
+                  border: "1.5px solid rgba(251,191,36,0.4)",
+                  boxShadow: "0 8px 32px rgba(251,191,36,0.12)",
+                }}
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <span className="text-2xl">🪙</span>
+                <img
+                  src={cryptoIcon}
+                  alt="Crypto Monnaie"
+                  className="w-36 h-auto object-contain drop-shadow-xl"
+                />
+                <div className="text-center">
+                  <div className="text-xl font-extrabold text-white tracking-wide">CRYPTO MONNAIE</div>
+                  <div className="text-sm text-white/50 mt-1">USDT · BTC · ETH</div>
+                  <div className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold text-amber-400" style={{ background: "rgba(251,191,36,0.12)" }}>
+                    Bientôt disponible
+                  </div>
                 </div>
-                <div className="flex-1 text-left">
-                  <div className="font-bold text-slate-800 text-base">Crypto Monnaie</div>
-                  <div className="text-xs text-slate-500 mt-0.5">USDT TRC20</div>
-                  <div className="text-xs font-semibold text-amber-600 mt-1">Min: 2 000 FCFA</div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-amber-500 transition-colors" />
               </button>
             </motion.div>
           )}
 
-          {/* STEP 2 — Sélection opérateur */}
-          {step === "operator" && (
-            <motion.div key="operator" {...pageVariants} transition={{ duration: 0.22 }} className="space-y-3">
-              <p className="text-sm text-slate-500 font-medium mt-2">Sélectionnez votre opérateur</p>
-
-              {MOBILE_OPERATORS.map((op) => (
-                <button
-                  key={op.id}
-                  onClick={() => { setSelectedOperator(op); setStep("form"); }}
-                  className="w-full bg-white rounded-2xl p-4 flex items-center gap-4 border border-slate-100 shadow-sm hover:border-green-400 hover:shadow-md transition-all group"
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm text-2xl group-hover:scale-105 transition-transform"
-                    style={{ background: `${op.color}18` }}
-                  >
-                    {op.emoji}
-                  </div>
-                  <div className="flex-1 text-left">
-                    <div className="font-bold text-slate-800">{op.name}</div>
-                    <div className="text-xs text-slate-400">{op.desc}</div>
-                    <div className="text-xs text-slate-400 mt-0.5">
-                      Min: <span className="font-semibold text-green-600">{op.min.toLocaleString()} FCFA</span>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-green-500 transition-colors" />
-                </button>
-              ))}
-            </motion.div>
-          )}
-
-          {/* STEP 3 — Formulaire de recharge */}
+          {/* ÉTAPE 2 — Formulaire Mobile Money */}
           {step === "form" && (
-            <motion.div key="form" {...pageVariants} transition={{ duration: 0.22 }} className="space-y-4">
+            <motion.div key="form" {...pageVariants} transition={{ duration: 0.25 }} className="space-y-4">
 
-              {/* Canal sélectionné */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-50">
-                  <span className="text-sm text-slate-500 font-medium">Canal De Recharge</span>
-                  <span className="text-sm font-bold text-slate-700">{selectedOperator.name}</span>
+              {/* Info canal */}
+              <div
+                className="rounded-2xl overflow-hidden"
+                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+              >
+                <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+                  <span className="text-sm text-white/50 font-medium">Canal De Recharge</span>
+                  <span className="text-sm font-bold text-green-400">Mobile Money</span>
                 </div>
                 <div className="flex items-center justify-between px-5 py-4">
-                  <span className="text-sm text-slate-500 font-medium leading-tight">Montant De Recharge<br />Minimum</span>
-                  <span className="text-sm font-semibold text-slate-700">
-                    {selectedOperator.min.toLocaleString()} ~ {selectedOperator.max.toLocaleString()} FCFA
+                  <span className="text-sm text-white/50 font-medium leading-tight">
+                    Montant Min ~ Max
+                  </span>
+                  <span className="text-sm font-semibold text-white/80">
+                    1 000 ~ 2 000 000 FCFA
                   </span>
                 </div>
               </div>
 
               {/* Montants rapides */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+              <div
+                className="rounded-2xl p-5 space-y-5"
+                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+              >
                 <div>
-                  <p className="text-sm font-semibold text-slate-600 mb-3">Choisissez Le Montant</p>
+                  <p className="text-sm font-semibold text-white/70 mb-3">Choisissez Le Montant</p>
                   <div className="grid grid-cols-3 gap-2">
                     {QUICK_AMOUNTS.map((val) => (
                       <button
                         key={val}
                         onClick={() => setAmount(val.toString())}
-                        className={`py-3 rounded-xl text-sm font-bold border-2 transition-all ${
+                        className={`py-3 rounded-xl text-sm font-bold border transition-all ${
                           amount === val.toString()
-                            ? "border-green-500 bg-green-50 text-green-700"
-                            : "border-slate-200 bg-slate-50 text-slate-600 hover:border-green-300"
+                            ? "border-green-500 bg-green-500/20 text-green-400"
+                            : "border-white/10 bg-white/5 text-white/60 hover:border-green-500/50 hover:text-white/80"
                         }`}
                       >
                         {val.toLocaleString()}
@@ -233,77 +208,108 @@ export default function Deposit() {
 
                 {/* Champ montant */}
                 <div>
-                  <p className="text-sm font-semibold text-slate-600 mb-2">Montant De La Recharge</p>
+                  <p className="text-sm font-semibold text-white/70 mb-2">Montant De La Recharge</p>
                   <div className="relative">
-                    <Input
+                    <input
                       type="number"
                       placeholder="Veuillez entrer le montant"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
-                      className="h-12 pr-16 text-base font-semibold border-slate-200 rounded-xl focus-visible:ring-green-500 focus-visible:border-green-400"
+                      className="w-full h-13 pr-16 pl-4 text-base font-semibold rounded-xl outline-none text-white placeholder:text-white/30"
+                      style={{
+                        background: "rgba(255,255,255,0.08)",
+                        border: "1.5px solid rgba(255,255,255,0.15)",
+                      }}
+                      onFocus={(e) => (e.target.style.borderColor = "rgba(34,197,94,0.7)")}
+                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.15)")}
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">FCFA</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-white/40">FCFA</span>
                   </div>
                 </div>
 
                 {/* Numéro de téléphone */}
                 <div>
-                  <p className="text-sm font-semibold text-slate-600 mb-2">Numéro de téléphone</p>
-                  <Input
+                  <p className="text-sm font-semibold text-white/70 mb-2">Numéro de téléphone</p>
+                  <input
                     type="tel"
                     placeholder="Ex: 90 00 00 00"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="h-12 text-base font-semibold border-slate-200 rounded-xl focus-visible:ring-green-500 focus-visible:border-green-400"
+                    className="w-full h-13 px-4 text-base font-semibold rounded-xl outline-none text-white placeholder:text-white/30"
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      border: "1.5px solid rgba(255,255,255,0.15)",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "rgba(34,197,94,0.7)")}
+                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.15)")}
                   />
                 </div>
               </div>
 
               {/* Boutons */}
               <div className="space-y-3 pt-2">
-                <Button
+                <button
                   onClick={handleDeposit}
                   disabled={createDeposit.isPending}
-                  className="w-full h-14 text-base font-extrabold rounded-full bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-200 border-b-4 border-green-800 active:border-b-0 active:translate-y-1 transition-all"
+                  className="w-full h-14 text-base font-extrabold rounded-full text-white transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-60"
+                  style={{
+                    background: "linear-gradient(135deg, #16a34a, #15803d)",
+                    boxShadow: "0 6px 0 #14532d, 0 8px 20px rgba(22,163,74,0.4)",
+                  }}
                 >
-                  {createDeposit.isPending ? <Loader2 className="animate-spin mr-2 w-5 h-5" /> : null}
+                  {createDeposit.isPending ? <Loader2 className="animate-spin w-5 h-5" /> : null}
                   Recharger maintenant
-                </Button>
-                <Button
-                  variant="outline"
+                </button>
+
+                <button
                   onClick={() => toast({ title: "Guide de recharge", description: "Effectuez un virement Mobile Money sur le numéro indiqué par l'administrateur, puis soumettez votre demande." })}
-                  className="w-full h-14 text-base font-bold rounded-full border-2 border-amber-400 text-amber-600 hover:bg-amber-50 bg-white shadow-sm"
+                  className="w-full h-14 text-base font-bold rounded-full border-2 text-amber-400 hover:bg-amber-400/10 transition-all"
+                  style={{ borderColor: "rgba(251,191,36,0.5)", background: "rgba(251,191,36,0.07)" }}
                 >
                   Comment recharger ?
-                </Button>
+                </button>
               </div>
             </motion.div>
           )}
 
-          {/* STEP 4 — Succès */}
+          {/* ÉTAPE 3 — Succès */}
           {step === "success" && (
-            <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-16 gap-6">
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-16 gap-6"
+            >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", damping: 10 }}
-                className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center"
+                className="w-24 h-24 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(34,197,94,0.15)", border: "2px solid rgba(34,197,94,0.4)" }}
               >
-                <CheckCircle2 className="w-14 h-14 text-green-600" />
+                <CheckCircle2 className="w-14 h-14 text-green-400" />
               </motion.div>
               <div className="text-center">
-                <h2 className="text-2xl font-extrabold text-slate-800 mb-2">Demande envoyée !</h2>
-                <p className="text-slate-500 text-sm max-w-xs">
-                  Votre demande de recharge de <span className="font-bold text-green-600">{Number(amount).toLocaleString()} FCFA</span> via <span className="font-bold">{selectedOperator.name}</span> est en cours de traitement.
+                <h2 className="text-2xl font-extrabold text-white mb-2">Demande envoyée !</h2>
+                <p className="text-white/50 text-sm max-w-xs">
+                  Votre demande de recharge de{" "}
+                  <span className="font-bold text-green-400">{Number(amount).toLocaleString()} FCFA</span>{" "}
+                  via Mobile Money est en cours de traitement.
                 </p>
-                <p className="text-xs text-slate-400 mt-3">Votre solde sera mis à jour après vérification (quelques minutes).</p>
+                <p className="text-xs text-white/30 mt-3">
+                  Votre solde sera mis à jour après vérification (quelques minutes).
+                </p>
               </div>
-              <Button
+              <button
                 onClick={() => setLocation("/")}
-                className="w-full max-w-xs h-13 rounded-full font-bold bg-green-600 hover:bg-green-700 text-white shadow-lg"
+                className="w-full max-w-xs h-14 rounded-full font-bold text-white text-base transition-all active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, #16a34a, #15803d)",
+                  boxShadow: "0 6px 0 #14532d, 0 8px 20px rgba(22,163,74,0.35)",
+                }}
               >
                 Retour à l'accueil
-              </Button>
+              </button>
             </motion.div>
           )}
 
