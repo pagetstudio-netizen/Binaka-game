@@ -24,21 +24,25 @@ export function AppLayout({ children }: { children: ReactNode }) {
     return <Redirect to="/login" />;
   }
 
+  const hideNav = location.startsWith("/games");
+
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-slate-50 pb-16">
+    <div className={`min-h-[100dvh] flex flex-col bg-slate-50 ${hideNav ? "" : "pb-16"}`}>
       <main className="flex-1 w-full max-w-md mx-auto relative bg-background shadow-xl overflow-hidden flex flex-col">
         {children}
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
-        <div className="flex justify-around items-center h-16 max-w-md mx-auto">
-          <NavItem href="/" icon={iconHome}    label="Accueil"      isActive={location === "/"} />
-          <NavItem href="/games" icon={iconGames}  label="Jeux"         isActive={location.startsWith("/games")} />
-          <NavItem href="/wallet" icon={iconWallet} label="Portefeuille" isActive={location === "/wallet"} />
-          <NavItem href="/promotions" icon={iconGift}   label="Promotions"  isActive={location === "/promotions"} />
-          <NavItem href="/account" icon={iconAccount} label="Compte"       isActive={location === "/account"} />
-        </div>
-      </nav>
+      {!hideNav && (
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
+          <div className="flex justify-around items-center h-16 max-w-md mx-auto">
+            <NavItem href="/" icon={iconHome}    label="Accueil"      isActive={location === "/"} />
+            <NavItem href="/games" icon={iconGames}  label="Jeux"         isActive={location.startsWith("/games")} />
+            <NavItem href="/wallet" icon={iconWallet} label="Portefeuille" isActive={location === "/wallet"} />
+            <NavItem href="/promotions" icon={iconGift}   label="Promotions"  isActive={location === "/promotions"} />
+            <NavItem href="/account" icon={iconAccount} label="Compte"       isActive={location === "/account"} />
+          </div>
+        </nav>
+      )}
     </div>
   );
 }
