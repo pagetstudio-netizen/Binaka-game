@@ -30,11 +30,12 @@ export default function Promotions() {
   };
 
   return (
-    <div className="p-4 space-y-6 pb-20 w-full">
-      <header className="flex items-center gap-3">
+    <div className="flex flex-col w-full pb-20">
+      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex items-center gap-3">
         <Gift className="text-primary w-6 h-6" />
         <h1 className="text-2xl font-bold">Promotions</h1>
       </header>
+      <div className="p-4 space-y-6">
 
       <Card className="bg-gradient-to-br from-primary to-green-700 text-white border-none overflow-hidden relative">
         <div className="absolute right-0 top-0 opacity-20 transform translate-x-4 -translate-y-4">
@@ -76,6 +77,7 @@ export default function Promotions() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -31,8 +31,8 @@ export default function Notifications() {
   };
 
   return (
-    <div className="p-4 space-y-4 pb-20 w-full">
-      <header className="flex justify-between items-center">
+    <div className="flex flex-col w-full pb-20">
+      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Bell className="w-6 h-6" /> Notifications
         </h1>
@@ -43,7 +43,7 @@ export default function Notifications() {
         ) : null}
       </header>
 
-      <div className="space-y-3">
+      <div className="p-4 space-y-3">
         {data?.notifications?.map((notif) => (
           <div 
             key={notif.id} 

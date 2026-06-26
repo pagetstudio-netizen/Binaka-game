@@ -27,11 +27,12 @@ export default function Referral() {
   };
 
   return (
-    <div className="p-4 space-y-6 pb-20 w-full">
-      <header>
+    <div className="flex flex-col w-full pb-20">
+      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm">
         <h1 className="text-2xl font-bold">Parrainage</h1>
         <p className="text-sm text-muted-foreground mt-1">Invitez vos amis et gagnez à vie !</p>
       </header>
+      <div className="p-4 space-y-6">
 
       <Card className="bg-primary text-white border-none shadow-lg">
         <CardContent className="p-6 text-center space-y-2">
@@ -71,6 +72,7 @@ export default function Referral() {
           <span className="text-xl font-bold text-green-600">{(info?.totalEarned || 0).toLocaleString()} FCFA</span>
           <span className="text-xs text-muted-foreground">Gains totaux</span>
         </div>
+      </div>
       </div>
     </div>
   );

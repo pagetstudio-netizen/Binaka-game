@@ -66,7 +66,7 @@ export default function Withdraw() {
 
   return (
     <div className="flex flex-col flex-1 pb-6 w-full">
-      <header className="px-4 py-4 bg-card border-b border-border flex items-center gap-3">
+      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex items-center gap-3">
         <Link href="/">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="w-5 h-5" />

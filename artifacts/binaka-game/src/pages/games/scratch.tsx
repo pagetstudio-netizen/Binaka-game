@@ -71,7 +71,7 @@ export default function Scratch() {
 
   return (
     <div className="flex flex-col flex-1 bg-amber-900 text-white w-full overflow-y-auto">
-      <header className="p-4 flex items-center gap-3">
+      <header className="sticky top-0 z-20 p-4 flex items-center gap-3 bg-inherit">
         <Link href="/games">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
             <ArrowLeft />

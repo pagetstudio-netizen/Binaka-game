@@ -14,7 +14,7 @@ export default function Support() {
     <div className="h-[100dvh] w-full overflow-hidden flex flex-col bg-white">
 
       {/* ── Header ── */}
-      <header className="flex items-center px-4 py-4 border-b border-gray-100 bg-white">
+      <header className="sticky top-0 z-20 flex items-center px-4 py-4 border-b border-gray-200 bg-white shadow-sm">
         <Link href="/">
           <button className="p-1.5 rounded-full hover:bg-gray-100 transition-colors active:scale-95">
             <ArrowLeft size={22} className="text-gray-700" />
