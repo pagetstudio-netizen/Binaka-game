@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { Link } from "wouter";
-import { Bell, Menu, Eye, EyeOff, Gamepad2 } from "lucide-react";
+import { Bell, Menu, Eye, EyeOff, Gamepad2, History, Users, Gift, Headphones } from "lucide-react";
 import { useGetBalance, getGetBalanceQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
-import { useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
@@ -10,10 +10,6 @@ import iconScratch from "@assets/icon-scratch.png";
 import iconDeposit from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
 import iconWithdraw from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
 import cardBg from "@assets/20260617_124349_1782318016151.png";
-import iconHistorique from "@assets/mine-mod-records-DgHXSKa1_1782511060496.png";
-import iconParrainage from "@assets/téléchargement_(70)_1782511060599.png";
-import iconBonus from "@assets/téléchargement_(66)_1782511060631.png";
-import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782511060663.png";
 import { getUserAvatar } from "@/lib/user-avatar";
 
 export default function Home() {
@@ -129,10 +125,10 @@ export default function Home() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-2 px-4 py-4">
-          <QuickAction img={iconHistorique} label="Historique" href="/wallet" />
-          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" />
-          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" />
-          <QuickAction img={iconSupport}    label="Support"    href="/support" />
+          <QuickAction icon={History}     label="Historique" href="/wallet" />
+          <QuickAction icon={Users}       label="Parrainage" href="/referral" />
+          <QuickAction icon={Gift}        label="Bonus"      href="/promotions" />
+          <QuickAction icon={Headphones}  label="Support"    href="/support" />
         </div>
 
         {/* Promo Banner */}
@@ -222,25 +218,11 @@ export default function Home() {
   );
 }
 
-function QuickAction({ img, label, href }: { img: string; label: string; href: string }) {
+function QuickAction({ icon: Icon, label, href }: { icon: React.ElementType; label: string; href: string }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
       <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-amber-50 border border-amber-200">
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            backgroundColor: "#f59e0b",
-            maskImage: `url(${img})`,
-            WebkitMaskImage: `url(${img})`,
-            maskSize: "contain",
-            WebkitMaskSize: "contain",
-            maskRepeat: "no-repeat",
-            WebkitMaskRepeat: "no-repeat",
-            maskPosition: "center",
-            WebkitMaskPosition: "center",
-          }}
-        />
+        <Icon size={26} className="text-amber-500" strokeWidth={1.8} />
       </div>
       <span className="text-[10px] font-bold text-center text-amber-500">{label}</span>
     </Link>
