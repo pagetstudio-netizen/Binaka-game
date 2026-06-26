@@ -129,10 +129,10 @@ export default function Home() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-2 px-4 py-4">
-          <QuickAction img={iconHistorique} label="Historique" href="/wallet" />
-          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" />
-          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" />
-          <QuickAction img={iconSupport}    label="Support"    href="/support" />
+          <QuickAction img={iconHistorique} label="Historique" href="/wallet" mode="mask" />
+          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" mode="multiply" />
+          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" mode="multiply-invert" />
+          <QuickAction img={iconSupport}    label="Support"    href="/support" mode="mask" />
         </div>
 
         {/* Promo Banner */}
@@ -222,25 +222,46 @@ export default function Home() {
   );
 }
 
-function QuickAction({ img, label, href }: { img: string; label: string; href: string }) {
+type QAMode = "mask" | "multiply" | "multiply-invert";
+
+function QuickAction({ img, label, href, mode = "mask" }: { img: string; label: string; href: string; mode?: QAMode }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
       <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-gray-100 border border-gray-200">
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            backgroundColor: "#111827",
-            maskImage: `url(${img})`,
-            WebkitMaskImage: `url(${img})`,
-            maskSize: "contain",
-            WebkitMaskSize: "contain",
-            maskRepeat: "no-repeat",
-            WebkitMaskRepeat: "no-repeat",
-            maskPosition: "center",
-            WebkitMaskPosition: "center",
-          }}
-        />
+        {mode === "mask" ? (
+          /* Icône blanche sur fond transparent → masque CSS */
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              backgroundColor: "#111827",
+              maskImage: `url(${img})`,
+              WebkitMaskImage: `url(${img})`,
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
+        ) : (
+          /* Icône sur fond non-transparent → mix-blend-mode:multiply dans conteneur blanc */
+          <div className="w-7 h-7 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+            <img
+              src={img}
+              alt=""
+              style={{
+                width: 26,
+                height: 26,
+                objectFit: "contain",
+                mixBlendMode: "multiply",
+                /* multiply-invert : fond sombre → on inverse d'abord pour avoir fond clair */
+                filter: mode === "multiply-invert" ? "invert(1)" : "none",
+              }}
+            />
+          </div>
+        )}
       </div>
       <span className="text-[10px] font-bold text-center text-gray-900">{label}</span>
     </Link>
