@@ -221,10 +221,10 @@ export default function Home() {
 function QuickAction({ icon: Icon, label, href }: { icon: React.ElementType; label: string; href: string }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
-      <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-amber-50 border border-amber-200">
-        <Icon size={26} className="text-amber-500" strokeWidth={1.8} />
+      <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-gray-100 border border-gray-200">
+        <Icon size={26} className="text-gray-900" strokeWidth={1.8} />
       </div>
-      <span className="text-[10px] font-bold text-center text-amber-500">{label}</span>
+      <span className="text-[10px] font-bold text-center text-gray-900">{label}</span>
     </Link>
   );
 }
