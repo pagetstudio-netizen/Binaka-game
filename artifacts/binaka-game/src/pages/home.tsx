@@ -222,19 +222,15 @@ export default function Home() {
   );
 }
 
-function QuickAction({ img, color, label, href }: { img: string; color: string; label: string; href: string }) {
+function QuickAction({ img, label, href }: { img: string; label: string; href: string }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
-      <div
-        className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-md"
-        style={{ background: `${color}22`, border: `1.5px solid ${color}44` }}
-      >
-        {/* div masqué avec la couleur — technique fiable pour coloriser un PNG */}
+      <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-amber-50 border border-amber-200">
         <div
           style={{
             width: 28,
             height: 28,
-            backgroundColor: color,
+            backgroundColor: "#f59e0b",
             maskImage: `url(${img})`,
             WebkitMaskImage: `url(${img})`,
             maskSize: "contain",
@@ -246,7 +242,7 @@ function QuickAction({ img, color, label, href }: { img: string; color: string; 
           }}
         />
       </div>
-      <span className="text-[10px] font-bold text-center" style={{ color }}>{label}</span>
+      <span className="text-[10px] font-bold text-center text-amber-500">{label}</span>
     </Link>
   );
 }
