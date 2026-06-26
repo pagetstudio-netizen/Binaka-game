@@ -129,10 +129,10 @@ export default function Home() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-2 px-4 py-4">
-          <QuickAction img={iconHistorique} color="#3b82f6" label="Historique" href="/wallet" />
-          <QuickAction img={iconParrainage} color="#a855f7" label="Parrainage" href="/referral" />
-          <QuickAction img={iconBonus}      color="#f59e0b" label="Bonus"      href="/promotions" />
-          <QuickAction img={iconSupport}    color="#22c55e" label="Support"    href="/support" />
+          <QuickAction img={iconHistorique} label="Historique" href="/wallet" />
+          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" />
+          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" />
+          <QuickAction img={iconSupport}    label="Support"    href="/support" />
         </div>
 
         {/* Promo Banner */}
