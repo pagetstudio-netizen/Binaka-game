@@ -1,7 +1,7 @@
 import { useAuth } from "@/lib/auth";
 import { Link } from "wouter";
 import { Bell, Menu, Eye, EyeOff, Gamepad2 } from "lucide-react";
-import { useGetBalance, getGetBalanceQueryKey, useGetRecentWinners, getGetRecentWinnersQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
+import { useGetBalance, getGetBalanceQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import iconSlots from "@assets/icon-slots.png";
@@ -19,7 +19,6 @@ import { getUserAvatar } from "@/lib/user-avatar";
 export default function Home() {
   const { user } = useAuth();
   const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
-  const { data: winners } = useGetRecentWinners({ limit: 5 }, { query: { queryKey: getGetRecentWinnersQueryKey({ limit: 5 }) } });
   const { data: txData } = useGetTransactions({ limit: 5 }, { query: { queryKey: getGetTransactionsQueryKey({ limit: 5 }) } });
 
   const [showBalance, setShowBalance] = useState(true);
@@ -218,28 +217,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Recent Winners */}
-        <div className="px-4 py-4 mb-4">
-          <h3 className="font-bold text-lg mb-3">GAGNANTS RÉCENTS</h3>
-          <div className="bg-card rounded-xl border border-border overflow-hidden divide-y divide-border">
-            {winners?.length ? winners.map((winner) => (
-              <div key={winner.id} className="p-3 flex items-center justify-between hover:bg-muted/50 transition-colors">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={getUserAvatar(winner.id, winner.avatarUrl)} className="object-cover" />
-                  </Avatar>
-                  <div>
-                    <div className="font-semibold text-sm">{winner.username}</div>
-                    <div className="text-xs text-muted-foreground">{winner.gameType}</div>
-                  </div>
-                </div>
-                <div className="font-bold text-green-600">+{winner.winAmount.toLocaleString()} FCFA</div>
-              </div>
-            )) : (
-              <div className="p-4 text-center text-sm text-muted-foreground">Aucun gagnant pour le moment</div>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );
