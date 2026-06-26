@@ -10,10 +10,10 @@ import iconScratch from "@assets/icon-scratch.png";
 import iconDeposit from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
 import iconWithdraw from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
 import cardBg from "@assets/20260617_124349_1782318016151.png";
-import iconHistorique from "@assets/téléchargement_(72)_1782317985494.png";
-import iconParrainage from "@assets/téléchargement_(70)_1782317985777.png";
-import iconBonus from "@assets/téléchargement_(66)_1782317985807.png";
-import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782317985826.png";
+import iconHistorique from "@assets/mine-mod-records-DgHXSKa1_1782511060496.png";
+import iconParrainage from "@assets/téléchargement_(70)_1782511060599.png";
+import iconBonus from "@assets/téléchargement_(66)_1782511060631.png";
+import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782511060663.png";
 import { getUserAvatar } from "@/lib/user-avatar";
 
 export default function Home() {
