@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { Link } from "wouter";
-import { Bell, Menu, Eye, EyeOff, Gamepad2, History, Users, Gift, Headphones } from "lucide-react";
+import { Bell, Menu, Eye, EyeOff, Gamepad2 } from "lucide-react";
+import iconHistorique from "@assets/mine-mod-records-DgHXSKa1_1782513308641.png";
+import iconParrainage from "@assets/téléchargement_(70)_1782513308679.png";
+import iconBonus from "@assets/téléchargement_(66)_1782513308705.png";
+import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782513308727.png";
 import { useGetBalance, getGetBalanceQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import iconSlots from "@assets/icon-slots.png";
@@ -125,10 +129,10 @@ export default function Home() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-4 gap-2 px-4 py-4">
-          <QuickAction icon={History}     label="Historique" href="/wallet" />
-          <QuickAction icon={Users}       label="Parrainage" href="/referral" />
-          <QuickAction icon={Gift}        label="Bonus"      href="/promotions" />
-          <QuickAction icon={Headphones}  label="Support"    href="/support" />
+          <QuickAction img={iconHistorique} label="Historique" href="/wallet" />
+          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" />
+          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" />
+          <QuickAction img={iconSupport}    label="Support"    href="/support" />
         </div>
 
         {/* Promo Banner */}
@@ -218,11 +222,25 @@ export default function Home() {
   );
 }
 
-function QuickAction({ icon: Icon, label, href }: { icon: React.ElementType; label: string; href: string }) {
+function QuickAction({ img, label, href }: { img: string; label: string; href: string }) {
   return (
     <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
       <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-gray-100 border border-gray-200">
-        <Icon size={26} className="text-gray-900" strokeWidth={1.8} />
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            backgroundColor: "#111827",
+            maskImage: `url(${img})`,
+            WebkitMaskImage: `url(${img})`,
+            maskSize: "contain",
+            WebkitMaskSize: "contain",
+            maskRepeat: "no-repeat",
+            WebkitMaskRepeat: "no-repeat",
+            maskPosition: "center",
+            WebkitMaskPosition: "center",
+          }}
+        />
       </div>
       <span className="text-[10px] font-bold text-center text-gray-900">{label}</span>
     </Link>
