@@ -12,6 +12,12 @@ import Games from "@/pages/games";
 import Slots from "@/pages/games/slots";
 import Wheel from "@/pages/games/wheel";
 import Scratch from "@/pages/games/scratch";
+import Dice from "@/pages/games/dice";
+import CoinFlip from "@/pages/games/coin-flip";
+import LuckyNumber from "@/pages/games/lucky-number";
+import LuckyBox from "@/pages/games/lucky-box";
+import MysteryGift from "@/pages/games/mystery-gift";
+import MiniJackpot from "@/pages/games/mini-jackpot";
 import Wallet from "@/pages/wallet";
 import Deposit from "@/pages/deposit";
 import Withdraw from "@/pages/withdraw";
@@ -38,6 +44,12 @@ function MainRoutes() {
         <Route path="/games/slots" component={Slots} />
         <Route path="/games/wheel" component={Wheel} />
         <Route path="/games/scratch" component={Scratch} />
+        <Route path="/games/dice" component={Dice} />
+        <Route path="/games/coin-flip" component={CoinFlip} />
+        <Route path="/games/lucky-number" component={LuckyNumber} />
+        <Route path="/games/lucky-box" component={LuckyBox} />
+        <Route path="/games/mystery-gift" component={MysteryGift} />
+        <Route path="/games/mini-jackpot" component={MiniJackpot} />
         <Route path="/wallet" component={Wallet} />
         <Route path="/promotions" component={Promotions} />
         <Route path="/account" component={Account} />

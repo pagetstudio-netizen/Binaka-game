@@ -1,220 +1,272 @@
-import React, { useState } from "react";
-import { useAuth } from "@/lib/auth";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { Bell, Menu, Eye, EyeOff, Gamepad2 } from "lucide-react";
-import iconHistorique from "@assets/mine-mod-records-DgHXSKa1_1782513308641.png";
-import iconParrainage from "@assets/téléchargement_(70)_1782513308679.png";
-import iconBonus from "@assets/téléchargement_(66)_1782513308705.png";
-import iconSupport from "@assets/mine-mod-cs-DtBQ0Sp0_1782513308727.png";
-import { useGetBalance, getGetBalanceQueryKey, useGetTransactions, getGetTransactionsQueryKey } from "@workspace/api-client-react";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Bell, Download, Gift, ChevronRight, Trophy, Zap } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { useGetBalance, getGetBalanceQueryKey } from "@workspace/api-client-react";
+import { getUserAvatar } from "@/lib/user-avatar";
+
+import banner1 from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547259143.png";
+import banner2 from "@assets/file_000000000f0471f4a3199220c69af3b7_1782547259216.png";
+import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.png";
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
-import iconDeposit from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
-import iconWithdraw from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
-import cardBg from "@assets/20260617_124349_1782318016151.png";
-import { getUserAvatar } from "@/lib/user-avatar";
+
+const BANNERS = [banner1, banner2, banner3];
+
+const GAMES = [
+  { id: "slots", href: "/games/slots", name: "Jackpot", emoji: "🎰", image: iconSlots, gradient: "from-purple-600 to-purple-900", hot: true },
+  { id: "wheel", href: "/games/wheel", name: "Roue", emoji: "🎡", image: iconWheel, gradient: "from-blue-500 to-blue-800", hot: false },
+  { id: "scratch", href: "/games/scratch", name: "Gratter", emoji: "🎟", image: iconScratch, gradient: "from-amber-500 to-orange-700", hot: false },
+  { id: "dice", href: "/games/dice", name: "Dice", emoji: "🎲", gradient: "from-red-500 to-rose-800", hot: false },
+  { id: "coin-flip", href: "/games/coin-flip", name: "Coin Flip", emoji: "🪙", gradient: "from-yellow-400 to-yellow-700", hot: false },
+  { id: "lucky-number", href: "/games/lucky-number", name: "Lucky N°", emoji: "🎯", gradient: "from-green-500 to-emerald-800", hot: true },
+  { id: "lucky-box", href: "/games/lucky-box", name: "Lucky Box", emoji: "💎", gradient: "from-cyan-500 to-cyan-900", hot: false },
+  { id: "mystery-gift", href: "/games/mystery-gift", name: "Mystery Gift", emoji: "🎁", gradient: "from-pink-500 to-pink-900", hot: false },
+  { id: "mini-jackpot", href: "/games/mini-jackpot", name: "Mini Jackpot", emoji: "🎮", gradient: "from-indigo-500 to-indigo-900", hot: false },
+];
+
+const FAKE_WINNERS = [
+  { name: "Mbouma***", amount: "125 000", game: "Jackpot" },
+  { name: "Dj***ck", amount: "75 000", game: "Roue" },
+  { name: "Ange***", amount: "200 000", game: "Jackpot" },
+  { name: "Marc***", amount: "50 000", game: "Gratter" },
+  { name: "Fran***", amount: "98 000", game: "Dice" },
+  { name: "Alex***", amount: "300 000", game: "Lucky Box" },
+];
 
 export default function Home() {
   const { user } = useAuth();
   const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
-  const { data: txData } = useGetTransactions({ limit: 5 }, { query: { queryKey: getGetTransactionsQueryKey({ limit: 5 }) } });
-
   const [showBalance, setShowBalance] = useState(true);
+  const [bannerIndex, setBannerIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [winnerIndex, setWinnerIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setTimeout(() => setIsLoaded(true), 400);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBannerIndex((i) => (i + 1) % BANNERS.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWinnerIndex((i) => (i + 1) % FAKE_WINNERS.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   if (!user) return null;
 
+  const balance = wallet?.balance ?? 0;
+  const winner = FAKE_WINNERS[winnerIndex];
+
   return (
-    <div className="flex flex-col flex-1 pb-6 w-full">
-      {/* Header */}
-      <header className="px-4 py-3 flex items-center justify-between bg-card border-b border-border shadow-sm z-10 sticky top-0">
-        <div className="flex items-center gap-3">
-          <Menu className="text-muted-foreground" />
-          <h1 className="text-xl font-extrabold tracking-tight">
-            <span className="text-primary">BINAKA</span>{" "}
-            <span className="text-amber-500">GAME</span>
-          </h1>
-        </div>
-        <div className="relative">
-          <Bell className="text-muted-foreground" />
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-          </span>
+    <div className="flex flex-col w-full bg-gray-50 min-h-full pb-20">
+
+      {/* ── STICKY HEADER ── */}
+      <header
+        className="sticky top-0 z-50 bg-white"
+        style={{ height: 70, boxShadow: "0 2px 16px rgba(0,0,0,0.08)", borderBottom: "1px solid #f0f0f0" }}
+      >
+        <div className="flex items-center h-full px-3 gap-2">
+          {/* Avatar circulaire */}
+          <Link href="/account">
+            <div className="relative flex-shrink-0">
+              <img
+                src={getUserAvatar(user.id, user.avatarUrl)}
+                alt="Avatar"
+                className="w-10 h-10 rounded-full border-2 border-green-500 object-cover"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 bg-amber-400 text-[8px] font-black text-white rounded-full px-1 leading-4 border border-white">
+                V{user.vipLevel}
+              </span>
+            </div>
+          </Link>
+
+          {/* Solde + toggle */}
+          <div className="flex-1 min-w-0 mx-1">
+            <p className="text-[10px] text-gray-400 font-medium leading-none mb-0.5">Solde principal</p>
+            <div className="flex items-center gap-1">
+              <span className="font-black text-gray-900 text-[17px] leading-none truncate">
+                {showBalance ? balance.toLocaleString("fr-FR") : "••••••"}
+              </span>
+              <span className="text-[10px] text-gray-500 font-bold">FCFA</span>
+              <button onClick={() => setShowBalance(!showBalance)} className="text-gray-400 ml-0.5">
+                {showBalance ? <Eye size={13} /> : <EyeOff size={13} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Bouton Dépôt */}
+          <Link href="/deposit">
+            <motion.button
+              whileTap={{ scale: 0.94 }}
+              className="flex items-center gap-1.5 h-9 px-4 bg-green-600 text-white font-bold text-sm rounded-xl shadow-md flex-shrink-0"
+            >
+              <Zap size={14} />
+              Dépôt
+            </motion.button>
+          </Link>
+
+          {/* Icône Télécharger */}
+          <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 flex-shrink-0">
+            <Download size={17} className="text-gray-600" />
+          </motion.button>
+
+          {/* Icône Cadeaux */}
+          <Link href="/promotions">
+            <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 flex-shrink-0">
+              <Gift size={17} className="text-amber-500" />
+            </motion.button>
+          </Link>
+
+          {/* Icône Notifications */}
+          <Link href="/notifications">
+            <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 relative flex-shrink-0">
+              <Bell size={17} className="text-gray-600" />
+              <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-black rounded-full min-w-[16px] h-4 flex items-center justify-center px-0.5 border border-white">3</span>
+            </motion.button>
+          </Link>
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        {/* User info */}
-        <div className="px-4 pt-4 pb-2">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12 border-2 border-primary">
-              <AvatarImage src={getUserAvatar(user.id, user.avatarUrl)} className="object-cover" />
-            </Avatar>
-            <div className="flex-1">
-              <h2 className="font-bold text-lg leading-tight">Bonjour, {user.fullName}</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">VIP {user.vipLevel}</span>
-                <span className="text-xs text-muted-foreground">ID: {user.id}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex-1 overflow-x-hidden">
 
-        {/* Balance Card */}
-        <div className="px-4 py-2">
-          <div
-            className="rounded-2xl p-5 text-white shadow-lg relative overflow-hidden"
-            style={{ background: "linear-gradient(135deg, #16a34a 0%, #15803d 60%, #166534 100%)" }}
-          >
-            {/* Decorative lines image */}
-            <img
-              src={cardBg}
-              alt=""
-              aria-hidden
-              className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
-              style={{ mixBlendMode: "overlay" }}
-            />
-            {/* Glow blobs */}
-            <div className="absolute -right-8 -top-8 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute -left-8 -bottom-8 w-36 h-36 bg-black/10 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="relative z-10">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold tracking-widest opacity-80 uppercase">Solde Principal</span>
+        {/* ── BANNIÈRE CARROUSEL ── */}
+        <div className="px-3 pt-3">
+          <div className="relative overflow-hidden rounded-2xl shadow-md" style={{ aspectRatio: "2.1 / 1" }}>
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={bannerIndex}
+                src={BANNERS[bannerIndex]}
+                alt="Bannière BINAKA GAME"
+                className="w-full h-full object-cover absolute inset-0"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.45, ease: "easeInOut" }}
+              />
+            </AnimatePresence>
+            {/* Indicateurs (points) */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {BANNERS.map((_, i) => (
                 <button
-                  onClick={() => setShowBalance(!showBalance)}
-                  className="p-1 opacity-80 hover:opacity-100 transition-opacity"
-                >
-                  {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
-              </div>
-
-              <div className="text-3xl font-extrabold mb-5 flex items-baseline gap-1">
-                {showBalance ? (wallet?.balance?.toLocaleString("fr-FR") ?? "0") : "••••••"}
-                <span className="text-lg font-bold opacity-80">FCFA</span>
-              </div>
-
-              {/* Deposit / Withdraw buttons with custom icons */}
-              <div className="flex gap-3">
-                <Link
-                  href="/deposit"
-                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl font-bold text-sm bg-white text-green-700 hover:bg-white/90 transition-all active:scale-95 shadow"
-                >
-                  <img
-                    src={iconDeposit}
-                    alt="Dépôt"
-                    className="w-5 h-5 object-contain"
-                    style={{ filter: "invert(27%) sepia(80%) saturate(500%) hue-rotate(100deg) brightness(0.85)" }}
-                  />
-                  DÉPÔT
-                </Link>
-                <Link
-                  href="/withdraw"
-                  className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl font-bold text-sm bg-amber-500 text-white hover:bg-amber-600 transition-all active:scale-95 shadow"
-                >
-                  <img
-                    src={iconWithdraw}
-                    alt="Retrait"
-                    className="w-5 h-5 object-contain"
-                    style={{ filter: "invert(1) brightness(1.2)" }}
-                  />
-                  RETRAIT
-                </Link>
-              </div>
+                  key={i}
+                  onClick={() => setBannerIndex(i)}
+                  className="rounded-full transition-all duration-300"
+                  style={{ width: i === bannerIndex ? 22 : 8, height: 8, backgroundColor: i === bannerIndex ? "#ffffff" : "rgba(255,255,255,0.5)" }}
+                />
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-4 gap-2 px-4 py-4">
-          <QuickAction img={iconHistorique} label="Historique" href="/wallet" mode="mask" />
-          <QuickAction img={iconParrainage} label="Parrainage" href="/referral" mode="multiply" />
-          <QuickAction img={iconBonus}      label="Bonus"      href="/promotions" mode="multiply-invert" />
-          <QuickAction img={iconSupport}    label="Support"    href="/support" mode="mask" />
-        </div>
-
-        {/* Promo Banner */}
-        <div className="px-4 py-2">
-          <div
-            className="rounded-xl overflow-hidden shadow-md relative"
-            style={{ background: "linear-gradient(135deg, #16a34a 0%, #065f46 100%)", minHeight: "90px" }}
-          >
-            <div className="absolute -right-8 -top-8 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-            <div className="absolute -right-4 top-4 text-6xl select-none pointer-events-none opacity-30">🎁</div>
-            <div className="relative z-10 flex items-center p-5 gap-4">
-              <div className="flex-1 text-white">
-                <div className="text-xs font-semibold uppercase tracking-wider opacity-80 mb-0.5">Offre Parrainage</div>
-                <h3 className="font-extrabold text-xl leading-tight mb-1">Invitez & Gagnez</h3>
-                <p className="text-sm opacity-90 mb-3">10% sur chaque dépôt de vos filleuls</p>
-                <Link
-                  href="/referral"
-                  className="inline-flex items-center h-7 px-3 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors"
-                >
-                  En savoir plus
-                </Link>
-              </div>
-              <div className="text-7xl select-none hidden sm:block">💰</div>
-            </div>
+        {/* ── TICKER GAGNANTS ── */}
+        <div className="mx-3 mt-3 bg-white rounded-xl px-3 py-2.5 flex items-center gap-2 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <Trophy size={14} className="text-amber-500" />
+            <span className="text-[11px] font-black text-amber-500 uppercase tracking-wide">Gagnants</span>
           </div>
+          <div className="w-px h-4 bg-gray-200 flex-shrink-0" />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={winnerIndex}
+              className="flex items-center gap-2 flex-1 min-w-0"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-xs font-bold text-gray-800 truncate">{winner.name}</span>
+              <span className="text-[10px] text-gray-400 flex-shrink-0">{winner.game}</span>
+              <span className="ml-auto text-xs font-black text-green-600 flex-shrink-0">+{winner.amount} FCFA</span>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Games */}
-        <div className="px-4 py-4">
+        {/* ── ACTIONS RAPIDES ── */}
+        <div className="px-3 mt-3 grid grid-cols-4 gap-2">
+          {[
+            { label: "Dépôt", emoji: "💳", href: "/deposit", bg: "#f0fdf4", color: "#16a34a" },
+            { label: "Retrait", emoji: "💰", href: "/withdraw", bg: "#fffbeb", color: "#d97706" },
+            { label: "VIP", emoji: "👑", href: "/vip", bg: "#faf5ff", color: "#9333ea" },
+            { label: "Parrainage", emoji: "🤝", href: "/referral", bg: "#eff6ff", color: "#2563eb" },
+          ].map((item) => (
+            <Link key={item.label} href={item.href}>
+              <motion.div
+                whileTap={{ scale: 0.92 }}
+                className="flex flex-col items-center gap-1 py-3 rounded-xl border"
+                style={{ backgroundColor: item.bg, borderColor: item.color + "30" }}
+              >
+                <span className="text-xl">{item.emoji}</span>
+                <span className="text-[10px] font-bold" style={{ color: item.color }}>{item.label}</span>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+
+        {/* ── GRILLE DE JEUX ── */}
+        <div className="px-3 mt-4">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-lg">NOS JEUX</h3>
-            <Link href="/games" className="text-sm font-medium text-primary flex items-center">
-              Voir tout <Gamepad2 className="ml-1 w-4 h-4" />
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-5 bg-green-600 rounded-full" />
+              <h2 className="font-black text-gray-900 text-base">Jeux Populaires</h2>
+            </div>
+            <Link href="/games">
+              <span className="text-xs font-bold text-green-600 flex items-center gap-0.5">
+                Voir tout <ChevronRight size={14} />
+              </span>
             </Link>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <GameCard href="/games/slots" image={iconSlots} name="Jackpot" />
-            <GameCard href="/games/wheel" image={iconWheel} name="Roue" />
-            <GameCard href="/games/scratch" image={iconScratch} name="Gratter" />
+
+          <div className="grid grid-cols-3 gap-2.5">
+            {!isLoaded
+              ? Array.from({ length: 9 }).map((_, i) => (
+                  <div key={i} className="flex flex-col gap-1.5">
+                    <div className="aspect-[3/4] bg-gray-200 animate-pulse rounded-2xl" />
+                    <div className="h-3 bg-gray-200 animate-pulse rounded mx-2" />
+                  </div>
+                ))
+              : GAMES.map((game, i) => (
+                  <motion.div
+                    key={game.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06, duration: 0.4 }}
+                  >
+                    <GameCard game={game} />
+                  </motion.div>
+                ))}
           </div>
         </div>
 
-        {/* Last 5 Transactions */}
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-lg">DERNIÈRES TRANSACTIONS</h3>
-            <Link href="/wallet" className="text-sm font-medium text-primary">Voir tout</Link>
-          </div>
-          <div className="bg-card rounded-xl border border-border overflow-hidden divide-y divide-border">
-            {txData?.transactions?.length ? txData.transactions.slice(0, 5).map((tx) => {
-              const isDebit = tx.type === "withdrawal";
-              const icon = isDebit ? iconWithdraw : iconDeposit;
-              const color = isDebit ? "#f59e0b" : "#22c55e";
-              const sign = isDebit ? "-" : "+";
-              const label = tx.type === "deposit" ? "Dépôt" : tx.type === "withdrawal" ? "Retrait" : tx.type;
-              const statusColor = tx.status === "completed" ? "text-green-500" : tx.status === "pending" ? "text-amber-500" : "text-red-500";
-              const statusLabel = tx.status === "completed" ? "Complété" : tx.status === "pending" ? "En attente" : "Échoué";
-              return (
-                <div key={tx.id} className="p-3 flex items-center justify-between gap-3">
-                  <div
-                    className="h-9 w-9 rounded-xl flex-shrink-0 flex items-center justify-center"
-                    style={{ background: `${color}22`, border: `1.5px solid ${color}44` }}
-                  >
-                    <div style={{ width: 20, height: 20, backgroundColor: color, maskImage: `url(${icon})`, WebkitMaskImage: `url(${icon})`, maskSize: "contain", WebkitMaskSize: "contain", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm">{label}</div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs font-medium ${statusColor}`}>{statusLabel}</span>
-                      {tx.method && <span className="text-xs text-muted-foreground">· {tx.method}</span>}
-                    </div>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <div className="font-bold text-sm" style={{ color }}>{sign}{tx.amount.toLocaleString("fr-FR")} FCFA</div>
-                    <div className="text-xs text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</div>
-                  </div>
-                </div>
-              );
-            }) : (
-              <div className="p-4 text-center text-sm text-muted-foreground">Aucune transaction pour le moment</div>
-            )}
-          </div>
+        {/* ── BANNIÈRE PARRAINAGE ── */}
+        <div className="px-3 mt-4 mb-4">
+          <Link href="/referral">
+            <motion.div
+              whileTap={{ scale: 0.98 }}
+              className="rounded-2xl overflow-hidden relative shadow-md"
+              style={{ background: "linear-gradient(135deg, #16a34a 0%, #064e3b 100%)", minHeight: 90 }}
+            >
+              <div className="absolute right-3 top-0 bottom-0 flex items-center text-7xl opacity-20 select-none pointer-events-none">🤑</div>
+              <div className="relative z-10 p-4">
+                <p className="text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-0.5">Offre Parrainage</p>
+                <h3 className="text-white font-black text-xl leading-tight mb-1">Invitez & Gagnez</h3>
+                <p className="text-white/80 text-xs mb-2">10% sur chaque dépôt de vos filleuls</p>
+                <span className="inline-flex items-center gap-1 bg-amber-400 text-white text-[11px] font-bold px-3 py-1.5 rounded-full">
+                  En savoir plus <ChevronRight size={11} />
+                </span>
+              </div>
+            </motion.div>
+          </Link>
         </div>
 
       </div>
@@ -222,59 +274,41 @@ export default function Home() {
   );
 }
 
-type QAMode = "mask" | "multiply" | "multiply-invert";
+type Game = {
+  id: string; href: string; name: string; emoji: string;
+  image?: string; gradient: string; hot: boolean;
+};
 
-function QuickAction({ img, label, href, mode = "mask" }: { img: string; label: string; href: string; mode?: QAMode }) {
+function GameCard({ game }: { game: Game }) {
   return (
-    <Link href={href} className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors active:scale-95">
-      <div className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-sm bg-gray-100 border border-gray-200">
-        {mode === "mask" ? (
-          /* Icône blanche sur fond transparent → masque CSS */
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              backgroundColor: "#111827",
-              maskImage: `url(${img})`,
-              WebkitMaskImage: `url(${img})`,
-              maskSize: "contain",
-              WebkitMaskSize: "contain",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              maskPosition: "center",
-              WebkitMaskPosition: "center",
-            }}
-          />
-        ) : (
-          /* Icône sur fond non-transparent → mix-blend-mode:multiply dans conteneur blanc */
-          <div className="w-7 h-7 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+    <Link href={game.href}>
+      <motion.div whileTap={{ scale: 0.93 }} className="group flex flex-col">
+        <div className={`aspect-[3/4] rounded-2xl overflow-hidden relative bg-gradient-to-br ${game.gradient} shadow-md`}>
+          {game.hot && (
+            <div className="absolute top-1.5 left-1.5 z-10 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">
+              HOT 🔥
+            </div>
+          )}
+          {game.image ? (
             <img
-              src={img}
-              alt=""
-              style={{
-                width: 26,
-                height: 26,
-                objectFit: "contain",
-                mixBlendMode: "multiply",
-                /* multiply-invert : fond sombre → on inverse d'abord pour avoir fond clair */
-                filter: mode === "multiply-invert" ? "invert(1)" : "none",
-              }}
+              src={game.image}
+              alt={game.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center">
+              <span className="text-5xl drop-shadow-lg">{game.emoji}</span>
+            </div>
+          )}
+          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="absolute bottom-2 left-0 right-0 flex justify-center">
+            <span className="bg-green-600 text-white text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-wide shadow">
+              Jouer
+            </span>
           </div>
-        )}
-      </div>
-      <span className="text-[10px] font-bold text-center text-gray-900">{label}</span>
-    </Link>
-  );
-}
-
-function GameCard({ href, image, name }: { href: string; image: string; name: string }) {
-  return (
-    <Link href={href} className="flex flex-col gap-2 group">
-      <div className="aspect-square rounded-2xl overflow-hidden shadow-md border border-border group-hover:scale-105 transition-transform duration-300">
-        <img src={image} alt={name} className="w-full h-full object-cover" />
-      </div>
-      <span className="text-xs font-bold text-center">{name}</span>
+        </div>
+        <p className="text-[11px] font-bold text-gray-700 text-center mt-1.5 truncate px-1">{game.name}</p>
+      </motion.div>
     </Link>
   );
 }
