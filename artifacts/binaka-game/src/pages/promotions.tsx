@@ -1,83 +1,53 @@
-import { useGetBonusList, getGetBonusListQueryKey, useClaimDailyBonus, getGetBalanceQueryKey } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
-import { useQueryClient } from "@tanstack/react-query";
-import { Gift, Loader2, CheckCircle2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+
+import banner1 from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547259143.png";
+import banner2 from "@assets/file_000000000f0471f4a3199220c69af3b7_1782547259216.png";
+import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.png";
+import promo1 from "@assets/20260624_150018_1782317841294.png";
+import promo2 from "@assets/20260624_150106_1782317841320.png";
+import promo3 from "@assets/20260624_150241_1782317841340.png";
+import promo4 from "@assets/20260624_150402_1782317841358.png";
+import promo5 from "@assets/20260624_150441_1782317841381.png";
+import promo6 from "@assets/file_000000005a0c71f4bc093c66523e7c21_1782512298304.png";
+import promo7 from "@assets/file_0000000083c071f4a1b9b5b3e1dd86cd_1782512584552.png";
+
+const BANNERS = [
+  banner1,
+  banner2,
+  banner3,
+  promo1,
+  promo2,
+  promo3,
+  promo4,
+  promo5,
+  promo6,
+  promo7,
+];
 
 export default function Promotions() {
-  const { data: bonuses } = useGetBonusList({ query: { queryKey: getGetBonusListQueryKey() } });
-  const claimBonus = useClaimDailyBonus();
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  const handleClaim = async () => {
-    try {
-      const res = await claimBonus.mutateAsync();
-      toast({
-        title: "Bonus réclamé !",
-        description: res.message || `Vous avez reçu ${res.amount} FCFA`,
-        className: "bg-green-600 text-white",
-      });
-      queryClient.invalidateQueries({ queryKey: getGetBalanceQueryKey() });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: error.message || "Bonus déjà réclamé aujourd'hui",
-      });
-    }
-  };
-
   return (
-    <div className="flex flex-col w-full pb-20">
-      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex items-center gap-3">
-        <Gift className="text-primary w-6 h-6" />
-        <h1 className="text-2xl font-bold">Promotions</h1>
+    <div className="flex flex-col w-full min-h-full bg-gray-100 pb-24">
+      <header className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm px-4 h-14 flex items-center">
+        <h1 className="text-xl font-black text-gray-900">Promotions</h1>
       </header>
-      <div className="p-4 space-y-6">
 
-      <Card className="bg-gradient-to-br from-primary to-green-700 text-white border-none overflow-hidden relative">
-        <div className="absolute right-0 top-0 opacity-20 transform translate-x-4 -translate-y-4">
-          <Gift size={100} />
-        </div>
-        <CardContent className="p-6 relative z-10">
-          <h2 className="text-xl font-bold mb-2">Bonus Quotidien</h2>
-          <p className="text-green-100 text-sm mb-4">Connectez-vous chaque jour pour réclamer votre récompense gratuite !</p>
-          <Button 
-            onClick={handleClaim} 
-            disabled={claimBonus.isPending}
-            variant="secondary"
-            className="w-full font-bold bg-white text-primary hover:bg-white/90"
+      <div className="flex flex-col gap-3 p-3">
+        {BANNERS.map((src, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
+            className="w-full rounded-2xl overflow-hidden shadow-md bg-white"
           >
-            {claimBonus.isPending ? <Loader2 className="animate-spin mr-2" /> : null}
-            RÉCLAMER MON BONUS
-          </Button>
-        </CardContent>
-      </Card>
-
-      <div>
-        <h3 className="font-bold text-lg mb-3">Bonus Actifs</h3>
-        <div className="space-y-3">
-          {bonuses?.map((bonus) => (
-            <div key={bonus.id} className="p-4 bg-card rounded-xl border border-border shadow-sm flex items-center justify-between">
-              <div>
-                <h4 className="font-bold text-sm">{bonus.title}</h4>
-                <p className="text-xs text-muted-foreground mt-1">{bonus.description}</p>
-                <span className="inline-block mt-2 text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
-                  {bonus.amount} FCFA
-                </span>
-              </div>
-              <CheckCircle2 className="text-green-500 w-5 h-5" />
-            </div>
-          ))}
-          {(!bonuses || bonuses.length === 0) && (
-            <div className="text-center p-8 text-muted-foreground text-sm border border-dashed rounded-xl">
-              Aucun autre bonus disponible pour le moment.
-            </div>
-          )}
-        </div>
-      </div>
+            <img
+              src={src}
+              alt={`Promotion ${i + 1}`}
+              className="w-full h-auto object-cover block"
+              loading="lazy"
+            />
+          </motion.div>
+        ))}
       </div>
     </div>
   );
