@@ -96,6 +96,7 @@ function GameCard({ game }: { game: Game }) {
     <Link href={game.href}>
       <motion.div whileTap={{ scale: 0.93 }} className="group flex flex-col">
         <div className={`aspect-[3/4] rounded-2xl overflow-hidden relative bg-gradient-to-br ${game.gradient} shadow-md`}>
+          {/* Badge HOT ou NEW */}
           {game.hot && (
             <div className="absolute top-1.5 left-1.5 z-10 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">
               HOT 🔥
@@ -106,24 +107,44 @@ function GameCard({ game }: { game: Game }) {
               NEW ✨
             </div>
           )}
+
           {game.image ? (
             <img src={game.image} alt={game.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
+            <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+              {/* Halo lumineux */}
+              <div className="absolute w-24 h-24 rounded-full opacity-25"
+                style={{ background: "radial-gradient(circle, white 0%, transparent 70%)" }} />
+              {/* Étoiles décoratives */}
+              <motion.div
+                className="absolute top-2 right-3 text-base opacity-40"
+                animate={{ y: [0, -5, 0], rotate: [0, 12, 0] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}>
+                ✨
+              </motion.div>
+              <motion.div
+                className="absolute bottom-8 left-2 text-sm opacity-30"
+                animate={{ y: [0, 5, 0], rotate: [0, -10, 0] }}
+                transition={{ duration: 4.1, repeat: Infinity, ease: "easeInOut", delay: 1 }}>
+                ⭐
+              </motion.div>
+              <motion.div
+                className="absolute top-3 left-3 text-sm opacity-20"
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}>
+                💫
+              </motion.div>
+              {/* Emoji principal */}
               <motion.span
-                className="text-5xl drop-shadow-lg"
-                animate={{ scale: [1, 1.08, 1], rotate: [0, 3, -3, 0] }}
-                transition={{ duration: 3, repeat: Infinity, delay: Math.random() * 2 }}>
+                className="text-5xl drop-shadow-lg relative z-10"
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
                 {game.emoji}
               </motion.span>
+              {/* Overlay bas */}
+              <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
           )}
-          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/70 to-transparent" />
-          <div className="absolute bottom-2 left-0 right-0 flex justify-center">
-            <span className="bg-green-600 text-white text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-wide shadow">
-              Jouer
-            </span>
-          </div>
         </div>
         <p className="text-[11px] font-bold text-gray-700 text-center mt-1.5 truncate px-1">{game.name}</p>
         <p className="text-[9px] text-gray-400 text-center truncate px-1">{game.minBet} min</p>

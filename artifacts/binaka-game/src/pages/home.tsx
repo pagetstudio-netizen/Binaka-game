@@ -296,16 +296,34 @@ function GameCard({ game }: { game: Game }) {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center">
-              <span className="text-5xl drop-shadow-lg">{game.emoji}</span>
+            <div className="w-full h-full flex flex-col items-center justify-center gap-1 relative overflow-hidden">
+              {/* Cercle de lueur derrière l'emoji */}
+              <div className="absolute w-20 h-20 rounded-full opacity-30"
+                style={{ background: "radial-gradient(circle, white 0%, transparent 70%)" }} />
+              {/* Décorations flottantes */}
+              <motion.div
+                className="absolute top-2 right-3 text-lg opacity-40"
+                animate={{ y: [0, -4, 0], rotate: [0, 10, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
+                ✨
+              </motion.div>
+              <motion.div
+                className="absolute bottom-6 left-2 text-base opacity-30"
+                animate={{ y: [0, 4, 0], rotate: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}>
+                ⭐
+              </motion.div>
+              {/* Emoji principal animé */}
+              <motion.span
+                className="text-5xl drop-shadow-lg relative z-10"
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 4, -4, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
+                {game.emoji}
+              </motion.span>
+              {/* Nom du jeu en overlay */}
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
           )}
-          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/70 to-transparent" />
-          <div className="absolute bottom-2 left-0 right-0 flex justify-center">
-            <span className="bg-green-600 text-white text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-wide shadow">
-              Jouer
-            </span>
-          </div>
         </div>
         <p className="text-[11px] font-bold text-gray-700 text-center mt-1.5 truncate px-1">{game.name}</p>
       </motion.div>
