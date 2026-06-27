@@ -18,6 +18,13 @@ import LuckyNumber from "@/pages/games/lucky-number";
 import LuckyBox from "@/pages/games/lucky-box";
 import MysteryGift from "@/pages/games/mystery-gift";
 import MiniJackpot from "@/pages/games/mini-jackpot";
+import Crash from "@/pages/games/crash";
+import Mines from "@/pages/games/mines";
+import HiLo from "@/pages/games/hilo";
+import Tower from "@/pages/games/tower";
+import Keno from "@/pages/games/keno";
+import Plinko from "@/pages/games/plinko";
+import FermeMagique from "@/pages/games/ferme-magique";
 import Wallet from "@/pages/wallet";
 import Deposit from "@/pages/deposit";
 import Withdraw from "@/pages/withdraw";
@@ -50,6 +57,13 @@ function MainRoutes() {
         <Route path="/games/lucky-box" component={LuckyBox} />
         <Route path="/games/mystery-gift" component={MysteryGift} />
         <Route path="/games/mini-jackpot" component={MiniJackpot} />
+        <Route path="/games/crash" component={Crash} />
+        <Route path="/games/mines" component={Mines} />
+        <Route path="/games/hilo" component={HiLo} />
+        <Route path="/games/tower" component={Tower} />
+        <Route path="/games/keno" component={Keno} />
+        <Route path="/games/plinko" component={Plinko} />
+        <Route path="/games/ferme-magique" component={FermeMagique} />
         <Route path="/wallet" component={Wallet} />
         <Route path="/promotions" component={Promotions} />
         <Route path="/account" component={Account} />
