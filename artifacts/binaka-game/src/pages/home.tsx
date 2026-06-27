@@ -10,7 +10,7 @@ import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
-import headerBanner from "@assets/20260627_092131_1782552970143.png";
+import headerBanner from "@assets/20260627_094959_1782553814769.png";
 
 const BANNERS = [banner1, banner2, banner3];
 
