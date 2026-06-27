@@ -12,6 +12,11 @@ import { useToast } from "@/hooks/use-toast";
 import avatarImg from "@assets/1993889-belle-femme-latine-avatar-icone-personnage-gratuit-vec_1782318102114.jpg";
 import rechargeIcon from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
 import withdrawIcon from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
+import iconRecords  from "@assets/mine-mod-records-DgHXSKa1_1782553297880.png";
+import iconSecurity from "@assets/mine-mod-change-pwd-D4tL_Aft_1782553297920.png";
+import iconBonus    from "@assets/mine-mod-bankcard-CLOhqwHj_1782553297946.png";
+import iconVipMenu  from "@assets/recharge-icon-BZHWSjQZ_1782553297976.png";
+import iconSupport  from "@assets/mine-mod-cs-DtBQ0Sp0_1782553297996.png";
 
 const VIP_LEVELS = ["Bronze", "Argent", "Or", "Platine", "Diamant", "Légende"];
 const VIP_EMOJIS = ["🥉", "🥈", "🥇", "💎", "👑", "🏆"];
@@ -25,12 +30,12 @@ const VIP_COLORS = [
 ];
 
 const MENU_ITEMS = [
-  { icon: FileText,   label: "Historique de Solde",   href: "/wallet",           color: "#16a34a" },
-  { icon: Shield,     label: "Compte & Sécurité",      href: "/account/security", color: "#3b82f6" },
-  { icon: Gift,       label: "Cadeaux & Bonus",        href: "/promotions",       color: "#f59e0b" },
-  { icon: Crown,      label: "Programme VIP",          href: "/vip",              color: "#9333ea" },
-  { icon: Headphones, label: "Support en direct",      href: "/support",          color: "#0891b2" },
-  { icon: Settings,   label: "Paramètres",             href: "/account/settings", color: "#64748b" },
+  { img: iconRecords,  label: "Historique de Solde",   href: "/wallet",           color: "#16a34a" },
+  { img: iconSecurity, label: "Compte & Sécurité",      href: "/account/security", color: "#3b82f6" },
+  { img: iconBonus,    label: "Cadeaux & Bonus",        href: "/promotions",       color: "#f59e0b" },
+  { img: iconVipMenu,  label: "Programme VIP",          href: "/vip",              color: "#9333ea" },
+  { img: iconSupport,  label: "Support en direct",      href: "/support",          color: "#0891b2" },
+  { img: null,         label: "Paramètres",             href: "/account/settings", color: "#64748b" },
 ];
 
 export default function Account() {
@@ -157,25 +162,32 @@ export default function Account() {
       {/* ── MENU LIST ── */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
         className="mx-4 mt-3 bg-white rounded-2xl shadow-sm overflow-hidden">
-        {MENU_ITEMS.map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <Link key={item.href + i} href={item.href}>
-              <motion.div whileTap={{ backgroundColor: "#f9fafb" }}
-                className="flex items-center justify-between px-4 py-4 cursor-pointer"
-                style={{ borderBottom: i < MENU_ITEMS.length - 1 ? "1px solid #f3f4f6" : "none" }}>
-                <div className="flex items-center gap-4">
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{ background: item.color + "18" }}>
-                    <Icon size={18} style={{ color: item.color }} />
-                  </div>
-                  <span className="text-sm font-bold text-gray-800">{item.label}</span>
+        {MENU_ITEMS.map((item, i) => (
+          <Link key={item.href + i} href={item.href}>
+            <motion.div whileTap={{ backgroundColor: "#f9fafb" }}
+              className="flex items-center justify-between px-4 py-4 cursor-pointer"
+              style={{ borderBottom: i < MENU_ITEMS.length - 1 ? "1px solid #f3f4f6" : "none" }}>
+              <div className="flex items-center gap-4">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                  style={{ background: item.color + "18" }}>
+                  {item.img ? (
+                    <img
+                      src={item.img}
+                      alt={item.label}
+                      className="w-5 h-5 object-contain"
+                      style={{ filter: "invert(1) brightness(0)" }}
+                      draggable={false}
+                    />
+                  ) : (
+                    <Settings size={18} style={{ color: item.color }} />
+                  )}
                 </div>
-                <ChevronRight size={16} className="text-gray-300" />
-              </motion.div>
-            </Link>
-          );
-        })}
+                <span className="text-sm font-bold text-gray-800">{item.label}</span>
+              </div>
+              <ChevronRight size={16} className="text-gray-300" />
+            </motion.div>
+          </Link>
+        ))}
 
         {/* Admin item */}
         {user.isAdmin && (
