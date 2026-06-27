@@ -7,10 +7,24 @@ import { useLogin } from "@workspace/api-client-react";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Loader2, Eye, EyeOff, Lock, Phone, RefreshCw } from "lucide-react";
+import { Loader2, Eye, EyeOff, Lock, Phone, RefreshCw, ChevronDown } from "lucide-react";
 import bannerImg from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547684603.png";
 
 const WHATSAPP_NUMBER = "22890000000";
+
+/* ── COUNTRIES ──────────────────────────────────────── */
+const COUNTRIES = [
+  { code: "TG", dial: "+228", flag: "🇹🇬", name: "Togo" },
+  { code: "BJ", dial: "+229", flag: "🇧🇯", name: "Bénin" },
+  { code: "CI", dial: "+225", flag: "🇨🇮", name: "Côte d'Ivoire" },
+  { code: "SN", dial: "+221", flag: "🇸🇳", name: "Sénégal" },
+  { code: "ML", dial: "+223", flag: "🇲🇱", name: "Mali" },
+  { code: "BF", dial: "+226", flag: "🇧🇫", name: "Burkina Faso" },
+  { code: "GH", dial: "+233", flag: "🇬🇭", name: "Ghana" },
+  { code: "CM", dial: "+237", flag: "🇨🇲", name: "Cameroun" },
+  { code: "GN", dial: "+224", flag: "🇬🇳", name: "Guinée" },
+  { code: "NE", dial: "+227", flag: "🇳🇪", name: "Niger" },
+];
 
 /* ── CAPTCHA ────────────────────────────────────────── */
 const CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -84,6 +98,7 @@ export default function Login() {
   const [captchaCode, setCaptchaCode] = useState(genCode);
   const [captchaInput, setCaptchaInput] = useState("");
   const [captchaError, setCaptchaError] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
 
   const refreshCaptcha = useCallback(() => {
     setCaptchaCode(genCode());
@@ -140,10 +155,24 @@ export default function Login() {
 
           {/* Téléphone */}
           <div>
-            <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">Numéro de téléphone</label>
+            <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">Pays & Numéro de téléphone</label>
             <div className="flex items-center h-13 rounded-2xl border-2 border-gray-200 overflow-hidden focus-within:border-green-500 transition-colors bg-gray-50">
               <Phone size={16} className="ml-4 text-gray-400 shrink-0" />
-              <span className="ml-2 pr-3 text-sm font-bold text-gray-500 border-r border-gray-200 h-full flex items-center">+</span>
+              {/* Sélecteur de pays */}
+              <div className="relative flex items-center border-r border-gray-200 h-full shrink-0">
+                <select
+                  className="h-full pl-2 pr-7 bg-transparent text-xs font-bold text-gray-700 outline-none appearance-none cursor-pointer"
+                  value={selectedCountry.code}
+                  onChange={(e) => {
+                    const found = COUNTRIES.find((c) => c.code === e.target.value) || COUNTRIES[0];
+                    setSelectedCountry(found);
+                  }}>
+                  {COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.code}>{c.flag} {c.dial}</option>
+                  ))}
+                </select>
+                <ChevronDown size={12} className="absolute right-1.5 text-gray-400 pointer-events-none" />
+              </div>
               <input type="tel" inputMode="numeric" placeholder="Ex: 90 00 00 00"
                 className="flex-1 h-full px-3 bg-transparent text-sm outline-none text-gray-800 placeholder:text-gray-400"
                 {...form.register("phone")} />
