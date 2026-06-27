@@ -11,6 +11,10 @@ import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
 import headerBanner from "@assets/20260627_094959_1782553814769.png";
+import iconDeposit  from "@assets/20260228_002852_1772238747316_1782553073125.png";
+import iconWithdraw from "@assets/20260228_002918_1772238747293_1782553073315.png";
+import iconReferral from "@assets/20260228_080749_1772266120754_1782553073350.png";
+import iconVip      from "@assets/fa6620bc07e2128cfd6a47b85bb73129_1782553073377.png";
 
 const BANNERS = [banner1, banner2, banner3];
 
@@ -138,18 +142,23 @@ export default function Home() {
         {/* ── ACTIONS RAPIDES ── */}
         <div className="px-3 mt-3 grid grid-cols-4 gap-2">
           {[
-            { label: "Dépôt", emoji: "💳", href: "/wallet", bg: "#f0fdf4", color: "#16a34a" },
-            { label: "Retrait", emoji: "💰", href: "/wallet", bg: "#fffbeb", color: "#d97706" },
-            { label: "VIP", emoji: "👑", href: "/vip", bg: "#faf5ff", color: "#9333ea" },
-            { label: "Parrainage", emoji: "🤝", href: "/referral", bg: "#eff6ff", color: "#2563eb" },
+            { label: "Dépôt",      icon: iconDeposit,  href: "/wallet",   bg: "#f0fdf4", color: "#16a34a" },
+            { label: "Retrait",    icon: iconWithdraw, href: "/wallet",   bg: "#fffbeb", color: "#d97706" },
+            { label: "VIP",        icon: iconVip,      href: "/vip",      bg: "#faf5ff", color: "#9333ea" },
+            { label: "Parrainage", icon: iconReferral, href: "/referral", bg: "#eff6ff", color: "#2563eb" },
           ].map((item) => (
             <Link key={item.label} href={item.href}>
               <motion.div
                 whileTap={{ scale: 0.92 }}
-                className="flex flex-col items-center gap-1 py-3 rounded-xl border"
+                className="flex flex-col items-center gap-1.5 py-3 rounded-xl border"
                 style={{ backgroundColor: item.bg, borderColor: item.color + "30" }}
               >
-                <span className="text-xl">{item.emoji}</span>
+                <img
+                  src={item.icon}
+                  alt={item.label}
+                  className="w-8 h-8 object-contain"
+                  draggable={false}
+                />
                 <span className="text-[10px] font-bold" style={{ color: item.color }}>{item.label}</span>
               </motion.div>
             </Link>
