@@ -1,36 +1,51 @@
-# [Project name]
+# Binaka Game
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A French-language mobile-first online gaming/gambling platform featuring slots, wheel, and scratch card games with a wallet system, VIP program, and referral bonuses in FCFA currency.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `PORT=8080 pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
+- `PORT=5000 BASE_PATH=/ API_PORT=8080 pnpm --filter @workspace/binaka-game run dev` — run the frontend (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `DATABASE_URL` — Postgres connection string (auto-provisioned by Replit)
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
+- pnpm workspaces, Node.js 20, TypeScript 5.9
+- Frontend: React 19 + Vite on port 5000, proxies `/api` → backend on port 8080
+- API: Express 5 on port 8080
 - DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Auth: JWT + bcrypt (custom, stored in localStorage as `binaka_token`)
+- Validation: Zod, drizzle-zod
+- API codegen: Orval (from OpenAPI spec in `lib/api-spec/`)
+- Build: esbuild (CJS bundle for server)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/api-server/` — Express backend, routes under `src/routes/`
+- `artifacts/binaka-game/` — React/Vite frontend
+- `lib/db/` — Drizzle schema + DB client (`DATABASE_URL` from env)
+- `lib/api-client-react/` — Generated React Query hooks from OpenAPI spec
+- `lib/api-spec/` — OpenAPI YAML definition (source of truth for API contract)
+- `lib/api-zod/` — Shared Zod validation schemas
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The Vite dev server proxies `/api/*` requests to the Express backend (port 8080), so the frontend uses relative paths and no CORS issues arise in dev.
+- Auth uses JWT tokens stored in localStorage (`binaka_token`); the `setAuthTokenGetter` hook in api-client-react injects the Bearer header on every request.
+- Game logic (RTP, win probability) runs server-side in `artifacts/api-server/src/lib/gameEngine.ts` — never exposed to the client.
+- API contract is code-generated: edit `lib/api-spec/openapi.yaml`, run codegen, then implement the route.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- **Games**: Jackpot (slots), Roue (wheel of fortune), Gratter (scratch cards)
+- **Wallet**: Deposit/withdrawal requests, transaction history, FCFA balance
+- **VIP**: Level-based progression with bonuses
+- **Referral**: Invitation codes with bonus credits
+- **Admin**: Dashboard for managing users and reviewing stats
 
 ## User preferences
 
@@ -38,7 +53,10 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Always run `pnpm --filter @workspace/db run push` after schema changes in `lib/db/src/schema/`
+- After editing `lib/api-spec/openapi.yaml`, run `pnpm --filter @workspace/api-spec run codegen` to regenerate hooks
+- The API server must be started before the frontend for proxy calls to succeed
+- `DATABASE_URL` is automatically set by Replit's built-in PostgreSQL — no manual setup needed
 
 ## Pointers
 
