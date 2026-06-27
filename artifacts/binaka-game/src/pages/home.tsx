@@ -106,7 +106,7 @@ export default function Home() {
           </div>
 
           {/* Bouton Dépôt */}
-          <Link href="/deposit">
+          <Link href="/wallet">
             <motion.button
               whileTap={{ scale: 0.94 }}
               className="flex items-center gap-1.5 h-9 px-4 bg-green-600 text-white font-bold text-sm rounded-xl shadow-md flex-shrink-0"
@@ -195,8 +195,8 @@ export default function Home() {
         {/* ── ACTIONS RAPIDES ── */}
         <div className="px-3 mt-3 grid grid-cols-4 gap-2">
           {[
-            { label: "Dépôt", emoji: "💳", href: "/deposit", bg: "#f0fdf4", color: "#16a34a" },
-            { label: "Retrait", emoji: "💰", href: "/withdraw", bg: "#fffbeb", color: "#d97706" },
+            { label: "Dépôt", emoji: "💳", href: "/wallet", bg: "#f0fdf4", color: "#16a34a" },
+            { label: "Retrait", emoji: "💰", href: "/wallet", bg: "#fffbeb", color: "#d97706" },
             { label: "VIP", emoji: "👑", href: "/vip", bg: "#faf5ff", color: "#9333ea" },
             { label: "Parrainage", emoji: "🤝", href: "/referral", bg: "#eff6ff", color: "#2563eb" },
           ].map((item) => (
