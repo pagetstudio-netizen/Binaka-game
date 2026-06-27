@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Bell, Download, Gift, ChevronRight, Trophy, Zap } from "lucide-react";
+import { ChevronRight, Trophy } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { useGetBalance, getGetBalanceQueryKey } from "@workspace/api-client-react";
-import { getUserAvatar } from "@/lib/user-avatar";
 
 import banner1 from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547259143.png";
 import banner2 from "@assets/file_000000000f0471f4a3199220c69af3b7_1782547259216.png";
@@ -12,6 +10,7 @@ import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
+import headerBanner from "@assets/20260627_092131_1782552970143.png";
 
 const BANNERS = [banner1, banner2, banner3];
 
@@ -38,8 +37,6 @@ const FAKE_WINNERS = [
 
 export default function Home() {
   const { user } = useAuth();
-  const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
-  const [showBalance, setShowBalance] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [winnerIndex, setWinnerIndex] = useState(0);
@@ -65,77 +62,23 @@ export default function Home() {
 
   if (!user) return null;
 
-  const balance = wallet?.balance ?? 0;
   const winner = FAKE_WINNERS[winnerIndex];
 
   return (
     <div className="flex flex-col w-full bg-gray-50 min-h-full pb-20">
 
-      {/* ── STICKY HEADER ── */}
+      {/* ── HEADER BANNIÈRE FIXE ── */}
       <header
         className="sticky top-0 z-50 bg-white"
-        style={{ height: 70, boxShadow: "0 2px 16px rgba(0,0,0,0.08)", borderBottom: "1px solid #f0f0f0" }}
+        style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.08)" }}
       >
-        <div className="flex items-center h-full px-3 gap-2">
-          {/* Avatar circulaire */}
-          <Link href="/account">
-            <div className="relative flex-shrink-0">
-              <img
-                src={getUserAvatar(user.id, user.avatarUrl)}
-                alt="Avatar"
-                className="w-10 h-10 rounded-full border-2 border-green-500 object-cover"
-              />
-              <span className="absolute -bottom-0.5 -right-0.5 bg-amber-400 text-[8px] font-black text-white rounded-full px-1 leading-4 border border-white">
-                V{user.vipLevel}
-              </span>
-            </div>
-          </Link>
-
-          {/* Solde + toggle */}
-          <div className="flex-1 min-w-0 mx-1">
-            <p className="text-[10px] text-gray-400 font-medium leading-none mb-0.5">Solde principal</p>
-            <div className="flex items-center gap-1">
-              <span className="font-black text-gray-900 text-[17px] leading-none truncate">
-                {showBalance ? balance.toLocaleString("fr-FR") : "••••••"}
-              </span>
-              <span className="text-[10px] text-gray-500 font-bold">FCFA</span>
-              <button onClick={() => setShowBalance(!showBalance)} className="text-gray-400 ml-0.5">
-                {showBalance ? <Eye size={13} /> : <EyeOff size={13} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Bouton Dépôt */}
-          <Link href="/wallet">
-            <motion.button
-              whileTap={{ scale: 0.94 }}
-              className="flex items-center gap-1.5 h-9 px-4 bg-green-600 text-white font-bold text-sm rounded-xl shadow-md flex-shrink-0"
-            >
-              <Zap size={14} />
-              Dépôt
-            </motion.button>
-          </Link>
-
-          {/* Icône Télécharger */}
-          <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 flex-shrink-0">
-            <Download size={17} className="text-gray-600" />
-          </motion.button>
-
-          {/* Icône Cadeaux */}
-          <Link href="/promotions">
-            <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 flex-shrink-0">
-              <Gift size={17} className="text-amber-500" />
-            </motion.button>
-          </Link>
-
-          {/* Icône Notifications */}
-          <Link href="/notifications">
-            <motion.button whileTap={{ scale: 0.9 }} className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 relative flex-shrink-0">
-              <Bell size={17} className="text-gray-600" />
-              <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-black rounded-full min-w-[16px] h-4 flex items-center justify-center px-0.5 border border-white">3</span>
-            </motion.button>
-          </Link>
-        </div>
+        <img
+          src={headerBanner}
+          alt="Binaka Game"
+          className="w-full object-cover pointer-events-none select-none"
+          draggable={false}
+          style={{ display: "block", maxHeight: 80 }}
+        />
       </header>
 
       <div className="flex-1 overflow-x-hidden">
