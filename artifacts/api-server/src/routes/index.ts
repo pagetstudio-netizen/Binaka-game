@@ -10,6 +10,7 @@ import notificationsRouter from "./notifications.js";
 import bonusRouter from "./bonus.js";
 import vipRouter from "./vip.js";
 import adminRouter from "./admin.js";
+import paymentsRouter from "./payments.js";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use("/notifications", notificationsRouter);
 router.use("/bonus", bonusRouter);
 router.use("/vip", vipRouter);
 router.use("/admin", adminRouter);
+router.use("/payments", paymentsRouter);
 
 export default router;
