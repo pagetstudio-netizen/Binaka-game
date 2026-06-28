@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Trophy } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import megaphoneIcon from "@assets/téléchargement_(75)_1782610207756.png";
 
 import banner1 from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547259143.png";
 import banner2 from "@assets/file_000000000f0471f4a3199220c69af3b7_1782547259216.png";
@@ -103,8 +104,8 @@ export default function Home() {
 
         {/* ── TICKER GAGNANTS ── */}
         <div className="mx-3 mt-3 bg-white rounded-xl px-3 py-2.5 flex items-center gap-2 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-1 flex-shrink-0">
-            <Trophy size={14} className="text-amber-500" />
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <img src={megaphoneIcon} alt="Annonce" className="w-6 h-6 object-contain" />
             <span className="text-[11px] font-black text-amber-500 uppercase tracking-wide">Gagnants</span>
           </div>
           <div className="w-px h-4 bg-gray-200 flex-shrink-0" />
