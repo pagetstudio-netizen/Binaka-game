@@ -20,7 +20,7 @@ const WHATSAPP_NUMBER = "22890000000";
 const NAV_ITEMS = [
   { href: "/", icon: iconHome, label: "Accueil", matchFn: (loc: string) => loc === "/" },
   { href: "/games", icon: iconGames, label: "Jeux", matchFn: (loc: string) => loc.startsWith("/games") },
-  { href: "/wallet", icon: iconWallet, label: "Portefeuille", matchFn: (loc: string) => loc === "/wallet" },
+  { href: "/deposit", icon: iconWallet, label: "Dépôt", matchFn: (loc: string) => loc === "/deposit" },
   { href: "/promotions", icon: iconGift, label: "Promotions", matchFn: (loc: string) => loc === "/promotions" },
   { href: "/account", icon: iconAccount, label: "Compte", matchFn: (loc: string) => loc.startsWith("/account") },
 ];
