@@ -65,19 +65,18 @@ export default function Deposit() {
 
   return (
     <div className="flex flex-col w-full min-h-[100dvh] bg-gray-50">
-      {/* Header — fixé */}
-      <header className="sticky top-0 z-20 px-4 py-4 flex items-center gap-3 bg-white border-b border-gray-200 shadow-sm">
+      {/* Step indicator */}
+      <div className="px-4 pt-4 pb-2 flex items-center gap-3">
         <button
           onClick={handleBack}
           className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-gray-700" />
         </button>
-        <h1 className="text-lg font-extrabold text-gray-900 flex-1 text-center tracking-wide">
-          {step === "method" ? "Recharger" : step === "form" ? "Mobile Money" : "Succès"}
-        </h1>
-        <div className="w-9" />
-      </header>
+        <span className="text-sm font-bold text-gray-500">
+          {step === "method" ? "Choisissez un mode" : step === "form" ? "Mobile Money" : "Paiement confirmé"}
+        </span>
+      </div>
 
       {/* Balance pill */}
       <div className="mx-4 mt-4 mb-4">

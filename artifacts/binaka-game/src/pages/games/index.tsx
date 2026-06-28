@@ -54,8 +54,7 @@ function GamesInner() {
   return (
     <div className="flex flex-col w-full bg-gray-50 min-h-full pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 h-14 flex items-center gap-3"
-        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+      <header className="bg-white border-b border-gray-100 px-4 h-14 flex items-center gap-3">
         <div className="w-1 h-5 bg-green-600 rounded-full" />
         <h1 className="text-lg font-black text-gray-900">Tous les Jeux</h1>
         <span className="ml-auto bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full">

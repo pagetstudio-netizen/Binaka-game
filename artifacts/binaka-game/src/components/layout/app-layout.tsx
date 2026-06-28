@@ -2,11 +2,17 @@ import { Link, useLocation, Redirect } from "wouter";
 import { ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bell, ArrowLeft } from "lucide-react";
+import {
+  useGetBalance, getGetBalanceQueryKey,
+  useGetNotifications, getGetNotificationsQueryKey,
+} from "@workspace/api-client-react";
 
-import iconHome from "@assets/20260624_150018_1782317841294.png";
-import iconGames from "@assets/20260624_150106_1782317841320.png";
-import iconWallet from "@assets/20260624_150241_1782317841340.png";
-import iconGift from "@assets/20260624_150402_1782317841358.png";
+import headerBanner from "@assets/20260627_094959_1782553814769.png";
+import iconHome    from "@assets/20260624_150018_1782317841294.png";
+import iconGames   from "@assets/20260624_150106_1782317841320.png";
+import iconWallet  from "@assets/20260624_150241_1782317841340.png";
+import iconGift    from "@assets/20260624_150402_1782317841358.png";
 import iconAccount from "@assets/20260624_150441_1782317841381.png";
 
 const WHATSAPP_NUMBER = "22890000000";
@@ -18,6 +24,18 @@ const NAV_ITEMS = [
   { href: "/promotions", icon: iconGift, label: "Promotions", matchFn: (loc: string) => loc === "/promotions" },
   { href: "/account", icon: iconAccount, label: "Compte", matchFn: (loc: string) => loc.startsWith("/account") },
 ];
+
+const SUB_PAGES: Record<string, { title: string; back: string }> = {
+  "/account/profile":   { title: "Informations Personnelles", back: "/account" },
+  "/account/security":  { title: "Sécurité", back: "/account" },
+  "/account/settings":  { title: "Paramètres", back: "/account" },
+  "/notifications":     { title: "Notifications", back: "/" },
+  "/support":           { title: "Service Client", back: "/" },
+  "/vip":               { title: "Programme VIP", back: "/" },
+  "/referral":          { title: "Parrainage", back: "/" },
+  "/deposit":           { title: "Recharger", back: "/wallet" },
+  "/withdraw":          { title: "Retrait", back: "/wallet" },
+};
 
 /* ── WhatsApp SVG ─────────────────────────────────────────────── */
 const WA_SVG = (
@@ -39,6 +57,78 @@ const GAMEPAD_SVG = (
   </svg>
 );
 
+/* ── Global App Header ────────────────────────────────────────── */
+export function AppHeader() {
+  const [location, setLocation] = useLocation();
+  const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
+  const { data: notifs } = useGetNotifications(
+    { limit: 50 },
+    { query: { queryKey: getGetNotificationsQueryKey({ limit: 50 }) } },
+  );
+
+  const subPage = SUB_PAGES[location];
+  const unread = notifs?.unreadCount ?? 0;
+
+  return (
+    <header
+      className="sticky top-0 left-0 w-full z-[9999] bg-white flex items-center px-4 flex-shrink-0"
+      style={{
+        height: 70,
+        borderBottom: "1px solid #E5E7EB",
+        boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+        transition: "box-shadow 0.2s ease",
+      }}
+    >
+      {/* Left — brand logo OR back button */}
+      {subPage ? (
+        <button
+          onClick={() => setLocation(subPage.back)}
+          className="p-2 -ml-1 rounded-full hover:bg-gray-100 active:scale-95 transition-all flex-shrink-0"
+        >
+          <ArrowLeft className="w-5 h-5 text-gray-700" />
+        </button>
+      ) : (
+        <img
+          src={headerBanner}
+          alt="Binaka Game"
+          className="h-11 w-auto object-contain select-none pointer-events-none"
+          draggable={false}
+        />
+      )}
+
+      {/* Center — page title for sub-pages */}
+      {subPage ? (
+        <h1 className="flex-1 text-center text-base font-bold text-gray-800 px-2 truncate">
+          {subPage.title}
+        </h1>
+      ) : (
+        <div className="flex-1" />
+      )}
+
+      {/* Right — balance + notifications bell */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {wallet !== undefined && (
+          <div className="bg-green-50 border border-green-200 px-3 py-1 rounded-full">
+            <span className="text-green-700 text-xs font-black whitespace-nowrap">
+              {(wallet.balance ?? 0).toLocaleString()} FCFA
+            </span>
+          </div>
+        )}
+        <Link href="/notifications">
+          <button className="relative p-2 rounded-full hover:bg-gray-100 transition-colors active:scale-95">
+            <Bell className="w-5 h-5 text-gray-600" />
+            {unread > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                {unread > 9 ? "9+" : unread}
+              </span>
+            )}
+          </button>
+        </Link>
+      </div>
+    </header>
+  );
+}
+
 /* ── Floating Buttons ─────────────────────────────────────────── */
 function FloatingButtons() {
   const [location] = useLocation();
@@ -56,7 +146,6 @@ function FloatingButtons() {
         transition={{ type: "spring", stiffness: 340, damping: 26, delay: 0.1 }}
         className="relative flex items-center gap-2"
       >
-        {/* Label tooltip */}
         <AnimatePresence>
           {!onGame && (
             <motion.span
@@ -77,7 +166,6 @@ function FloatingButtons() {
           )}
         </AnimatePresence>
 
-        {/* Float oscillation wrapper */}
         <motion.div
           animate={{ y: [0, -5, 0] }}
           transition={{ repeat: Infinity, duration: 2.6, ease: "easeInOut" }}
@@ -92,7 +180,6 @@ function FloatingButtons() {
                 boxShadow: "0 6px 0 #92400e, 0 10px 28px rgba(245,158,11,0.55)",
               }}
             >
-              {/* Shimmer sweep */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
                 animate={{ x: ["-100%", "100%"] }}
@@ -112,7 +199,6 @@ function FloatingButtons() {
         transition={{ type: "spring", stiffness: 320, damping: 24, delay: 0.22 }}
         className="relative flex items-center gap-2"
       >
-        {/* Label tooltip */}
         <motion.span
           initial={{ opacity: 0, x: 8 }}
           animate={{ opacity: 1, x: 0 }}
@@ -128,21 +214,18 @@ function FloatingButtons() {
         </motion.span>
 
         <div className="relative">
-          {/* Pulse ring 1 */}
           <motion.div
             className="absolute inset-0 rounded-2xl"
             style={{ background: "#25D366" }}
             animate={{ scale: [1, 1.55], opacity: [0.55, 0] }}
             transition={{ repeat: Infinity, duration: 1.8, ease: "easeOut" }}
           />
-          {/* Pulse ring 2 (offset) */}
           <motion.div
             className="absolute inset-0 rounded-2xl"
             style={{ background: "#25D366" }}
             animate={{ scale: [1, 1.35], opacity: [0.35, 0] }}
             transition={{ repeat: Infinity, duration: 1.8, ease: "easeOut", delay: 0.5 }}
           />
-
           <motion.a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
             target="_blank"
@@ -168,7 +251,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { user, isLoading } = useAuth();
 
-  // Pages de jeu individuelles (ex: /games/slots) — pas la liste /games
   const isGamePage = /^\/games\/.+/.test(location);
 
   if (isLoading) {
@@ -189,13 +271,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-gray-100">
       <main className="flex-1 w-full max-w-[430px] mx-auto relative bg-gray-50 shadow-2xl overflow-hidden flex flex-col">
+        {/* Global header — hidden on individual game pages */}
+        {!isGamePage && <AppHeader />}
         {children}
       </main>
 
-      {/* Floating Action Buttons — masqués sur les pages de jeu individuelles */}
       {user && !isGamePage && <FloatingButtons />}
 
-      {/* Bottom Navigation — masquée sur les pages de jeu individuelles */}
       {!isGamePage && (
         <nav
           className="fixed bottom-0 left-0 right-0 z-50 bg-white"

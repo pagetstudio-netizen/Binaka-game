@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Link, useLocation } from "wouter";
-import { ArrowLeft, Loader2, AlertCircle } from "lucide-react";
+import { useLocation } from "wouter";
+import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const METHODS = [
@@ -66,14 +66,6 @@ export default function Withdraw() {
 
   return (
     <div className="flex flex-col flex-1 pb-6 w-full">
-      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex items-center gap-3">
-        <Link href="/">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-        </Link>
-        <h1 className="text-xl font-bold">Retrait</h1>
-      </header>
 
       <div className="p-4 space-y-6">
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl flex justify-between items-center">

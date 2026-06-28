@@ -52,15 +52,6 @@ export default function AccountSettings() {
 
   return (
     <div className="flex flex-col w-full min-h-[100dvh] bg-slate-50">
-      {/* Header */}
-      <header className="px-4 pt-12 pb-4 bg-white border-b border-slate-100 flex items-center gap-3 sticky top-0 z-10 shadow-sm">
-        <button onClick={() => setLocation("/account")} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
-          <ArrowLeft className="w-5 h-5 text-slate-700" />
-        </button>
-        <h1 className="text-lg font-bold flex-1 text-center text-slate-800">Paramètres</h1>
-        <div className="w-9" />
-      </header>
-
       <div className="flex-1 px-4 py-6 space-y-5 max-w-md mx-auto w-full">
 
         {/* Notifications & Sons */}

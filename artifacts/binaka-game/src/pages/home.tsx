@@ -10,7 +10,6 @@ import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.
 import iconSlots from "@assets/icon-slots.png";
 import iconWheel from "@assets/icon-wheel.png";
 import iconScratch from "@assets/icon-scratch.png";
-import headerBanner from "@assets/20260627_094959_1782553814769.png";
 import iconDeposit  from "@assets/20260228_002852_1772238747316_1782553073125.png";
 import iconWithdraw from "@assets/20260228_002918_1772238747293_1782553073315.png";
 import iconReferral from "@assets/20260228_080749_1772266120754_1782553073350.png";
@@ -70,20 +69,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full bg-gray-50 min-h-full pb-20">
-
-      {/* ── HEADER BANNIÈRE FIXE ── */}
-      <header
-        className="sticky top-0 z-50 bg-white"
-        style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.08)" }}
-      >
-        <img
-          src={headerBanner}
-          alt="Binaka Game"
-          className="w-full object-cover pointer-events-none select-none"
-          draggable={false}
-          style={{ display: "block", maxHeight: 80 }}
-        />
-      </header>
 
       <div className="flex-1 overflow-x-hidden">
 

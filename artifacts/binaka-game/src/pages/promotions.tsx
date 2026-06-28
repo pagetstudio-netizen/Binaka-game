@@ -10,12 +10,6 @@ export default function Promotions() {
   return (
     <div className="flex flex-col w-full min-h-full bg-gray-100 pb-24">
 
-      {/* Header fixe */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 h-14 flex items-center"
-        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}>
-        <h1 className="text-xl font-black text-gray-900">Promotions</h1>
-      </header>
-
       <div className="flex flex-col gap-3 p-3">
         {BANNERS.map((src, i) => (
           <motion.div

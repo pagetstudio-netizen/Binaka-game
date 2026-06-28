@@ -1,5 +1,4 @@
-import { Link } from "wouter";
-import { ArrowLeft, ChevronRight, Clock, Zap, ShieldCheck } from "lucide-react";
+import { ChevronRight, Clock, Zap, ShieldCheck } from "lucide-react";
 
 // ⚠️ Configurez vos liens Telegram ici
 const TELEGRAM_SERVICE = "https://t.me/BInakaGame_service";
@@ -11,19 +10,7 @@ const HEURES_EN_LIGNE = "9:00 AM – 7:00 PM";
 
 export default function Support() {
   return (
-    <div className="h-[100dvh] w-full overflow-hidden flex flex-col bg-white">
-
-      {/* ── Header ── */}
-      <header className="sticky top-0 z-20 flex items-center px-4 py-4 border-b border-gray-200 bg-white shadow-sm">
-        <Link href="/">
-          <button className="p-1.5 rounded-full hover:bg-gray-100 transition-colors active:scale-95">
-            <ArrowLeft size={22} className="text-gray-700" />
-          </button>
-        </Link>
-        <h1 className="text-lg font-bold text-gray-800 flex-1 text-center pr-8">
-          Service client
-        </h1>
-      </header>
+    <div className="flex-1 w-full overflow-y-auto flex flex-col bg-white">
 
       {/* ── Bandeau 3 atouts ── */}
       <div className="bg-gray-50 border-b border-gray-100 px-4 py-5">

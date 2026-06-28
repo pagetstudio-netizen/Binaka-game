@@ -32,16 +32,13 @@ export default function Notifications() {
 
   return (
     <div className="flex flex-col w-full pb-20">
-      <header className="sticky top-0 z-20 px-4 py-4 bg-white border-b border-gray-200 shadow-sm flex justify-between items-center">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Bell className="w-6 h-6" /> Notifications
-        </h1>
-        {data?.unreadCount ? (
+      {data?.unreadCount ? (
+        <div className="px-4 pt-3 pb-1 flex justify-end">
           <Button variant="ghost" size="sm" onClick={handleMarkAllRead} className="text-xs">
             <Check className="w-4 h-4 mr-1"/> Tout marquer comme lu
           </Button>
-        ) : null}
-      </header>
+        </div>
+      ) : null}
 
       <div className="p-4 space-y-3">
         {data?.notifications?.map((notif) => (
