@@ -87,13 +87,15 @@ export function AppHeader() {
         >
           <ArrowLeft className="w-5 h-5 text-gray-700" />
         </button>
-      ) : (
+      ) : location === "/" ? (
         <img
           src={headerBanner}
           alt="Binaka Game"
           className="h-11 w-auto object-contain select-none pointer-events-none"
           draggable={false}
         />
+      ) : (
+        <span className="text-green-800 font-black text-lg tracking-wide">BINAKA</span>
       )}
 
       {/* Center — page title for sub-pages */}

@@ -8,9 +8,15 @@ import megaphoneIcon from "@assets/téléchargement_(75)_1782610207756.png";
 import banner1 from "@assets/file_000000007f2c71f4bdc6d0d958f5bd37_1782547259143.png";
 import banner2 from "@assets/file_000000000f0471f4a3199220c69af3b7_1782547259216.png";
 import banner3 from "@assets/1c02ab26-f0bd-40a1-bb0d-c4aaadf65c82_1782547299433.png";
-import iconSlots from "@assets/icon-slots.png";
-import iconWheel from "@assets/icon-wheel.png";
-import iconScratch from "@assets/icon-scratch.png";
+import iconSlots       from "@assets/icon-slots.png";
+import iconWheel       from "@assets/icon-wheel.png";
+import iconScratch     from "@assets/icon-scratch.png";
+import iconDice        from "@assets/icon-dice.png";
+import iconCoinFlip    from "@assets/icon-coin-flip.png";
+import iconLuckyNumber from "@assets/icon-lucky-number.png";
+import iconLuckyBox    from "@assets/icon-lucky-box.png";
+import iconMysteryGift from "@assets/icon-mystery-gift.png";
+import iconMiniJackpot from "@assets/icon-mini-jackpot.png";
 import iconDeposit  from "@assets/20260228_002852_1772238747316_1782553073125.png";
 import iconWithdraw from "@assets/20260228_002918_1772238747293_1782553073315.png";
 import iconReferral from "@assets/20260228_080749_1772266120754_1782553073350.png";
@@ -19,15 +25,15 @@ import iconVip      from "@assets/fa6620bc07e2128cfd6a47b85bb73129_1782553073377
 const BANNERS = [banner1, banner2, banner3];
 
 const GAMES = [
-  { id: "slots", href: "/games/slots", name: "Jackpot", emoji: "🎰", image: iconSlots, gradient: "from-purple-600 to-purple-900", hot: true },
-  { id: "wheel", href: "/games/wheel", name: "Roue", emoji: "🎡", image: iconWheel, gradient: "from-blue-500 to-blue-800", hot: false },
-  { id: "scratch", href: "/games/scratch", name: "Gratter", emoji: "🎟", image: iconScratch, gradient: "from-amber-500 to-orange-700", hot: false },
-  { id: "dice", href: "/games/dice", name: "Dice", emoji: "🎲", gradient: "from-red-500 to-rose-800", hot: false },
-  { id: "coin-flip", href: "/games/coin-flip", name: "Coin Flip", emoji: "🪙", gradient: "from-yellow-400 to-yellow-700", hot: false },
-  { id: "lucky-number", href: "/games/lucky-number", name: "Lucky N°", emoji: "🎯", gradient: "from-green-500 to-emerald-800", hot: true },
-  { id: "lucky-box", href: "/games/lucky-box", name: "Lucky Box", emoji: "💎", gradient: "from-cyan-500 to-cyan-900", hot: false },
-  { id: "mystery-gift", href: "/games/mystery-gift", name: "Mystery Gift", emoji: "🎁", gradient: "from-pink-500 to-pink-900", hot: false },
-  { id: "mini-jackpot", href: "/games/mini-jackpot", name: "Mini Jackpot", emoji: "🎮", gradient: "from-indigo-500 to-indigo-900", hot: false },
+  { id: "slots",        href: "/games/slots",        name: "Jackpot",     emoji: "🎰", image: iconSlots,       gradient: "from-purple-600 to-purple-900", hot: true  },
+  { id: "wheel",        href: "/games/wheel",         name: "Roue",        emoji: "🎡", image: iconWheel,       gradient: "from-blue-500 to-blue-800",     hot: false },
+  { id: "scratch",      href: "/games/scratch",       name: "Gratter",     emoji: "🎟", image: iconScratch,     gradient: "from-amber-500 to-orange-700",  hot: false },
+  { id: "dice",         href: "/games/dice",          name: "Dice",        emoji: "🎲", image: iconDice,        gradient: "from-red-500 to-rose-800",      hot: false },
+  { id: "coin-flip",    href: "/games/coin-flip",     name: "Coin Flip",   emoji: "🪙", image: iconCoinFlip,    gradient: "from-yellow-400 to-yellow-700", hot: false },
+  { id: "lucky-number", href: "/games/lucky-number",  name: "Lucky N°",    emoji: "🎯", image: iconLuckyNumber, gradient: "from-green-500 to-emerald-800", hot: true  },
+  { id: "lucky-box",    href: "/games/lucky-box",     name: "Lucky Box",   emoji: "💎", image: iconLuckyBox,    gradient: "from-cyan-500 to-cyan-900",     hot: false },
+  { id: "mystery-gift", href: "/games/mystery-gift",  name: "Mystery Gift",emoji: "🎁", image: iconMysteryGift, gradient: "from-pink-500 to-pink-900",     hot: false },
+  { id: "mini-jackpot", href: "/games/mini-jackpot",  name: "Mini Jackpot",emoji: "🎮", image: iconMiniJackpot, gradient: "from-indigo-500 to-indigo-900", hot: false },
 ];
 
 const FAKE_WINNERS = [
