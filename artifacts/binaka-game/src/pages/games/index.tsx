@@ -1,29 +1,36 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import iconSlots from "@assets/icon-slots.png";
-import iconWheel from "@assets/icon-wheel.png";
-import iconScratch from "@assets/icon-scratch.png";
+import iconSlots       from "@assets/icon-slots.png";
+import iconWheel       from "@assets/icon-wheel.png";
+import iconScratch     from "@assets/icon-scratch.png";
+import iconDice        from "@assets/icon-dice.png";
+import iconCoinFlip    from "@assets/icon-coin-flip.png";
+import iconLuckyNumber from "@assets/icon-lucky-number.png";
+import iconLuckyBox    from "@assets/icon-lucky-box.png";
+import iconMysteryGift from "@assets/icon-mystery-gift.png";
+import iconMiniJackpot from "@assets/icon-mini-jackpot.png";
+import iconCrash       from "@assets/icon-crash.png";
+import iconMines       from "@assets/icon-mines.png";
+import iconHilo        from "@assets/icon-hilo.png";
+import iconTower       from "@assets/icon-tower.png";
 
 const GAMES = [
-  // Original 3
-  { id: "slots",         href: "/games/slots",         name: "Jackpot",           emoji: "🎰", gradient: "from-purple-600 to-purple-900", hot: true,  new: false, minBet: "100 FCFA", image: iconSlots },
-  { id: "wheel",         href: "/games/wheel",          name: "Roue de Fortune",   emoji: "🎡", gradient: "from-blue-500 to-blue-800",     hot: false, new: false, minBet: "200 FCFA", image: iconWheel },
-  { id: "scratch",       href: "/games/scratch",        name: "Carte à Gratter",   emoji: "🎟", gradient: "from-amber-500 to-orange-700",  hot: false, new: false, minBet: "500 FCFA", image: iconScratch },
-  // Original mini games
-  { id: "dice",          href: "/games/dice",           name: "Dice",              emoji: "🎲", gradient: "from-red-500 to-rose-800",      hot: false, new: false, minBet: "100 FCFA" },
-  { id: "coin-flip",     href: "/games/coin-flip",      name: "Coin Flip",         emoji: "🪙", gradient: "from-yellow-400 to-yellow-700", hot: false, new: false, minBet: "100 FCFA" },
-  { id: "lucky-number",  href: "/games/lucky-number",   name: "Lucky Number",      emoji: "🎯", gradient: "from-green-500 to-emerald-800", hot: true,  new: false, minBet: "100 FCFA" },
-  { id: "lucky-box",     href: "/games/lucky-box",      name: "Lucky Box",         emoji: "💎", gradient: "from-cyan-500 to-cyan-900",     hot: false, new: false, minBet: "200 FCFA" },
-  { id: "mystery-gift",  href: "/games/mystery-gift",   name: "Mystery Gift",      emoji: "🎁", gradient: "from-pink-500 to-pink-900",     hot: false, new: false, minBet: "300 FCFA" },
-  { id: "mini-jackpot",  href: "/games/mini-jackpot",   name: "Mini Jackpot",      emoji: "🎮", gradient: "from-indigo-500 to-indigo-900", hot: false, new: false, minBet: "100 FCFA" },
-  // 6 New games
-  { id: "crash",         href: "/games/crash",          name: "Crash",             emoji: "🚀", gradient: "from-violet-600 to-indigo-900", hot: true,  new: true,  minBet: "100 FCFA" },
-  { id: "mines",         href: "/games/mines",          name: "Mines",             emoji: "💣", gradient: "from-slate-600 to-slate-900",   hot: true,  new: true,  minBet: "100 FCFA" },
-  { id: "hilo",          href: "/games/hilo",           name: "Hi-Lo",             emoji: "🃏", gradient: "from-blue-700 to-blue-950",     hot: false, new: true,  minBet: "100 FCFA" },
-  { id: "tower",         href: "/games/tower",          name: "Tower",             emoji: "🗼", gradient: "from-purple-700 to-purple-950", hot: false, new: true,  minBet: "100 FCFA" },
-  { id: "keno",          href: "/games/keno",           name: "Keno",              emoji: "🎱", gradient: "from-sky-600 to-sky-950",       hot: false, new: true,  minBet: "100 FCFA" },
-  { id: "plinko",        href: "/games/plinko",         name: "Plinko",            emoji: "🎯", gradient: "from-emerald-600 to-teal-900",  hot: false, new: true,  minBet: "100 FCFA" },
-  { id: "ferme-magique", href: "/games/ferme-magique",  name: "Ferme Magique",     emoji: "🌾", gradient: "from-green-600 to-green-950",   hot: false, new: true,  minBet: "200 FCFA" },
+  { id: "slots",         href: "/games/slots",         name: "Jackpot",         emoji: "🎰", gradient: "from-purple-600 to-purple-900", hot: true,  new: false, minBet: "100 FCFA", image: iconSlots },
+  { id: "wheel",         href: "/games/wheel",          name: "Roue de Fortune", emoji: "🎡", gradient: "from-blue-500 to-blue-800",     hot: false, new: false, minBet: "200 FCFA", image: iconWheel },
+  { id: "scratch",       href: "/games/scratch",        name: "Carte à Gratter", emoji: "🎟", gradient: "from-amber-500 to-orange-700",  hot: false, new: false, minBet: "500 FCFA", image: iconScratch },
+  { id: "dice",          href: "/games/dice",           name: "Dice",            emoji: "🎲", gradient: "from-red-500 to-rose-800",      hot: false, new: false, minBet: "100 FCFA", image: iconDice },
+  { id: "coin-flip",     href: "/games/coin-flip",      name: "Coin Flip",       emoji: "🪙", gradient: "from-yellow-400 to-yellow-700", hot: false, new: false, minBet: "100 FCFA", image: iconCoinFlip },
+  { id: "lucky-number",  href: "/games/lucky-number",   name: "Lucky Number",    emoji: "🎯", gradient: "from-green-500 to-emerald-800", hot: true,  new: false, minBet: "100 FCFA", image: iconLuckyNumber },
+  { id: "lucky-box",     href: "/games/lucky-box",      name: "Lucky Box",       emoji: "💎", gradient: "from-cyan-500 to-cyan-900",     hot: false, new: false, minBet: "200 FCFA", image: iconLuckyBox },
+  { id: "mystery-gift",  href: "/games/mystery-gift",   name: "Mystery Gift",    emoji: "🎁", gradient: "from-pink-500 to-pink-900",     hot: false, new: false, minBet: "300 FCFA", image: iconMysteryGift },
+  { id: "mini-jackpot",  href: "/games/mini-jackpot",   name: "Mini Jackpot",    emoji: "🎮", gradient: "from-indigo-500 to-indigo-900", hot: false, new: false, minBet: "100 FCFA", image: iconMiniJackpot },
+  { id: "crash",         href: "/games/crash",          name: "Crash",           emoji: "🚀", gradient: "from-violet-600 to-indigo-900", hot: true,  new: true,  minBet: "100 FCFA", image: iconCrash },
+  { id: "mines",         href: "/games/mines",          name: "Mines",           emoji: "💣", gradient: "from-slate-600 to-slate-900",   hot: true,  new: true,  minBet: "100 FCFA", image: iconMines },
+  { id: "hilo",          href: "/games/hilo",           name: "Hi-Lo",           emoji: "🃏", gradient: "from-blue-700 to-blue-950",     hot: false, new: true,  minBet: "100 FCFA", image: iconHilo },
+  { id: "tower",         href: "/games/tower",          name: "Tower",           emoji: "🗼", gradient: "from-purple-700 to-purple-950", hot: false, new: true,  minBet: "100 FCFA", image: iconTower },
+  { id: "keno",          href: "/games/keno",           name: "Keno",            emoji: "🎱", gradient: "from-sky-600 to-sky-950",       hot: false, new: true,  minBet: "100 FCFA" },
+  { id: "plinko",        href: "/games/plinko",         name: "Plinko",          emoji: "🎯", gradient: "from-emerald-600 to-teal-900",  hot: false, new: true,  minBet: "100 FCFA" },
+  { id: "ferme-magique", href: "/games/ferme-magique",  name: "Ferme Magique",   emoji: "🌾", gradient: "from-green-600 to-green-950",   hot: false, new: true,  minBet: "200 FCFA" },
 ];
 
 const CATEGORIES = [

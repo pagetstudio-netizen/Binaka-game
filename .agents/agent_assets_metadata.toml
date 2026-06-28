@@ -42,6 +42,66 @@ uri = "file://attached_assets/icon-scratch.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "ij-cIDZlfY_JWHt5GcGl-"
+uri = "file://attached_assets/icon-dice.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "WNkH0aEcPcO7V8rOSFXUO"
+uri = "file://attached_assets/icon-coin-flip.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "qMeCfTxfxSgbALbGgG8gZ"
+uri = "file://attached_assets/icon-lucky-number.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "T2kX29bOOQayOr8RNS__3"
+uri = "file://attached_assets/icon-lucky-box.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "LnBo2SX3pqJXpV1xGj7-n"
+uri = "file://attached_assets/icon-mystery-gift.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "JbdycZbnRAWvtFN9DzL0I"
+uri = "file://attached_assets/icon-mini-jackpot.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "QZIE9QFhAAHTyvuARmsX0"
+uri = "file://attached_assets/icon-crash.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "A4FhippKZDX3_p0eiLrjC"
+uri = "file://attached_assets/icon-mines.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "6UeIWzUBcE4wf2o1lV_tO"
+uri = "file://attached_assets/icon-hilo.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "jZTLGOCLsGDAHOrfS20D5"
+uri = "file://attached_assets/icon-tower.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "h6iFATu7aIsonGXlhDAV8"
 uri = "file://attached_assets/icon-slots.png"
