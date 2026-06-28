@@ -71,10 +71,10 @@ export function AppHeader() {
 
   return (
     <header
-      className="sticky top-0 left-0 w-full z-[9999] bg-white flex items-center px-4 flex-shrink-0"
+      className="sticky top-0 left-0 w-full z-[9999] bg-green-50 flex items-center px-4 flex-shrink-0"
       style={{
         height: 70,
-        borderBottom: "1px solid #E5E7EB",
+        borderBottom: "1px solid #bbf7d0",
         boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
         transition: "box-shadow 0.2s ease",
       }}
@@ -255,7 +255,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-[100dvh] flex items-center justify-center bg-gray-50">
+      <div className="min-h-[100dvh] flex items-center justify-center bg-green-50">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-bold text-gray-500">Chargement…</span>
@@ -269,8 +269,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-gray-100">
-      <main className="flex-1 w-full max-w-[430px] mx-auto relative bg-gray-50 shadow-2xl overflow-hidden flex flex-col">
+    <div className="min-h-[100dvh] flex flex-col bg-green-100">
+      <main className="flex-1 w-full max-w-[430px] mx-auto relative bg-green-50 shadow-2xl overflow-hidden flex flex-col">
         {/* Global header — hidden on individual game pages */}
         {!isGamePage && <AppHeader />}
         {children}
@@ -278,8 +278,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       {!isGamePage && (
         <nav
-          className="fixed bottom-0 left-0 right-0 z-50 bg-white"
-          style={{ boxShadow: "0 -2px 20px rgba(0,0,0,0.10)", borderTop: "1px solid #f0f0f0" }}
+          className="fixed bottom-0 left-0 right-0 z-50 bg-green-50"
+          style={{ boxShadow: "0 -2px 20px rgba(0,0,0,0.10)", borderTop: "1px solid #bbf7d0" }}
         >
           <div className="flex justify-around items-center h-16 max-w-[430px] mx-auto">
             {NAV_ITEMS.map((item) => {

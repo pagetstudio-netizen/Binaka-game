@@ -143,7 +143,7 @@ export default function Register() {
   const Field = ({ label, icon, children, error }: { label: string; icon?: React.ReactNode; children: React.ReactNode; error?: string }) => (
     <div>
       <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">{label}</label>
-      <div className="flex items-center h-13 rounded-2xl border-2 border-gray-200 overflow-hidden focus-within:border-green-500 transition-colors bg-gray-50">
+      <div className="flex items-center h-13 rounded-2xl border-2 border-green-200 overflow-hidden focus-within:border-green-500 transition-colors bg-white">
         {icon && <span className="ml-4 text-gray-400 shrink-0">{icon}</span>}
         {children}
       </div>
@@ -152,19 +152,19 @@ export default function Register() {
   );
 
   return (
-    <div className="min-h-[100dvh] w-full flex flex-col bg-white select-none">
+    <div className="min-h-[100dvh] w-full flex flex-col bg-green-50 select-none">
 
       {/* ── BANNER IMAGE ── */}
       <div className="w-full relative flex-shrink-0" style={{ maxHeight: 220 }}>
         <img src={bannerImg} alt="BINAKA GAME" className="w-full object-cover object-top" style={{ maxHeight: 220 }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-green-50/60" />
       </div>
 
       {/* ── WHITE CARD ── */}
-      <div className="flex-1 bg-white -mt-6 rounded-t-3xl shadow-xl z-10 flex flex-col px-5 pt-5 pb-10">
+      <div className="flex-1 bg-green-50 -mt-6 rounded-t-3xl shadow-xl z-10 flex flex-col px-5 pt-5 pb-10">
 
         {/* TABS */}
-        <div className="flex rounded-2xl bg-gray-100 p-1 mb-5">
+        <div className="flex rounded-2xl bg-green-100 p-1 mb-5">
           <Link href="/login" className="flex-1 py-2.5 rounded-xl text-center text-sm font-bold text-gray-500">
             Se connecter
           </Link>
@@ -185,7 +185,7 @@ export default function Register() {
           {/* Pays + Téléphone */}
           <div>
             <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">Pays & Numéro de téléphone</label>
-            <div className="flex items-center h-13 rounded-2xl border-2 border-gray-200 overflow-hidden focus-within:border-green-500 transition-colors bg-gray-50">
+            <div className="flex items-center h-13 rounded-2xl border-2 border-green-200 overflow-hidden focus-within:border-green-500 transition-colors bg-white">
               <Phone size={16} className="ml-4 text-gray-400 shrink-0" />
               <div className="relative flex items-center border-r border-gray-200 h-full shrink-0">
                 <select className="h-full pl-2 pr-7 bg-transparent text-xs font-bold text-gray-700 outline-none appearance-none cursor-pointer"
@@ -210,7 +210,7 @@ export default function Register() {
           {/* Mot de passe */}
           <div>
             <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">Mot de passe</label>
-            <div className="flex items-center h-13 rounded-2xl border-2 border-gray-200 overflow-hidden focus-within:border-green-500 transition-colors bg-gray-50">
+            <div className="flex items-center h-13 rounded-2xl border-2 border-green-200 overflow-hidden focus-within:border-green-500 transition-colors bg-white">
               <Lock size={16} className="ml-4 text-gray-400 shrink-0" />
               <input type={showPassword ? "text" : "password"} placeholder="Min. 6 caractères"
                 className="flex-1 h-full px-3 bg-transparent text-sm outline-none text-gray-800 placeholder:text-gray-400"
@@ -225,7 +225,7 @@ export default function Register() {
           {/* Confirmer mot de passe */}
           <div>
             <label className="text-xs font-black text-gray-500 uppercase tracking-wide mb-1.5 block">Confirmer le mot de passe</label>
-            <div className="flex items-center h-13 rounded-2xl border-2 border-gray-200 overflow-hidden focus-within:border-green-500 transition-colors bg-gray-50">
+            <div className="flex items-center h-13 rounded-2xl border-2 border-green-200 overflow-hidden focus-within:border-green-500 transition-colors bg-white">
               <Lock size={16} className="ml-4 text-gray-400 shrink-0" />
               <input type={showConfirm ? "text" : "password"} placeholder="Retapez le mot de passe"
                 className="flex-1 h-full px-3 bg-transparent text-sm outline-none text-gray-800 placeholder:text-gray-400"
@@ -257,8 +257,8 @@ export default function Register() {
               </motion.button>
               <p className="text-xs text-gray-400 flex-1 leading-snug">Cliquez sur 🔄 pour un nouveau code</p>
             </div>
-            <div className="flex items-center h-13 rounded-2xl border-2 overflow-hidden transition-colors bg-gray-50"
-              style={{ borderColor: captchaError ? "#dc2626" : "#e5e7eb" }}>
+            <div className="flex items-center h-13 rounded-2xl border-2 overflow-hidden transition-colors bg-white"
+              style={{ borderColor: captchaError ? "#dc2626" : "#bbf7d0" }}>
               <input type="text" placeholder="Entrez le code affiché" maxLength={6}
                 value={captchaInput}
                 onChange={(e) => { setCaptchaInput(e.target.value.toUpperCase()); setCaptchaError(false); }}

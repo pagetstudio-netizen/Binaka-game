@@ -69,29 +69,29 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 0 0% 100%;
+  --background: 142 30% 94%;
   --foreground: 222 47% 11%;
   
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
+  --border: 142 20% 84%;
+  --input: 142 20% 84%;
   --ring: 142 76% 36%;
   
-  --card: 210 40% 98%;
+  --card: 142 30% 97%;
   --card-foreground: 222 47% 11%;
-  --card-border: 214 32% 91%;
+  --card-border: 142 20% 87%;
   
-  --sidebar: 0 0% 100%;
+  --sidebar: 142 30% 94%;
   --sidebar-foreground: 222 47% 11%;
-  --sidebar-border: 214 32% 91%;
+  --sidebar-border: 142 20% 84%;
   --sidebar-primary: 142 76% 36%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 210 40% 96%;
+  --sidebar-accent: 142 30% 90%;
   --sidebar-accent-foreground: 222 47% 11%;
   --sidebar-ring: 142 76% 36%;
   
-  --popover: 0 0% 100%;
+  --popover: 142 30% 97%;
   --popover-foreground: 222 47% 11%;
-  --popover-border: 214 32% 91%;
+  --popover-border: 142 20% 84%;
   
   --primary: 142 76% 36%;
   --primary-foreground: 0 0% 100%;
@@ -121,28 +121,28 @@
 }
 
 .dark {
-  --background: 222 47% 11%;
+  --background: 142 40% 8%;
   --foreground: 0 0% 100%;
-  --border: 217 32% 17%;
-  --input: 217 32% 17%;
+  --border: 142 25% 16%;
+  --input: 142 25% 16%;
   --ring: 142 76% 36%;
   
-  --card: 222 47% 11%;
+  --card: 142 35% 11%;
   --card-foreground: 0 0% 100%;
-  --card-border: 217 32% 17%;
+  --card-border: 142 25% 16%;
   
-  --sidebar: 222 47% 11%;
+  --sidebar: 142 40% 8%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 217 32% 17%;
+  --sidebar-border: 142 25% 16%;
   --sidebar-primary: 142 76% 36%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 217 32% 17%;
+  --sidebar-accent: 142 30% 14%;
   --sidebar-accent-foreground: 0 0% 100%;
   --sidebar-ring: 142 76% 36%;
   
-  --popover: 222 47% 11%;
+  --popover: 142 35% 11%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 217 32% 17%;
+  --popover-border: 142 25% 16%;
   
   --primary: 142 76% 36%;
   --primary-foreground: 0 0% 100%;
