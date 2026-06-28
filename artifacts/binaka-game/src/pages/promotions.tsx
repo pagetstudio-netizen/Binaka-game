@@ -8,7 +8,7 @@ const BANNERS = [banner1, banner2, banner3];
 
 export default function Promotions() {
   return (
-    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#071C12" }}>
 
       <div className="flex flex-col gap-3 p-3">
         {BANNERS.map((src, i) => (
@@ -17,7 +17,8 @@ export default function Promotions() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08, duration: 0.4, ease: "easeOut" }}
-            className="w-full rounded-2xl overflow-hidden shadow-md bg-white"
+            className="w-full rounded-2xl overflow-hidden shadow-md"
+            style={{ background: "#0D2B1E" }}
           >
             <img
               src={src}
@@ -28,16 +29,16 @@ export default function Promotions() {
           </motion.div>
         ))}
 
-        {/* Message d'attente pour les prochaines promos */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className="w-full rounded-2xl border-2 border-dashed border-gray-300 bg-white flex flex-col items-center justify-center py-10 gap-2"
+          className="w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center py-10 gap-2"
+          style={{ borderColor: "rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.04)" }}
         >
           <span className="text-4xl">🎁</span>
-          <p className="text-sm font-black text-gray-500">D'autres promotions arrivent bientôt</p>
-          <p className="text-xs text-gray-400">Revenez régulièrement !</p>
+          <p className="text-sm font-black" style={{ color: "rgba(255,255,255,0.55)" }}>D'autres promotions arrivent bientôt</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>Revenez régulièrement !</p>
         </motion.div>
       </div>
     </div>

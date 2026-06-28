@@ -140,9 +140,9 @@ export function AppHeader() {
       className="sticky top-0 left-0 w-full z-[9999] flex items-center px-4 flex-shrink-0"
       style={{
         height: 70,
-        background: "#FFFFFF",
-        borderBottom: "2px solid #0A5C3A",
-        boxShadow: "0 2px 16px rgba(10,92,58,0.12)",
+        background: "#071C12",
+        borderBottom: "1px solid rgba(255,255,255,0.10)",
+        boxShadow: "0 2px 20px rgba(0,0,0,0.45)",
       }}
     >
       {/* Left — brand logo OR back button */}
@@ -150,9 +150,9 @@ export function AppHeader() {
         <button
           onClick={() => setLocation(subPage.back)}
           className="p-2 -ml-1 rounded-full active:scale-95 transition-all flex-shrink-0"
-          style={{ background: "#EAF8F2" }}
+          style={{ background: "rgba(255,255,255,0.08)" }}
         >
-          <ArrowLeft className="w-5 h-5" style={{ color: "#0F8A5F" }} />
+          <ArrowLeft className="w-5 h-5 text-white" />
         </button>
       ) : location === "/" ? (
         <img
@@ -162,12 +162,12 @@ export function AppHeader() {
           draggable={false}
         />
       ) : (
-        <span className="font-black text-lg tracking-wide" style={{ color: "#0F8A5F" }}>BINAKA</span>
+        <span className="font-black text-lg tracking-wide" style={{ color: "#F4C430" }}>BINAKA</span>
       )}
 
       {/* Center — page title for sub-pages */}
       {subPage ? (
-        <h1 className="flex-1 text-center text-base font-bold px-2 truncate" style={{ color: "#0A5C3A" }}>
+        <h1 className="flex-1 text-center text-base font-bold px-2 truncate text-white">
           {subPage.title}
         </h1>
       ) : (
@@ -177,15 +177,15 @@ export function AppHeader() {
       {/* Right — balance + notifications bell */}
       <div className="flex items-center gap-2 flex-shrink-0">
         {wallet !== undefined && (
-          <div className="px-3 py-1 rounded-full border" style={{ background: "#EAF8F2", borderColor: "#0F8A5F40" }}>
-            <span className="text-xs font-black whitespace-nowrap" style={{ color: "#0F8A5F" }}>
+          <div className="px-3 py-1 rounded-full" style={{ background: "rgba(244,196,48,0.15)", border: "1px solid rgba(244,196,48,0.30)" }}>
+            <span className="text-xs font-black whitespace-nowrap" style={{ color: "#F4C430" }}>
               {(wallet.balance ?? 0).toLocaleString()} FCFA
             </span>
           </div>
         )}
         <Link href="/notifications">
-          <button className="relative p-2 rounded-full transition-colors active:scale-95" style={{ background: "#EAF8F2" }}>
-            <Bell className="w-5 h-5" style={{ color: "#0F8A5F" }} />
+          <button className="relative p-2 rounded-full transition-colors active:scale-95" style={{ background: "rgba(255,255,255,0.08)" }}>
+            <Bell className="w-5 h-5 text-white" />
             {unread > 0 && (
               <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                 {unread > 9 ? "9+" : unread}
@@ -325,7 +325,7 @@ function AppLayoutInner({ children }: { children: ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-[100dvh] flex items-center justify-center" style={{ background: "#EAF8F2" }}>
+      <div className="min-h-[100dvh] flex items-center justify-center" style={{ background: "#071C12" }}>
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#0F8A5F", borderTopColor: "transparent" }} />
           <span className="text-sm font-bold" style={{ color: "#0F8A5F" }}>Chargement…</span>
@@ -339,10 +339,10 @@ function AppLayoutInner({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col" style={{ background: "#C8EDD8" }}>
+    <div className="min-h-[100dvh] flex flex-col" style={{ background: "#050F09" }}>
       <main
         className="flex-1 w-full max-w-[430px] mx-auto relative shadow-2xl overflow-x-hidden flex flex-col"
-        style={{ background: "#EAF8F2" }}
+        style={{ background: "#071C12" }}
       >
         {/* Global header — hidden on individual game pages */}
         {!isGamePage && <AppHeader />}
@@ -357,9 +357,9 @@ function AppLayoutInner({ children }: { children: ReactNode }) {
         <nav
           className="fixed bottom-0 left-0 right-0 z-50"
           style={{
-            background: "#FFFFFF",
-            boxShadow: "0 -2px 20px rgba(10,92,58,0.12)",
-            borderTop: "2px solid #0A5C3A",
+            background: "#0A2118",
+            boxShadow: "0 -1px 0 rgba(255,255,255,0.08), 0 -8px 32px rgba(0,0,0,0.55)",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
           }}
         >
           <div className="flex justify-around items-center h-16 max-w-[430px] mx-auto">
@@ -384,13 +384,14 @@ function AppLayoutInner({ children }: { children: ReactNode }) {
                       alt={item.label}
                       className="w-7 h-7 object-contain transition-all duration-200"
                       style={{
-                        opacity: isActive ? 1 : 0.5,
+                        opacity: isActive ? 1 : 0.45,
                         transform: isActive ? "scale(1.15)" : "scale(1)",
+                        filter: isActive ? "none" : "brightness(0.6) saturate(0.3)",
                       }}
                     />
                     <span
                       className="text-[10px] font-bold transition-colors"
-                      style={{ color: isActive ? "#0F8A5F" : "#9ca3af" }}
+                      style={{ color: isActive ? "#F4C430" : "rgba(255,255,255,0.40)" }}
                     >
                       {item.label}
                     </span>

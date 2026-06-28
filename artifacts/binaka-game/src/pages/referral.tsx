@@ -157,9 +157,9 @@ export default function Referral() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#071C12" }}>
       {/* HEADER GRADIENT */}
-      <div className="bg-gradient-to-br from-green-700 via-green-600 to-emerald-500 px-4 pt-4 pb-8 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-green-900 via-green-700 to-emerald-600 px-4 pt-4 pb-8 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="absolute rounded-full bg-white" style={{ width: 80 + i * 40, height: 80 + i * 40, top: -20 + i * 15, right: -30 + i * 10, opacity: 0.3 }} />
@@ -194,10 +194,10 @@ export default function Referral() {
           <motion.div key="gains" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col gap-4 px-4 -mt-4">
 
             {/* TEAM LEVEL CARD */}
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100">
+            <div className="rounded-3xl shadow-lg p-5" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <span className="text-xs text-gray-400 font-bold uppercase tracking-wide">Niveau de mon équipe</span>
+                  <span className="text-xs font-bold uppercase tracking-wide" style={{ color: "rgba(255,255,255,0.45)" }}>Niveau de mon équipe</span>
                   <div className="flex items-center gap-2 mt-1">
                     <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${currentLevel.bg} flex items-center gap-1.5`}>
                       <span className="text-base">{currentLevel.icon}</span>
@@ -207,18 +207,18 @@ export default function Referral() {
                 </div>
                 <motion.button whileTap={{ scale: 0.94 }}
                   className="px-4 py-2 rounded-xl font-black text-sm text-white"
-                  style={{ background: "linear-gradient(135deg, #16a34a, #22c55e)" }}>
+                  style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)" }}>
                   Détail
                 </motion.button>
               </div>
 
               <div className="space-y-3">
                 <div>
-                  <div className="flex justify-between text-xs font-bold text-gray-500 mb-1">
+                  <div className="flex justify-between text-xs font-bold mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>
                     <span>👥 Nombre d'équipe</span>
-                    <span className="text-green-600">{totalInvited}/{LEVELS[Math.min(currentLevel.id + 1, 5)].teamMin}</span>
+                    <span style={{ color: "#0F8A5F" }}>{totalInvited}/{LEVELS[Math.min(currentLevel.id + 1, 5)].teamMin}</span>
                   </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2.5">
+                  <div className="w-full rounded-full h-2.5" style={{ background: "rgba(255,255,255,0.10)" }}>
                     <motion.div
                       initial={{ width: 0 }} animate={{ width: `${Math.min((totalInvited / Math.max(LEVELS[Math.min(currentLevel.id + 1, 5)].teamMin, 1)) * 100, 100)}%` }}
                       transition={{ duration: 1, ease: "easeOut" }}
@@ -227,11 +227,11 @@ export default function Referral() {
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-xs font-bold text-gray-500 mb-1">
+                  <div className="flex justify-between text-xs font-bold mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>
                     <span>🎯 Paris d'équipe</span>
-                    <span className="text-green-600">0 / {LEVELS[Math.min(currentLevel.id + 1, 5)].teamBet.toLocaleString("fr-FR")} FCFA</span>
+                    <span style={{ color: "#0F8A5F" }}>0 / {LEVELS[Math.min(currentLevel.id + 1, 5)].teamBet.toLocaleString("fr-FR")} FCFA</span>
                   </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2.5">
+                  <div className="w-full rounded-full h-2.5" style={{ background: "rgba(255,255,255,0.10)" }}>
                     <div className="h-2.5 w-0 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400" />
                   </div>
                 </div>
@@ -239,19 +239,22 @@ export default function Referral() {
             </div>
 
             {/* PRIVILEGES CAROUSEL */}
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100">
+            <div className="rounded-3xl shadow-lg p-5" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
               <div className="flex items-center justify-between mb-4">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white text-xs font-black px-4 py-1.5 rounded-full shadow-md">
+                <div className="text-white text-xs font-black px-4 py-1.5 rounded-full shadow-md"
+                  style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)" }}>
                   ✨ Mes Privilèges
                 </div>
                 <div className="flex gap-2">
                   <motion.button whileTap={{ scale: 0.9 }} onClick={() => scrollPriv(-1)} disabled={privIdx === 0}
-                    className="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center disabled:opacity-30">
-                    <ChevronLeft size={16} className="text-gray-600" />
+                    className="w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-30"
+                    style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)" }}>
+                    <ChevronLeft size={16} style={{ color: "rgba(255,255,255,0.65)" }} />
                   </motion.button>
                   <motion.button whileTap={{ scale: 0.9 }} onClick={() => scrollPriv(1)} disabled={privIdx === PRIVILEGES.length - 1}
-                    className="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center disabled:opacity-30">
-                    <ChevronRight size={16} className="text-gray-600" />
+                    className="w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-30"
+                    style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)" }}>
+                    <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.65)" }} />
                   </motion.button>
                 </div>
               </div>
@@ -265,7 +268,7 @@ export default function Referral() {
               <div className="flex justify-center gap-1.5 mt-3">
                 {PRIVILEGES.map((_, i) => (
                   <motion.button key={i} onClick={() => { setPrivIdx(i); if (privRef.current) privRef.current.scrollTo({ left: i * 192, behavior: "smooth" }); }}
-                    animate={{ width: privIdx === i ? 20 : 8, background: privIdx === i ? "#16a34a" : "#d1d5db" }}
+                    animate={{ width: privIdx === i ? 20 : 8, background: privIdx === i ? "#0F8A5F" : "rgba(255,255,255,0.20)" }}
                     className="h-2 rounded-full"
                   />
                 ))}
@@ -273,27 +276,27 @@ export default function Referral() {
             </div>
 
             {/* REWARDS */}
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100">
+            <div className="rounded-3xl shadow-lg p-5" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-black text-gray-800">Retirer Gains</span>
-                  <ChevronRight size={16} className="text-gray-400" />
+                  <span className="font-black text-white">Retirer Gains</span>
+                  <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.40)" }} />
                 </div>
                 <motion.button whileTap={{ scale: 0.96 }}
                   className="px-5 py-2 rounded-xl font-black text-sm text-white shadow"
-                  style={{ background: totalEarned > 0 ? "linear-gradient(135deg,#16a34a,#22c55e)" : "#9ca3af" }}>
+                  style={{ background: totalEarned > 0 ? "linear-gradient(135deg,#0F8A5F,#0A5C3A)" : "rgba(255,255,255,0.15)" }}>
                   Réclamer
                 </motion.button>
               </div>
-              <p className="text-3xl font-black text-green-600 mb-4">{totalEarned.toLocaleString("fr-FR")} <span className="text-lg text-gray-400">FCFA</span></p>
+              <p className="text-3xl font-black mb-4" style={{ color: "#F4C430" }}>{totalEarned.toLocaleString("fr-FR")} <span className="text-lg" style={{ color: "rgba(255,255,255,0.45)" }}>FCFA</span></p>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-amber-50 rounded-2xl p-3 border border-amber-100">
-                  <p className="text-xs text-gray-500 font-bold">Gains totaux</p>
-                  <p className="text-lg font-black text-amber-600">{totalEarned.toLocaleString("fr-FR")} FCFA</p>
+                <div className="rounded-2xl p-3" style={{ background: "rgba(244,196,48,0.10)", border: "1px solid rgba(244,196,48,0.20)" }}>
+                  <p className="text-xs font-bold" style={{ color: "rgba(255,255,255,0.55)" }}>Gains totaux</p>
+                  <p className="text-lg font-black text-amber-400">{totalEarned.toLocaleString("fr-FR")} FCFA</p>
                 </div>
-                <div className="bg-green-50 rounded-2xl p-3 border border-green-100">
-                  <p className="text-xs text-gray-500 font-bold">Gains du jour</p>
-                  <p className="text-lg font-black text-green-600">0 FCFA</p>
+                <div className="rounded-2xl p-3" style={{ background: "rgba(15,138,95,0.10)", border: "1px solid rgba(15,138,95,0.20)" }}>
+                  <p className="text-xs font-bold" style={{ color: "rgba(255,255,255,0.55)" }}>Gains du jour</p>
+                  <p className="text-lg font-black text-green-400">0 FCFA</p>
                 </div>
               </div>
             </div>
@@ -325,17 +328,19 @@ export default function Referral() {
           <motion.div key="filleuls" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col gap-4 px-4 -mt-4">
 
             {/* NIVEAU CARDS CAROUSEL */}
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100">
+            <div className="rounded-3xl shadow-lg p-5" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-black text-gray-800 text-base">Niveaux & Récompenses</h3>
+                <h3 className="font-black text-white text-base">Niveaux & Récompenses</h3>
                 <div className="flex gap-2">
                   <motion.button whileTap={{ scale: 0.9 }} onClick={() => scrollLevel(-1)} disabled={levelIdx === 0}
-                    className="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center disabled:opacity-30">
-                    <ChevronLeft size={16} className="text-gray-600" />
+                    className="w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-30"
+                    style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)" }}>
+                    <ChevronLeft size={16} style={{ color: "rgba(255,255,255,0.65)" }} />
                   </motion.button>
                   <motion.button whileTap={{ scale: 0.9 }} onClick={() => scrollLevel(1)} disabled={levelIdx === LEVELS.length - 1}
-                    className="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center disabled:opacity-30">
-                    <ChevronRight size={16} className="text-gray-600" />
+                    className="w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-30"
+                    style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)" }}>
+                    <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.65)" }} />
                   </motion.button>
                 </div>
               </div>
@@ -349,7 +354,7 @@ export default function Referral() {
               <div className="flex justify-center gap-1.5 mt-2">
                 {LEVELS.map((_, i) => (
                   <motion.button key={i} onClick={() => { setLevelIdx(i); if (levelRef.current) levelRef.current.scrollTo({ left: i * 272, behavior: "smooth" }); }}
-                    animate={{ width: levelIdx === i ? 20 : 8, background: levelIdx === i ? "#16a34a" : "#d1d5db" }}
+                    animate={{ width: levelIdx === i ? 20 : 8, background: levelIdx === i ? "#0F8A5F" : "rgba(255,255,255,0.20)" }}
                     className="h-2 rounded-full"
                   />
                 ))}
@@ -357,18 +362,18 @@ export default function Referral() {
             </div>
 
             {/* COMPARAISON TABLE */}
-            <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-600 to-emerald-500 px-4 py-3">
+            <div className="rounded-3xl shadow-lg overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="px-4 py-3" style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)" }}>
                 <h3 className="text-white font-black text-sm">Tableau Comparatif des Niveaux</h3>
               </div>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto" style={{ background: "#0D2B1E" }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-gray-50 border-b border-gray-100">
-                      <th className="px-3 py-2.5 text-left font-black text-gray-500">Niveau</th>
-                      <th className="px-2 py-2.5 text-center font-black text-gray-500">Min.<br />filleuls</th>
-                      <th className="px-2 py-2.5 text-center font-black text-gray-500">Rebate<br />Paris</th>
-                      <th className="px-2 py-2.5 text-center font-black text-gray-500">Bonus<br />Hebdo</th>
+                    <tr style={{ background: "rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                      <th className="px-3 py-2.5 text-left font-black" style={{ color: "rgba(255,255,255,0.55)" }}>Niveau</th>
+                      <th className="px-2 py-2.5 text-center font-black" style={{ color: "rgba(255,255,255,0.55)" }}>Min.<br />filleuls</th>
+                      <th className="px-2 py-2.5 text-center font-black" style={{ color: "rgba(255,255,255,0.55)" }}>Rebate<br />Paris</th>
+                      <th className="px-2 py-2.5 text-center font-black" style={{ color: "rgba(255,255,255,0.55)" }}>Bonus<br />Hebdo</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -378,21 +383,21 @@ export default function Referral() {
                         <motion.tr key={level.id}
                           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.06 }}
-                          className={`border-b border-gray-50 ${isCurrentOrPassed ? "bg-green-50" : ""}`}>
+                          style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: isCurrentOrPassed ? "rgba(15,138,95,0.12)" : "transparent" }}>
                           <td className="px-3 py-3">
                             <div className="flex items-center gap-2">
                               <span className="text-xl">{level.icon}</span>
                               <div>
-                                <p className="font-black text-gray-800">{level.label}</p>
-                                <p className="text-gray-400 text-xs">{level.badge}</p>
+                                <p className="font-black text-white">{level.label}</p>
+                                <p className="text-xs" style={{ color: "rgba(255,255,255,0.40)" }}>{level.badge}</p>
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 py-3 text-center font-bold" style={{ color: isCurrentOrPassed ? "#16a34a" : "#374151" }}>
+                          <td className="px-2 py-3 text-center font-bold" style={{ color: isCurrentOrPassed ? "#0F8A5F" : "rgba(255,255,255,0.70)" }}>
                             {level.teamMin}
                           </td>
-                          <td className="px-2 py-3 text-center font-bold text-amber-600">{level.betRebate}</td>
-                          <td className="px-2 py-3 text-center font-bold text-violet-600">
+                          <td className="px-2 py-3 text-center font-bold text-amber-400">{level.betRebate}</td>
+                          <td className="px-2 py-3 text-center font-bold text-violet-400">
                             {level.weeklyBonus > 0 ? `${level.weeklyBonus.toLocaleString("fr-FR")} F` : "–"}
                           </td>
                         </motion.tr>
@@ -404,21 +409,21 @@ export default function Referral() {
             </div>
 
             {/* MON CODE */}
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100">
-              <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">Mon Code de Parrainage</p>
+            <div className="rounded-3xl shadow-lg p-5" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <p className="text-xs font-black uppercase tracking-wide mb-2" style={{ color: "rgba(255,255,255,0.45)" }}>Mon Code de Parrainage</p>
               <div className="flex gap-3 items-center">
-                <div className="flex-1 bg-gray-50 border-2 border-dashed border-green-300 rounded-2xl px-4 py-3 text-center">
-                  <p className="font-black text-2xl tracking-[0.2em] text-green-700">{info?.referralCode || "BINAKA"}</p>
+                <div className="flex-1 rounded-2xl px-4 py-3 text-center border-2 border-dashed" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(15,138,95,0.40)" }}>
+                  <p className="font-black text-2xl tracking-[0.2em]" style={{ color: "#F4C430" }}>{info?.referralCode || "BINAKA"}</p>
                 </div>
                 <motion.button whileTap={{ scale: 0.9 }} onClick={() => handleCopy(info?.referralCode || "BINAKA")}
                   className="w-14 h-14 rounded-2xl flex items-center justify-center shadow"
-                  style={{ background: "linear-gradient(135deg,#16a34a,#22c55e)" }}>
+                  style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)" }}>
                   <Copy className="text-white" size={20} />
                 </motion.button>
               </div>
               <div className="flex items-center gap-2 mt-3">
-                <Users size={14} className="text-gray-400" />
-                <span className="text-sm text-gray-500 font-bold">
+                <Users size={14} style={{ color: "rgba(255,255,255,0.40)" }} />
+                <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.55)" }}>
                   {totalInvited} ami{totalInvited !== 1 ? "s" : ""} invité{totalInvited !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -428,7 +433,7 @@ export default function Referral() {
 
         {tab === 2 && (
           <motion.div key="regles" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="flex flex-col gap-4 px-4 -mt-4">
-            <div className="bg-white rounded-3xl shadow-lg p-5 border border-gray-100 space-y-4">
+            <div className="rounded-3xl shadow-lg p-5 space-y-4" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
               {[
                 { icon: "1️⃣", title: "Invitez un ami", desc: "Partagez votre code unique. Votre ami s'inscrit et effectue un premier dépôt." },
                 { icon: "2️⃣", title: "Il joue, vous gagnez", desc: "Chaque pari de votre filleul vous rapporte un rebate en temps réel, crédité directement sur votre solde." },
@@ -436,11 +441,12 @@ export default function Referral() {
                 { icon: "4️⃣", title: "Retirez vos gains", desc: "Vos commissions sont disponibles immédiatement. Aucun minimum de retrait pour les commissions de parrainage." },
               ].map((rule, i) => (
                 <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
-                  className="flex gap-4 items-start p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                  className="flex gap-4 items-start p-4 rounded-2xl"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
                   <span className="text-2xl flex-shrink-0">{rule.icon}</span>
                   <div>
-                    <p className="font-black text-gray-800 text-sm mb-1">{rule.title}</p>
-                    <p className="text-xs text-gray-500 leading-relaxed">{rule.desc}</p>
+                    <p className="font-black text-white text-sm mb-1">{rule.title}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>{rule.desc}</p>
                   </div>
                 </motion.div>
               ))}

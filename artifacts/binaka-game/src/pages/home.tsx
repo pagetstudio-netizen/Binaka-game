@@ -23,6 +23,11 @@ import iconWithdraw from "@assets/20260228_002918_1772238747293_1782553073315.pn
 import iconReferral from "@assets/20260228_080749_1772266120754_1782553073350.png";
 import iconVip      from "@assets/fa6620bc07e2128cfd6a47b85bb73129_1782553073377.png";
 
+const BG       = "#071C12";
+const BG_CARD  = "#0D2B1E";
+const GOLD     = "#F4C430";
+const GREEN    = "#0F8A5F";
+
 const BANNERS = [banner1, banner2, banner3];
 
 const ALL_GAMES = [
@@ -44,6 +49,13 @@ const FAKE_WINNERS = [
   { name: "Marc***",   amount: "50 000",  game: "Gratter" },
   { name: "Fran***",   amount: "98 000",  game: "Dice" },
   { name: "Alex***",   amount: "300 000", game: "Lucky Box" },
+];
+
+const QUICK_ACTIONS = [
+  { label: "Dépôt",      icon: iconDeposit,  href: "/wallet",   color: GREEN,     bg: "rgba(15,138,95,0.18)" },
+  { label: "Retrait",    icon: iconWithdraw, href: "/wallet",   color: "#D4A017", bg: "rgba(212,160,23,0.18)" },
+  { label: "VIP",        icon: iconVip,      href: "/vip",      color: "#a855f7", bg: "rgba(168,85,247,0.18)" },
+  { label: "Parrainage", icon: iconReferral, href: "/referral", color: "#3b82f6", bg: "rgba(59,130,246,0.18)" },
 ];
 
 function filterGames(games: typeof ALL_GAMES, cat: string) {
@@ -71,16 +83,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setBannerIndex((i) => (i + 1) % BANNERS.length);
-    }, 3000);
+    const interval = setInterval(() => setBannerIndex(i => (i + 1) % BANNERS.length), 3000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setWinnerIndex((i) => (i + 1) % FAKE_WINNERS.length);
-    }, 2500);
+    const interval = setInterval(() => setWinnerIndex(i => (i + 1) % FAKE_WINNERS.length), 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -88,7 +96,7 @@ export default function Home() {
 
   const winner = FAKE_WINNERS[winnerIndex];
   const filteredGames = filterGames(ALL_GAMES, activeCategory);
-  const sectionTitle = activeCategory === "tous" ? "Jeux Populaires"
+  const sectionTitle = activeCategory === "tous"       ? "Jeux Populaires"
     : activeCategory === "jackpot"    ? "🎰 Jackpot"
     : activeCategory === "roue"       ? "🎡 Roue de Fortune"
     : activeCategory === "grattage"   ? "🎟 Cartes à Gratter"
@@ -97,12 +105,12 @@ export default function Home() {
     : "🔥 Jeux Populaires";
 
   return (
-    <div className="flex flex-col w-full min-h-full pb-20" style={{ background: "#EAF8F2" }}>
+    <div className="flex flex-col w-full min-h-full pb-20" style={{ background: BG }}>
       <div className="flex-1 overflow-x-hidden">
 
         {/* ── BANNIÈRE CARROUSEL ── */}
         <div className="px-3 pt-3">
-          <div className="relative overflow-hidden rounded-2xl shadow-md" style={{ aspectRatio: "2.1 / 1" }}>
+          <div className="relative overflow-hidden rounded-2xl shadow-xl" style={{ aspectRatio: "2.1 / 1" }}>
             <AnimatePresence mode="wait">
               <motion.img
                 key={bannerIndex}
@@ -115,26 +123,24 @@ export default function Home() {
                 transition={{ duration: 0.45, ease: "easeInOut" }}
               />
             </AnimatePresence>
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.4) 100%)" }} />
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
               {BANNERS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setBannerIndex(i)}
-                  className="rounded-full transition-all duration-300"
-                  style={{ width: i === bannerIndex ? 22 : 8, height: 8, backgroundColor: i === bannerIndex ? "#F4C430" : "rgba(255,255,255,0.6)" }}
-                />
+                <button key={i} onClick={() => setBannerIndex(i)} className="rounded-full transition-all duration-300"
+                  style={{ width: i === bannerIndex ? 22 : 8, height: 8, backgroundColor: i === bannerIndex ? GOLD : "rgba(255,255,255,0.45)" }} />
               ))}
             </div>
           </div>
         </div>
 
         {/* ── TICKER GAGNANTS ── */}
-        <div className="mx-3 mt-3 rounded-xl px-3 py-2.5 flex items-center gap-2 shadow-sm" style={{ background: "#FFFFFF", border: "1px solid #D4EDDA" }}>
+        <div className="mx-3 mt-3 rounded-xl px-3 py-2.5 flex items-center gap-2 shadow-sm"
+          style={{ background: BG_CARD, border: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <img src={megaphoneIcon} alt="Annonce" className="w-6 h-6 object-contain" />
-            <span className="text-[11px] font-black uppercase tracking-wide" style={{ color: "#F4C430" }}>Gagnants</span>
+            <span className="text-[11px] font-black uppercase tracking-wide" style={{ color: GOLD }}>Gagnants</span>
           </div>
-          <div className="w-px h-4 flex-shrink-0" style={{ background: "#D4EDDA" }} />
+          <div className="w-px h-4 flex-shrink-0" style={{ background: "rgba(255,255,255,0.15)" }} />
           <AnimatePresence mode="wait">
             <motion.div
               key={winnerIndex}
@@ -144,33 +150,21 @@ export default function Home() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.3 }}
             >
-              <span className="text-xs font-bold truncate" style={{ color: "#1a3a1a" }}>{winner.name}</span>
-              <span className="text-[10px] flex-shrink-0" style={{ color: "#6b7280" }}>{winner.game}</span>
-              <span className="ml-auto text-xs font-black flex-shrink-0" style={{ color: "#0F8A5F" }}>+{winner.amount} FCFA</span>
+              <span className="text-xs font-bold truncate text-white">{winner.name}</span>
+              <span className="text-[10px] flex-shrink-0" style={{ color: "rgba(255,255,255,0.45)" }}>{winner.game}</span>
+              <span className="ml-auto text-xs font-black flex-shrink-0" style={{ color: GOLD }}>+{winner.amount} FCFA</span>
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* ── ACTIONS RAPIDES ── */}
         <div className="px-3 mt-3 grid grid-cols-4 gap-2">
-          {[
-            { label: "Dépôt",      icon: iconDeposit,  href: "/wallet",   color: "#0F8A5F", bg: "#EAF8F2" },
-            { label: "Retrait",    icon: iconWithdraw, href: "/wallet",   color: "#D4A017", bg: "#FFFBEB" },
-            { label: "VIP",        icon: iconVip,      href: "/vip",      color: "#9333ea", bg: "#FAF5FF" },
-            { label: "Parrainage", icon: iconReferral, href: "/referral", color: "#2563eb", bg: "#EFF6FF" },
-          ].map((item) => (
+          {QUICK_ACTIONS.map((item) => (
             <Link key={item.label} href={item.href}>
-              <motion.div
-                whileTap={{ scale: 0.92 }}
+              <motion.div whileTap={{ scale: 0.92 }}
                 className="flex flex-col items-center gap-1.5 py-3 rounded-xl border"
-                style={{ backgroundColor: item.bg, borderColor: item.color + "30" }}
-              >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className="w-8 h-8 object-contain"
-                  draggable={false}
-                />
+                style={{ backgroundColor: item.bg, borderColor: item.color + "40" }}>
+                <img src={item.icon} alt={item.label} className="w-8 h-8 object-contain" draggable={false} />
                 <span className="text-[10px] font-bold" style={{ color: item.color }}>{item.label}</span>
               </motion.div>
             </Link>
@@ -181,11 +175,11 @@ export default function Home() {
         <div className="px-3 mt-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-1 h-5 rounded-full" style={{ background: "#F4C430" }} />
-              <h2 className="font-black text-base" style={{ color: "#0A5C3A" }}>{sectionTitle}</h2>
+              <div className="w-1 h-5 rounded-full" style={{ background: GOLD }} />
+              <h2 className="font-black text-base text-white">{sectionTitle}</h2>
             </div>
             <Link href="/games">
-              <span className="text-xs font-bold flex items-center gap-0.5" style={{ color: "#0F8A5F" }}>
+              <span className="text-xs font-bold flex items-center gap-0.5" style={{ color: GREEN }}>
                 Voir tout <ChevronRight size={14} />
               </span>
             </Link>
@@ -203,25 +197,21 @@ export default function Home() {
               {!isLoaded
                 ? Array.from({ length: 9 }).map((_, i) => (
                     <div key={i} className="flex flex-col gap-1.5">
-                      <div className="aspect-[3/4] rounded-2xl animate-pulse" style={{ background: "#C8EDD8" }} />
-                      <div className="h-3 rounded animate-pulse mx-2" style={{ background: "#C8EDD8" }} />
+                      <div className="aspect-[3/4] rounded-2xl animate-pulse" style={{ background: "#132E20" }} />
+                      <div className="h-3 rounded animate-pulse mx-2" style={{ background: "#132E20" }} />
                     </div>
                   ))
                 : filteredGames.length > 0
                   ? filteredGames.map((game, i) => (
-                      <motion.div
-                        key={game.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.06, duration: 0.4 }}
-                      >
+                      <motion.div key={game.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.06, duration: 0.4 }}>
                         <GameCard game={game} />
                       </motion.div>
                     ))
                   : (
                     <div className="col-span-3 py-12 flex flex-col items-center gap-2">
                       <span className="text-4xl">🎮</span>
-                      <p className="text-sm font-bold" style={{ color: "#0F8A5F" }}>Aucun jeu dans cette catégorie</p>
+                      <p className="text-sm font-bold" style={{ color: GREEN }}>Aucun jeu dans cette catégorie</p>
                     </div>
                   )
               }
@@ -232,24 +222,21 @@ export default function Home() {
         {/* ── BANNIÈRE PARRAINAGE ── */}
         <div className="px-3 mt-4 mb-4">
           <Link href="/referral">
-            <motion.div
-              whileTap={{ scale: 0.98 }}
-              className="rounded-2xl overflow-hidden relative shadow-md"
-              style={{ background: "linear-gradient(135deg, #0F8A5F 0%, #0A5C3A 100%)", minHeight: 90 }}
-            >
+            <motion.div whileTap={{ scale: 0.98 }}
+              className="rounded-2xl overflow-hidden relative shadow-lg"
+              style={{ background: "linear-gradient(135deg, #0F8A5F 0%, #0A5C3A 100%)", minHeight: 90 }}>
               <div className="absolute right-3 top-0 bottom-0 flex items-center text-7xl opacity-20 select-none pointer-events-none">🤑</div>
               <div className="relative z-10 p-4">
-                <p className="text-[11px] font-bold uppercase tracking-wider mb-0.5" style={{ color: "#F4C430" }}>Offre Parrainage</p>
+                <p className="text-[11px] font-bold uppercase tracking-wider mb-0.5" style={{ color: GOLD }}>Offre Parrainage</p>
                 <h3 className="text-white font-black text-xl leading-tight mb-1">Invitez & Gagnez</h3>
                 <p className="text-white/80 text-xs mb-2">10% sur chaque dépôt de vos filleuls</p>
-                <span className="inline-flex items-center gap-1 text-white text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: "#F4C430", color: "#1a3a1a" }}>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: GOLD, color: "#1a3a1a" }}>
                   En savoir plus <ChevronRight size={11} />
                 </span>
               </div>
             </motion.div>
           </Link>
         </div>
-
       </div>
     </div>
   );
@@ -271,38 +258,26 @@ function GameCard({ game }: { game: Game }) {
             </div>
           )}
           {game.image ? (
-            <img
-              src={game.image}
-              alt={game.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            <img src={game.image} alt={game.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-1 relative overflow-hidden">
               <div className="absolute w-20 h-20 rounded-full opacity-30"
                 style={{ background: "radial-gradient(circle, white 0%, transparent 70%)" }} />
-              <motion.div
-                className="absolute top-2 right-3 text-lg opacity-40"
+              <motion.div className="absolute top-2 right-3 text-lg opacity-40"
                 animate={{ y: [0, -4, 0], rotate: [0, 10, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
-                ✨
-              </motion.div>
-              <motion.div
-                className="absolute bottom-6 left-2 text-base opacity-30"
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>✨</motion.div>
+              <motion.div className="absolute bottom-6 left-2 text-base opacity-30"
                 animate={{ y: [0, 4, 0], rotate: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}>
-                ⭐
-              </motion.div>
-              <motion.span
-                className="text-5xl drop-shadow-lg relative z-10"
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}>⭐</motion.div>
+              <motion.span className="text-5xl drop-shadow-lg relative z-10"
                 animate={{ scale: [1, 1.1, 1], rotate: [0, 4, -4, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
-                {game.emoji}
-              </motion.span>
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>{game.emoji}</motion.span>
               <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
           )}
         </div>
-        <p className="text-[11px] font-bold text-center mt-1.5 truncate px-1" style={{ color: "#0A5C3A" }}>{game.name}</p>
+        <p className="text-[11px] font-bold text-center mt-1.5 truncate px-1 text-white/80">{game.name}</p>
       </motion.div>
     </Link>
   );

@@ -361,7 +361,7 @@ export default function Wallet() {
 
   /* ════════════════════════════════════════════════════════════ */
   return (
-    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#071C12" }}>
 
       {/* ── GRADIENT HEADER ── */}
       <div className="px-4 pt-5 pb-6 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0A5C3A 0%, #0F8A5F 60%, #12A66E 100%)" }}>
@@ -391,15 +391,16 @@ export default function Wallet() {
       </div>
 
       {/* ── TABS ── */}
-      <div className="bg-white border-b border-gray-200 flex">
+      <div className="flex" style={{ background: "#0A2118", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
         {(["deposit", "withdraw"] as const).map((t) => (
           <button key={t} onClick={() => setTab(t)}
             className="flex-1 py-4 text-sm font-black relative transition-colors"
-            style={{ color: tab === t ? "#111" : "#9ca3af" }}>
+            style={{ color: tab === t ? "#ffffff" : "rgba(255,255,255,0.40)" }}>
             {t === "deposit" ? "Dépôt" : "Retrait"}
             {tab === t && (
               <motion.div layoutId="tab-underline"
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 rounded-full bg-green-600" />
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 rounded-full"
+                style={{ background: "#F4C430" }} />
             )}
           </button>
         ))}
@@ -411,18 +412,18 @@ export default function Wallet() {
         {tab === "deposit" && (
           <motion.div key="deposit"
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.22 }} className="flex flex-col gap-0 bg-white">
+            transition={{ duration: 0.22 }} className="flex flex-col gap-0" style={{ background: "#071C12" }}>
 
             {/* ── WestPay success banner ── */}
             <AnimatePresence>
               {wpSuccess && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden">
-                  <div className="mx-4 mt-4 rounded-2xl bg-green-50 border-2 border-green-400 p-4 flex items-center gap-3">
-                    <CheckCircle2 size={28} className="text-green-500 flex-shrink-0" />
+                  <div className="mx-4 mt-4 rounded-2xl p-4 flex items-center gap-3" style={{ background: "rgba(15,138,95,0.15)", border: "2px solid #0F8A5F" }}>
+                    <CheckCircle2 size={28} className="text-green-400 flex-shrink-0" />
                     <div>
-                      <p className="font-black text-green-800 text-sm">Dépôt confirmé !</p>
-                      <p className="text-green-600 text-xs font-bold">+{fmtFull(wpAmount)} FCFA ajoutés à votre solde</p>
+                      <p className="font-black text-white text-sm">Dépôt confirmé !</p>
+                      <p className="text-xs font-bold" style={{ color: "#0F8A5F" }}>+{fmtFull(wpAmount)} FCFA ajoutés à votre solde</p>
                     </div>
                     <button onClick={() => setWpSuccess(false)} className="ml-auto text-green-400"><X size={18}/></button>
                   </div>
@@ -443,34 +444,34 @@ export default function Wallet() {
                     <div className="flex items-center gap-2">
                       <span className="text-2xl font-black" style={{ color: selectedCoin.color }}>{selectedCoin.symbol}</span>
                       <div>
-                        <p className="font-black text-sm text-gray-800">Payer en {selectedCoin.label}</p>
-                        <p className="text-xs text-gray-500">Réseau {selectedCoin.network}</p>
+                        <p className="font-black text-sm text-white">Payer en {selectedCoin.label}</p>
+                        <p className="text-xs" style={{ color: "rgba(255,255,255,0.50)" }}>Réseau {selectedCoin.network}</p>
                       </div>
                     </div>
 
                     {/* Status badge */}
                     {npStatus === "waiting" && (
-                      <div className="flex items-center gap-1.5 bg-amber-100 rounded-full px-3 py-1">
-                        <Clock size={12} className="text-amber-600 animate-pulse" />
-                        <span className="text-[10px] font-black text-amber-700">{countdownLabel()}</span>
+                      <div className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: "rgba(245,158,11,0.2)" }}>
+                        <Clock size={12} className="text-amber-400 animate-pulse" />
+                        <span className="text-[10px] font-black text-amber-400">{countdownLabel()}</span>
                       </div>
                     )}
                     {npStatus === "confirming" && (
-                      <div className="flex items-center gap-1.5 bg-blue-100 rounded-full px-3 py-1">
-                        <Loader2 size={12} className="text-blue-600 animate-spin" />
-                        <span className="text-[10px] font-black text-blue-700">Confirmation…</span>
+                      <div className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: "rgba(59,130,246,0.2)" }}>
+                        <Loader2 size={12} className="text-blue-400 animate-spin" />
+                        <span className="text-[10px] font-black text-blue-400">Confirmation…</span>
                       </div>
                     )}
                     {npStatus === "finished" && (
-                      <div className="flex items-center gap-1.5 bg-green-100 rounded-full px-3 py-1">
-                        <CheckCircle2 size={12} className="text-green-600" />
-                        <span className="text-[10px] font-black text-green-700">Confirmé !</span>
+                      <div className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: "rgba(15,138,95,0.2)" }}>
+                        <CheckCircle2 size={12} className="text-green-400" />
+                        <span className="text-[10px] font-black text-green-400">Confirmé !</span>
                       </div>
                     )}
                     {npStatus === "expired" && (
-                      <div className="flex items-center gap-1.5 bg-red-100 rounded-full px-3 py-1">
-                        <AlertCircle size={12} className="text-red-500" />
-                        <span className="text-[10px] font-black text-red-600">Expiré</span>
+                      <div className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: "rgba(239,68,68,0.2)" }}>
+                        <AlertCircle size={12} className="text-red-400" />
+                        <span className="text-[10px] font-black text-red-400">Expiré</span>
                       </div>
                     )}
                   </div>
@@ -479,8 +480,8 @@ export default function Wallet() {
                     /* ── Success state ── */
                     <div className="p-6 flex flex-col items-center gap-3 text-center">
                       <CheckCircle2 size={56} className="text-green-500" />
-                      <p className="font-black text-xl text-green-700">Paiement confirmé !</p>
-                      <p className="text-sm text-gray-500">Votre solde a été crédité</p>
+                      <p className="font-black text-xl text-green-400">Paiement confirmé !</p>
+                      <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>Votre solde a été crédité</p>
                       <motion.button whileTap={{ scale: 0.97 }} onClick={resetCryptoPayment}
                         className="mt-2 px-6 py-3 rounded-2xl font-black text-white text-sm"
                         style={{ background: selectedCoin.color }}>
@@ -491,8 +492,8 @@ export default function Wallet() {
                     /* ── Expired state ── */
                     <div className="p-6 flex flex-col items-center gap-3 text-center">
                       <AlertCircle size={48} className="text-red-400" />
-                      <p className="font-black text-lg text-red-600">Paiement expiré</p>
-                      <p className="text-sm text-gray-500">Créez une nouvelle demande de paiement</p>
+                      <p className="font-black text-lg text-red-400">Paiement expiré</p>
+                      <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>Créez une nouvelle demande de paiement</p>
                       <motion.button whileTap={{ scale: 0.97 }} onClick={resetCryptoPayment}
                         className="mt-2 px-6 py-3 rounded-2xl font-black text-white text-sm bg-red-500">
                         Réessayer
@@ -504,12 +505,12 @@ export default function Wallet() {
                       {/* Amount to send */}
                       <div className="w-full rounded-2xl p-3 flex items-center justify-between"
                         style={{ background: selectedCoin.color + "10" }}>
-                        <span className="text-xs font-bold text-gray-500">Montant exact à envoyer :</span>
+                        <span className="text-xs font-bold" style={{ color: "rgba(255,255,255,0.55)" }}>Montant exact à envoyer :</span>
                         <div className="text-right">
                           <span className="font-black text-base" style={{ color: selectedCoin.color }}>
                             {cryptoPayment.payAmount} {selectedCoin.label}
                           </span>
-                          <p className="text-[10px] text-gray-400">{fmtFull(Number(depositAmount))} FCFA</p>
+                          <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.40)" }}>{fmtFull(Number(depositAmount))} FCFA</p>
                         </div>
                       </div>
 
@@ -526,11 +527,11 @@ export default function Wallet() {
 
                       {/* Address */}
                       <div className="w-full">
-                        <p className="text-[10px] font-bold text-gray-400 mb-1.5 text-center">
+                        <p className="text-[10px] font-bold mb-1.5 text-center" style={{ color: "rgba(255,255,255,0.45)" }}>
                           Adresse {selectedCoin.label} ({selectedCoin.network})
                         </p>
-                        <div className="w-full flex items-center gap-2 bg-gray-50 rounded-2xl px-3 py-3 border border-gray-200">
-                          <p className="flex-1 text-[10px] font-mono text-gray-700 break-all leading-relaxed">
+                        <div className="w-full flex items-center gap-2 rounded-2xl px-3 py-3" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                          <p className="flex-1 text-[10px] font-mono text-white/80 break-all leading-relaxed">
                             {cryptoPayment.payAddress}
                           </p>
                           <motion.button whileTap={{ scale: 0.85 }} onClick={copyAddress}
@@ -544,15 +545,15 @@ export default function Wallet() {
                       </div>
 
                       {/* Warning */}
-                      <div className="w-full bg-amber-50 border border-amber-200 rounded-2xl px-3 py-2.5">
-                        <p className="text-[10px] text-amber-700 font-bold leading-relaxed text-center">
+                      <div className="w-full rounded-2xl px-3 py-2.5" style={{ background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.30)" }}>
+                        <p className="text-[10px] text-amber-400 font-bold leading-relaxed text-center">
                           ⚠️ Envoyez <strong>exactement</strong> {cryptoPayment.payAmount} {selectedCoin.label} sur cette adresse.<br />
                           Réseau : <strong>{selectedCoin.network}</strong>. Toute autre somme sera perdue.
                         </p>
                       </div>
 
                       {/* Cancel */}
-                      <button onClick={resetCryptoPayment} className="text-xs font-bold text-gray-400 underline">
+                      <button onClick={resetCryptoPayment} className="text-xs font-bold underline" style={{ color: "rgba(255,255,255,0.40)" }}>
                         Annuler ce paiement
                       </button>
                     </div>
@@ -565,16 +566,17 @@ export default function Wallet() {
             {!cryptoPayment && (
               <>
                 <div className="px-4 pt-5 pb-3">
-                  <div className="w-full h-14 rounded-2xl border-2 border-green-400 flex items-center justify-center bg-white">
+                  <div className="w-full h-14 rounded-2xl flex items-center justify-center" style={{ background: "rgba(255,255,255,0.07)", border: "2px solid #0F8A5F60" }}>
                     <input
                       type="number" inputMode="numeric" placeholder="0"
                       value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)}
-                      className="w-full text-center text-3xl font-black text-green-600 outline-none bg-transparent placeholder:text-gray-300"
+                      className="w-full text-center text-3xl font-black outline-none bg-transparent placeholder:text-white/20"
+                      style={{ color: "#F4C430" }}
                     />
                   </div>
                   <div className="flex justify-between text-xs font-bold mt-2 px-1">
-                    <span className="text-gray-500">Montant du dépôt :</span>
-                    <span className="text-gray-400">Min <span className="text-green-600">1 000 F</span> · Max <span className="text-green-600">2 000 000 F</span></span>
+                    <span style={{ color: "rgba(255,255,255,0.45)" }}>Montant du dépôt :</span>
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Min <span style={{ color: "#0F8A5F" }}>1 000 F</span> · Max <span style={{ color: "#0F8A5F" }}>2 000 000 F</span></span>
                   </div>
                 </div>
 
@@ -587,10 +589,10 @@ export default function Wallet() {
                         <motion.button key={v} whileTap={{ scale: 0.93 }} onClick={() => setDepositAmount(v.toString())}
                           className="h-12 rounded-2xl text-sm font-black border-2 transition-all"
                           style={{
-                            background:   active ? "#f0fdf4" : "#f9fafb",
-                            borderColor:  active ? "#16a34a" : "#e5e7eb",
-                            color:        active ? "#16a34a" : "#374151",
-                            boxShadow:    active ? "0 0 0 3px rgba(22,163,74,0.15)" : "none",
+                            background:   active ? "rgba(15,138,95,0.20)" : "rgba(255,255,255,0.06)",
+                            borderColor:  active ? "#0F8A5F" : "rgba(255,255,255,0.12)",
+                            color:        active ? "#F4C430" : "rgba(255,255,255,0.70)",
+                            boxShadow:    active ? "0 0 0 2px rgba(15,138,95,0.25)" : "none",
                           }}>
                           {fmtFull(v)} F
                         </motion.button>
@@ -601,7 +603,7 @@ export default function Wallet() {
 
                 {/* Payment mode cards */}
                 <div className="px-4 pb-4">
-                  <p className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Mode de paiement</p>
+                  <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.45)" }}>Mode de paiement</p>
                   <div className="grid grid-cols-2 gap-3">
 
                     {/* ── Mobile Money card ── */}
@@ -609,26 +611,27 @@ export default function Wallet() {
                       onClick={() => setPaymentMode(paymentMode === "mobile_money" ? null : "mobile_money")}
                       className="relative rounded-3xl p-4 text-left overflow-hidden transition-all"
                       style={{
-                        border:     paymentMode === "mobile_money" ? "2.5px solid #16a34a" : "2px solid #e5e7eb",
-                        background: paymentMode === "mobile_money" ? "linear-gradient(135deg,#f0fdf4,#dcfce7)" : "#f9fafb",
-                        boxShadow:  paymentMode === "mobile_money" ? "0 4px 20px rgba(22,163,74,0.2)" : "none",
+                        border:     paymentMode === "mobile_money" ? "2.5px solid #0F8A5F" : "1.5px solid rgba(255,255,255,0.10)",
+                        background: paymentMode === "mobile_money" ? "rgba(15,138,95,0.18)" : "rgba(255,255,255,0.05)",
+                        boxShadow:  paymentMode === "mobile_money" ? "0 4px 20px rgba(15,138,95,0.25)" : "none",
                       }}>
                       <AnimatePresence>
                         {paymentMode === "mobile_money" && (
                           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-                            className="absolute top-3 right-3 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                            className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
+                            style={{ background: "#0F8A5F" }}>
                             <Check size={11} className="text-white" strokeWidth={3} />
                           </motion.div>
                         )}
                       </AnimatePresence>
                       <div className="w-12 h-12 rounded-2xl mb-3 flex items-center justify-center"
-                        style={{ background: paymentMode === "mobile_money" ? "linear-gradient(135deg,#16a34a,#22c55e)" : "#e5e7eb" }}>
-                        <Smartphone size={22} className={paymentMode === "mobile_money" ? "text-white" : "text-gray-400"} />
+                        style={{ background: paymentMode === "mobile_money" ? "linear-gradient(135deg,#0F8A5F,#0A5C3A)" : "rgba(255,255,255,0.10)" }}>
+                        <Smartphone size={22} className="text-white" />
                       </div>
-                      <p className="font-black text-sm leading-tight" style={{ color: paymentMode === "mobile_money" ? "#15803d" : "#374151" }}>
+                      <p className="font-black text-sm leading-tight text-white">
                         Mobile Money
                       </p>
-                      <p className="text-xs mt-0.5" style={{ color: paymentMode === "mobile_money" ? "#16a34a" : "#9ca3af" }}>
+                      <p className="text-xs mt-0.5" style={{ color: paymentMode === "mobile_money" ? "#0F8A5F" : "rgba(255,255,255,0.40)" }}>
                         TMoney · Flooz{"\n"}Wave · MTN
                       </p>
                     </motion.button>
@@ -638,9 +641,9 @@ export default function Wallet() {
                       onClick={() => setPaymentMode(paymentMode === "crypto" ? null : "crypto")}
                       className="relative rounded-3xl p-4 text-left overflow-hidden transition-all"
                       style={{
-                        border:     paymentMode === "crypto" ? "2.5px solid #7c3aed" : "2px solid #e5e7eb",
-                        background: paymentMode === "crypto" ? "linear-gradient(135deg,#f5f3ff,#ede9fe)" : "#f9fafb",
-                        boxShadow:  paymentMode === "crypto" ? "0 4px 20px rgba(124,58,237,0.2)" : "none",
+                        border:     paymentMode === "crypto" ? "2.5px solid #7c3aed" : "1.5px solid rgba(255,255,255,0.10)",
+                        background: paymentMode === "crypto" ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.05)",
+                        boxShadow:  paymentMode === "crypto" ? "0 4px 20px rgba(124,58,237,0.25)" : "none",
                       }}>
                       <AnimatePresence>
                         {paymentMode === "crypto" && (
@@ -652,13 +655,13 @@ export default function Wallet() {
                         )}
                       </AnimatePresence>
                       <div className="w-12 h-12 rounded-2xl mb-3 flex items-center justify-center"
-                        style={{ background: paymentMode === "crypto" ? "linear-gradient(135deg,#7c3aed,#a855f7)" : "#e5e7eb" }}>
-                        <Bitcoin size={22} className={paymentMode === "crypto" ? "text-white" : "text-gray-400"} />
+                        style={{ background: paymentMode === "crypto" ? "linear-gradient(135deg,#7c3aed,#a855f7)" : "rgba(255,255,255,0.10)" }}>
+                        <Bitcoin size={22} className="text-white" />
                       </div>
-                      <p className="font-black text-sm leading-tight" style={{ color: paymentMode === "crypto" ? "#6d28d9" : "#374151" }}>
+                      <p className="font-black text-sm leading-tight text-white">
                         Crypto Monnaie
                       </p>
-                      <p className="text-xs mt-0.5" style={{ color: paymentMode === "crypto" ? "#7c3aed" : "#9ca3af" }}>
+                      <p className="text-xs mt-0.5" style={{ color: paymentMode === "crypto" ? "#a78bfa" : "rgba(255,255,255,0.40)" }}>
                         USDT · BTC{"\n"}ETH · BNB
                       </p>
                     </motion.button>
@@ -670,15 +673,15 @@ export default function Wallet() {
                   {paymentMode === "mobile_money" && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden px-4 pb-4">
-                      <p className="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Pays</p>
+                      <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.45)" }}>Pays</p>
                       <div className="flex gap-2 overflow-x-auto pb-1">
                         {COUNTRIES_MM.map(c => (
                           <motion.button key={c} whileTap={{ scale: 0.93 }} onClick={() => setMmCountry(c)}
                             className="flex-shrink-0 px-3 py-2 rounded-xl text-xs font-black border-2 transition-all"
                             style={{
-                              background:  mmCountry === c ? "#f0fdf4" : "#f9fafb",
-                              borderColor: mmCountry === c ? "#16a34a" : "#e5e7eb",
-                              color:       mmCountry === c ? "#16a34a" : "#374151",
+                              background:  mmCountry === c ? "rgba(15,138,95,0.20)" : "rgba(255,255,255,0.06)",
+                              borderColor: mmCountry === c ? "#0F8A5F" : "rgba(255,255,255,0.12)",
+                              color:       mmCountry === c ? "#F4C430" : "rgba(255,255,255,0.65)",
                             }}>
                             {c}
                           </motion.button>
@@ -693,18 +696,18 @@ export default function Wallet() {
                   {paymentMode === "crypto" && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden px-4 pb-4">
-                      <p className="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Crypto-monnaie</p>
+                      <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.45)" }}>Crypto-monnaie</p>
                       <div className="grid grid-cols-4 gap-2">
                         {CRYPTO_OPTIONS.map(c => (
                           <motion.button key={c.id} whileTap={{ scale: 0.93 }} onClick={() => setCryptoCoin(c.id)}
                             className="flex flex-col items-center gap-1 py-2.5 rounded-2xl border-2 transition-all"
                             style={{
-                              borderColor: cryptoCoin === c.id ? c.color : "#e5e7eb",
-                              background:  cryptoCoin === c.id ? c.color + "12" : "#f9fafb",
+                              borderColor: cryptoCoin === c.id ? c.color : "rgba(255,255,255,0.10)",
+                              background:  cryptoCoin === c.id ? c.color + "20" : "rgba(255,255,255,0.05)",
                             }}>
                             <span className="text-lg font-black" style={{ color: c.color }}>{c.symbol}</span>
-                            <span className="text-[9px] font-black" style={{ color: cryptoCoin === c.id ? c.color : "#6b7280" }}>{c.label}</span>
-                            <span className="text-[8px] text-gray-400">{c.network}</span>
+                            <span className="text-[9px] font-black" style={{ color: cryptoCoin === c.id ? c.color : "rgba(255,255,255,0.55)" }}>{c.label}</span>
+                            <span className="text-[8px]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.network}</span>
                           </motion.button>
                         ))}
                       </div>
@@ -729,29 +732,29 @@ export default function Wallet() {
             )}
 
             {/* ── Transaction history ── */}
-            <div className="px-4 pb-4 border-t border-gray-100 pt-4">
-              <p className="text-sm font-black text-gray-700 mb-3">Historique récent</p>
+            <div className="px-4 pb-4 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+              <p className="text-sm font-black text-white mb-3">Historique récent</p>
               {txData?.transactions && txData.transactions.length > 0 ? (
                 <div className="space-y-2">
                   {txData.transactions.slice(0, 5).map((tx) => (
-                    <div key={tx.id} className="flex items-center justify-between py-2.5 border-b border-gray-50">
+                    <div key={tx.id} className="flex items-center justify-between py-2.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full flex items-center justify-center text-base"
-                          style={{ background: tx.type === "DEPOSIT" ? "#f0fdf4" : tx.type === "WITHDRAWAL" ? "#fef2f2" : "#fffbeb" }}>
+                          style={{ background: "rgba(255,255,255,0.08)" }}>
                           {tx.type === "DEPOSIT" ? "⬇️" : tx.type === "WITHDRAWAL" ? "⬆️" : tx.type === "GAME_WIN" ? "🎮" : "🎯"}
                         </div>
                         <div>
-                          <p className="text-xs font-black text-gray-800">
+                          <p className="text-xs font-black text-white">
                             {tx.type === "DEPOSIT" ? "Dépôt" : tx.type === "WITHDRAWAL" ? "Retrait" : tx.type === "GAME_WIN" ? "Gain jeu" : "Mise"}
                           </p>
-                          <p className="text-xs text-gray-400">{format(new Date(tx.createdAt), "d MMM · HH:mm", { locale: fr })}</p>
+                          <p className="text-xs" style={{ color: "rgba(255,255,255,0.40)" }}>{format(new Date(tx.createdAt), "d MMM · HH:mm", { locale: fr })}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-black" style={{ color: ["DEPOSIT","GAME_WIN","BONUS"].includes(tx.type) ? "#16a34a" : "#dc2626" }}>
+                        <p className="text-sm font-black" style={{ color: ["DEPOSIT","GAME_WIN","BONUS"].includes(tx.type) ? "#4ade80" : "#f87171" }}>
                           {["WITHDRAWAL","GAME_BET"].includes(tx.type) ? "−" : "+"}{fmtFull(Number(tx.amount))} F
                         </p>
-                        <p className="text-xs" style={{ color: tx.status === "COMPLETED" ? "#16a34a" : tx.status === "PENDING" ? "#d97706" : "#dc2626" }}>
+                        <p className="text-xs" style={{ color: tx.status === "COMPLETED" ? "#4ade80" : tx.status === "PENDING" ? "#fbbf24" : "#f87171" }}>
                           {tx.status === "COMPLETED" ? "Complété" : tx.status === "PENDING" ? "En attente" : "Échoué"}
                         </p>
                       </div>
@@ -759,7 +762,7 @@ export default function Wallet() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-sm text-gray-400 py-6">Aucune transaction</p>
+                <p className="text-center text-sm py-6" style={{ color: "rgba(255,255,255,0.40)" }}>Aucune transaction</p>
               )}
             </div>
           </motion.div>
@@ -769,23 +772,24 @@ export default function Wallet() {
         {tab === "withdraw" && (
           <motion.div key="withdraw"
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.22 }} className="flex flex-col bg-white">
+            transition={{ duration: 0.22 }} className="flex flex-col" style={{ background: "#071C12" }}>
 
-            <div className="px-4 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="px-4 py-4 flex items-center justify-between" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
               <div>
-                <p className="text-xs text-gray-400 font-bold">Montant retirable</p>
-                <p className="text-3xl font-black text-gray-800">{fmtFull(balance)} <span className="text-base text-gray-400">FCFA</span></p>
+                <p className="text-xs font-bold" style={{ color: "rgba(255,255,255,0.45)" }}>Montant retirable</p>
+                <p className="text-3xl font-black text-white">{fmtFull(balance)} <span className="text-base" style={{ color: "rgba(255,255,255,0.45)" }}>FCFA</span></p>
               </div>
             </div>
 
             <div className="px-4 pt-4 pb-4">
-              <p className="text-sm font-black text-gray-700 mb-2">Compte de retrait :</p>
+              <p className="text-sm font-black text-white mb-2">Compte de retrait :</p>
               {accounts.length === 0 ? (
                 <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowAddAccount(true)}
-                  className="w-full flex items-center justify-between px-4 h-14 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50">
-                  <span className="text-gray-400 text-sm font-bold">Ajouter un compte de retrait</span>
-                  <div className="w-9 h-9 rounded-xl border-2 border-gray-300 flex items-center justify-center">
-                    <Plus size={18} className="text-gray-400" />
+                  className="w-full flex items-center justify-between px-4 h-14 rounded-2xl border-2 border-dashed"
+                  style={{ borderColor: "rgba(255,255,255,0.20)", background: "rgba(255,255,255,0.05)" }}>
+                  <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.45)" }}>Ajouter un compte de retrait</span>
+                  <div className="w-9 h-9 rounded-xl border-2 flex items-center justify-center" style={{ borderColor: "rgba(255,255,255,0.20)" }}>
+                    <Plus size={18} style={{ color: "rgba(255,255,255,0.45)" }} />
                   </div>
                 </motion.button>
               ) : (
@@ -796,20 +800,21 @@ export default function Wallet() {
                     return (
                       <motion.button key={acc.id} whileTap={{ scale: 0.97 }} onClick={() => setSelectedAccount(acc)}
                         className="w-full flex items-center justify-between px-4 h-14 rounded-2xl border-2 transition-colors"
-                        style={{ borderColor: isSelected ? op.color : "#e5e7eb", background: isSelected ? `${op.color}10` : "white" }}>
+                        style={{ borderColor: isSelected ? op.color : "rgba(255,255,255,0.12)", background: isSelected ? `${op.color}18` : "rgba(255,255,255,0.05)" }}>
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{op.emoji}</span>
                           <div className="text-left">
-                            <p className="text-xs font-black text-gray-800">{acc.accountName}</p>
-                            <p className="text-xs text-gray-400">{acc.accountNumber} · {op.label}</p>
+                            <p className="text-xs font-black text-white">{acc.accountName}</p>
+                            <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{acc.accountNumber} · {op.label}</p>
                           </div>
                         </div>
-                        {isSelected ? <Check size={18} style={{ color: op.color }} /> : <ChevronRight size={16} className="text-gray-300" />}
+                        {isSelected ? <Check size={18} style={{ color: op.color }} /> : <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.25)" }} />}
                       </motion.button>
                     );
                   })}
                   <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowAddAccount(true)}
-                    className="w-full flex items-center justify-center gap-2 h-11 rounded-xl border-2 border-dashed border-green-300 text-green-600 text-sm font-black bg-green-50">
+                    className="w-full flex items-center justify-center gap-2 h-11 rounded-xl border-2 border-dashed text-sm font-black"
+                    style={{ borderColor: "rgba(15,138,95,0.40)", color: "#0F8A5F", background: "rgba(15,138,95,0.08)" }}>
                     <Plus size={16} /> Ajouter un compte
                   </motion.button>
                 </div>
@@ -817,15 +822,16 @@ export default function Wallet() {
             </div>
 
             <div className="px-4 pb-3">
-              <p className="text-sm font-black text-gray-700 mb-2">Montant du retrait :</p>
-              <div className="w-full h-14 rounded-2xl border-2 border-gray-200 flex items-center px-4 focus-within:border-green-500 transition-colors bg-gray-50">
+              <p className="text-sm font-black text-white mb-2">Montant du retrait :</p>
+              <div className="w-full h-14 rounded-2xl flex items-center px-4 transition-colors"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.12)" }}>
                 <input
                   type="number" inputMode="numeric"
                   placeholder="Montant : 2 000 – 500 000 FCFA"
                   value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)}
-                  className="flex-1 text-base font-bold text-gray-800 outline-none bg-transparent placeholder:text-gray-300 placeholder:text-sm"
+                  className="flex-1 text-base font-bold text-white outline-none bg-transparent placeholder:text-white/25 placeholder:text-sm"
                 />
-                <span className="text-sm font-bold text-gray-400">FCFA</span>
+                <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.45)" }}>FCFA</span>
               </div>
             </div>
 
@@ -837,10 +843,10 @@ export default function Wallet() {
                     <motion.button key={v} whileTap={{ scale: 0.93 }} onClick={() => setWithdrawAmount(v.toString())}
                       className="h-12 rounded-2xl text-sm font-black border-2 transition-all"
                       style={{
-                        background:  active ? "#f0fdf4" : "#f9fafb",
-                        borderColor: active ? "#16a34a" : "#e5e7eb",
-                        color:       active ? "#16a34a" : "#374151",
-                        boxShadow:   active ? "0 0 0 3px rgba(22,163,74,0.15)" : "none",
+                        background:  active ? "rgba(15,138,95,0.20)" : "rgba(255,255,255,0.06)",
+                        borderColor: active ? "#0F8A5F" : "rgba(255,255,255,0.12)",
+                        color:       active ? "#F4C430" : "rgba(255,255,255,0.70)",
+                        boxShadow:   active ? "0 0 0 2px rgba(15,138,95,0.25)" : "none",
                       }}>
                       {fmtFull(v)} F
                     </motion.button>
@@ -852,7 +858,7 @@ export default function Wallet() {
             <div className="px-4 pb-8">
               <motion.button whileTap={{ scale: 0.97 }} onClick={handleWithdraw} disabled={createWithdrawal.isPending}
                 className="w-full h-14 rounded-full font-black text-lg text-white shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
-                style={{ background: "linear-gradient(135deg,#16a34a,#22c55e)" }}>
+                style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)", boxShadow: "0 4px 20px rgba(15,138,95,0.35)" }}>
                 {createWithdrawal.isPending ? <Loader2 className="animate-spin" size={20} /> : "Retirer"}
               </motion.button>
             </div>
@@ -869,31 +875,31 @@ export default function Wallet() {
               className="fixed inset-0 bg-black/50 z-40" />
             <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl pb-10 max-h-[90dvh] overflow-y-auto" style={{ background: "#EAF8F2" }}>
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl pb-10 max-h-[90dvh] overflow-y-auto" style={{ background: "#0A2118" }}>
 
               <div className="flex justify-center pt-3 pb-1">
-                <div className="w-10 h-1 rounded-full bg-gray-300" />
+                <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.20)" }} />
               </div>
-              <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white">
-                <button onClick={() => setShowAddAccount(false)} className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center">
-                  <X size={18} className="text-gray-600" />
+              <div className="flex items-center justify-between px-4 py-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                <button onClick={() => setShowAddAccount(false)} className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(255,255,255,0.08)" }}>
+                  <X size={18} className="text-white" />
                 </button>
-                <h2 className="font-black text-base text-gray-900">Informations du compte</h2>
+                <h2 className="font-black text-base text-white">Informations du compte</h2>
                 <div className="w-9" />
               </div>
 
               <div className="px-4 pt-5 space-y-5">
                 <div>
-                  <p className="text-sm font-black text-gray-700 mb-3">Choisir la méthode :</p>
+                  <p className="text-sm font-black text-white mb-3">Choisir la méthode :</p>
                   <div className="grid grid-cols-3 gap-2">
                     {OPERATORS.map((op) => {
                       const active = newOperator === op.id;
                       return (
                         <motion.button key={op.id} whileTap={{ scale: 0.94 }} onClick={() => setNewOperator(op.id)}
                           className="flex flex-col items-center gap-1 py-3 rounded-2xl border-2 transition-colors"
-                          style={{ borderColor: active ? op.color : "#e5e7eb", background: active ? `${op.color}15` : "white" }}>
+                          style={{ borderColor: active ? op.color : "rgba(255,255,255,0.12)", background: active ? `${op.color}18` : "rgba(255,255,255,0.06)" }}>
                           <span className="text-2xl">{op.emoji}</span>
-                          <span className="text-xs font-black" style={{ color: active ? op.color : "#4b5563" }}>{op.label}</span>
+                          <span className="text-xs font-black" style={{ color: active ? op.color : "rgba(255,255,255,0.65)" }}>{op.label}</span>
                           {active && <Check size={12} style={{ color: op.color }} />}
                         </motion.button>
                       );
@@ -902,30 +908,33 @@ export default function Wallet() {
                 </div>
 
                 <div>
-                  <p className="text-sm font-black text-gray-700 mb-2">Pays</p>
+                  <p className="text-sm font-black text-white mb-2">Pays</p>
                   <select value={newCountry} onChange={(e) => setNewCountry(e.target.value)}
-                    className="w-full h-14 px-4 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-800 outline-none focus:border-green-500 transition-colors">
-                    {COUNTRIES_MM.map((c) => <option key={c}>{c}</option>)}
+                    className="w-full h-14 px-4 rounded-2xl text-sm font-bold text-white outline-none transition-colors"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.15)" }}>
+                    {COUNTRIES_MM.map((c) => <option key={c} style={{ background: "#0A2118" }}>{c}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <p className="text-sm font-black text-gray-700 mb-2">Nom complet</p>
+                  <p className="text-sm font-black text-white mb-2">Nom complet</p>
                   <input type="text" placeholder="Nom sur le compte"
                     value={newName} onChange={(e) => setNewName(e.target.value)}
-                    className="w-full h-14 px-4 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-800 outline-none focus:border-green-500 transition-colors placeholder:text-gray-300 placeholder:font-normal" />
+                    className="w-full h-14 px-4 rounded-2xl text-sm font-bold text-white outline-none placeholder:text-white/25 placeholder:font-normal"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.15)" }} />
                 </div>
 
                 <div>
-                  <p className="text-sm font-black text-gray-700 mb-2">Numéro de compte</p>
+                  <p className="text-sm font-black text-white mb-2">Numéro de compte</p>
                   <input type="tel" placeholder="Numéro de téléphone / compte"
                     value={newNumber} onChange={(e) => setNewNumber(e.target.value)}
-                    className="w-full h-14 px-4 rounded-2xl border-2 border-gray-200 bg-white text-sm font-bold text-gray-800 outline-none focus:border-green-500 transition-colors placeholder:text-gray-300 placeholder:font-normal" />
+                    className="w-full h-14 px-4 rounded-2xl text-sm font-bold text-white outline-none placeholder:text-white/25 placeholder:font-normal"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.15)" }} />
                 </div>
 
                 <motion.button whileTap={{ scale: 0.97 }} onClick={handleSaveAccount}
                   className="w-full h-14 rounded-full font-black text-lg text-white shadow-lg"
-                  style={{ background: "linear-gradient(135deg,#16a34a,#22c55e)" }}>
+                  style={{ background: "linear-gradient(135deg,#0F8A5F,#0A5C3A)", boxShadow: "0 4px 20px rgba(15,138,95,0.35)" }}>
                   Confirmer
                 </motion.button>
               </div>

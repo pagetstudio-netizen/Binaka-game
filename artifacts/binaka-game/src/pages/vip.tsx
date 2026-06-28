@@ -11,14 +11,14 @@ export default function Vip() {
   const progress = vip.nextLevelXp > 0 ? (vip.currentXp / vip.nextLevelXp) * 100 : 100;
 
   return (
-    <div className="p-4 space-y-6 pb-20 w-full min-h-[100dvh] bg-slate-950 text-white">
+    <div className="p-4 space-y-6 pb-20 w-full min-h-[100dvh] text-white" style={{ background: "#071C12" }}>
       <header className="flex flex-col items-center justify-center pt-6 pb-2">
         <Crown className="w-12 h-12 text-amber-400 mb-2" />
         <h1 className="text-2xl font-black text-amber-400 tracking-wider">CLUB VIP</h1>
         <p className="text-sm text-slate-400">Des privilèges exclusifs pour nos meilleurs joueurs</p>
       </header>
 
-      <Card className="bg-slate-900 border-slate-800 text-white shadow-2xl relative overflow-hidden">
+      <Card className="text-white shadow-2xl relative overflow-hidden" style={{ background: "#0D2B1E", border: "1px solid rgba(255,255,255,0.08)" }}>
         <div className="absolute -right-10 -top-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl"></div>
         <CardContent className="p-6">
           <div className="flex justify-between items-end mb-4">
@@ -51,7 +51,8 @@ export default function Vip() {
           {vip.levels.map((level) => (
             <div 
               key={level.level} 
-              className={`p-4 rounded-xl border flex gap-4 ${level.level === vip.currentLevel ? 'bg-amber-500/10 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.1)]' : 'bg-slate-900 border-slate-800'}`}
+              className="p-4 rounded-xl border flex gap-4"
+              style={{ background: level.level === vip.currentLevel ? "rgba(244,196,48,0.10)" : "#0D2B1E", borderColor: level.level === vip.currentLevel ? "rgba(244,196,48,0.40)" : "rgba(255,255,255,0.08)" }}
             >
               <div className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-lg ${level.level === vip.currentLevel ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
                 {level.level}
