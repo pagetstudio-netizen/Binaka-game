@@ -27,15 +27,21 @@ const NAV_ITEMS = [
 ];
 
 const SUB_PAGES: Record<string, { title: string; back: string }> = {
-  "/account/profile":   { title: "Informations Personnelles", back: "/account" },
-  "/account/security":  { title: "Sécurité", back: "/account" },
-  "/account/settings":  { title: "Paramètres", back: "/account" },
-  "/notifications":     { title: "Notifications", back: "/" },
-  "/support":           { title: "Service Client", back: "/" },
-  "/vip":               { title: "Programme VIP", back: "/" },
-  "/referral":          { title: "Parrainage", back: "/" },
-  "/deposit":           { title: "Recharger", back: "/wallet" },
-  "/withdraw":          { title: "Retrait", back: "/wallet" },
+  "/account/profile":                          { title: "Mon Profil",                      back: "/account" },
+  "/account/security":                         { title: "Centre de Sécurité",              back: "/account" },
+  "/account/security/password":                { title: "Modifier le mot de passe",        back: "/account/security" },
+  "/account/security/transaction-password":    { title: "Mot de passe de transaction",     back: "/account/security" },
+  "/account/security/personal-info":           { title: "Informations personnelles",       back: "/account/security" },
+  "/account/security/security-question":       { title: "Question de sécurité",            back: "/account/security" },
+  "/account/security/fund-password":           { title: "Mot de passe du fonds",           back: "/account/security" },
+  "/account/security/bank-account":            { title: "Compte bancaire",                 back: "/account/security" },
+  "/account/settings":                         { title: "Paramètres",                      back: "/account" },
+  "/notifications":                            { title: "Notifications",                   back: "/" },
+  "/support":                                  { title: "Service Client",                  back: "/" },
+  "/vip":                                      { title: "Programme VIP",                   back: "/" },
+  "/referral":                                 { title: "Parrainage",                      back: "/" },
+  "/deposit":                                  { title: "Recharger",                       back: "/wallet" },
+  "/withdraw":                                 { title: "Retrait",                         back: "/wallet" },
 };
 
 const CATEGORY_BAR_PAGES = ["/", "/games"];

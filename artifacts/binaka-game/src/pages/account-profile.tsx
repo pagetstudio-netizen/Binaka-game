@@ -2,10 +2,8 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useUpdateMe } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, User, Mail, Globe, Camera, Loader2, CheckCircle2 } from "lucide-react";
-import { useLocation } from "wouter";
+import { User, Mail, Globe, Camera, Loader2, CheckCircle2, Phone, Star, Shield } from "lucide-react";
 import { motion } from "framer-motion";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { getUserAvatar } from "@/lib/user-avatar";
 
 const COUNTRIES = [
@@ -16,7 +14,6 @@ const COUNTRIES = [
 export default function AccountProfile() {
   const { user, refetchUser } = useAuth();
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
   const updateMe = useUpdateMe();
   const [saved, setSaved] = useState(false);
 
@@ -48,116 +45,152 @@ export default function AccountProfile() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-[100dvh]" style={{ background: "#EAF8F2" }}>
-      <div className="flex-1 px-4 py-6 space-y-6 max-w-md mx-auto w-full">
+    <div className="flex flex-col w-full min-h-[100dvh] pb-6" style={{ background: "#EAF8F2" }}>
 
-        {/* Avatar */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-3">
-          <div className="relative">
-            <Avatar className="h-24 w-24 border-4 border-primary shadow-lg">
-              <AvatarImage src={getUserAvatar(user.id, user.avatarUrl)} className="object-cover" />
-            </Avatar>
-            <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-md">
-              <Camera className="w-4 h-4 text-white" />
-            </button>
+      {/* ── AVATAR HEADER ── */}
+      <div className="pt-6 pb-8 flex flex-col items-center relative"
+        style={{ background: "linear-gradient(160deg, #062E1B 0%, #0A5C3A 60%, #0F8A5F 100%)" }}>
+        <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-10 bg-white" />
+        <div className="absolute -bottom-10 -left-6 w-40 h-40 rounded-full opacity-5 bg-white" />
+
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+          className="relative z-10">
+          <div className="w-24 h-24 rounded-full overflow-hidden shadow-xl"
+            style={{ border: "3px solid rgba(244,196,48,0.8)" }}>
+            <img src={getUserAvatar(user.id, user.avatarUrl)} alt="Avatar"
+              className="w-full h-full object-cover" />
           </div>
-          <div className="text-center">
-            <p className="text-xs text-slate-400">ID utilisateur</p>
-            <p className="text-sm font-bold text-slate-600">#{user.id}</p>
+          <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
+            style={{ background: "#F4C430" }}>
+            <Camera className="w-4 h-4 text-green-900" />
+          </button>
+        </motion.div>
+
+        <p className="mt-3 font-black text-white text-lg relative z-10">{user.fullName || user.phone}</p>
+        <div className="flex items-center gap-2 mt-1 relative z-10">
+          <span className="text-white/60 text-xs">ID #{user.id}</span>
+          <div className="w-1 h-1 rounded-full bg-white/30" />
+          <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+            style={{ background: "rgba(244,196,48,0.2)", color: "#F4C430", border: "1px solid rgba(244,196,48,0.4)" }}>
+            VIP {user.vipLevel ?? 0}
+          </span>
+        </div>
+      </div>
+
+      <div className="px-4 -mt-0 space-y-4 pt-4">
+
+        {/* ── INFO NON-MODIFIABLES ── */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl shadow-sm overflow-hidden"
+          style={{ border: "1px solid #D4EDDA" }}>
+          <div className="px-4 py-3" style={{ background: "#F5FDF9", borderBottom: "1px solid #EAF8F2" }}>
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: "#0F8A5F" }}>
+              Informations du compte
+            </p>
+          </div>
+          <div style={{ borderTop: "none" }}>
+            <InfoRow icon={<Phone size={15} style={{ color: "#0F8A5F" }} />} label="Téléphone" value={user.phone} />
+            <InfoRow icon={<Star size={15} style={{ color: "#F4C430" }} />}  label="Niveau VIP"  value={`VIP ${user.vipLevel ?? 0}`} last={false} />
+            <InfoRow icon={<Shield size={15} style={{ color: user.isVerified ? "#22C55E" : "#F97316" }} />}
+              label="Statut"
+              value={user.isVerified ? "Vérifié ✓" : "Non vérifié"}
+              last />
           </div>
         </motion.div>
 
-        {/* Champs non modifiables */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-          className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          <div className="px-5 py-3 border-b border-slate-50 bg-slate-50">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Informations du compte</p>
+        {/* ── CHAMPS MODIFIABLES ── */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
+          className="bg-white rounded-2xl shadow-sm overflow-hidden"
+          style={{ border: "1px solid #D4EDDA" }}>
+          <div className="px-4 py-3" style={{ background: "#F5FDF9", borderBottom: "1px solid #EAF8F2" }}>
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: "#0F8A5F" }}>
+              Modifier mes informations
+            </p>
           </div>
-          <div className="divide-y divide-slate-50">
-            <ReadonlyField label="Numéro de téléphone" value={user.phone} icon={<span className="text-base">📱</span>} />
-            <ReadonlyField label="Niveau VIP" value={`VIP ${user.vipLevel}`} icon={<span className="text-base">⭐</span>} />
-            <ReadonlyField label="Statut" value={user.isVerified ? "Compte vérifié" : "Non vérifié"} icon={<span className="text-base">{user.isVerified ? "✅" : "⏳"}</span>} />
-            <ReadonlyField label="Membre depuis" value={new Date(user.createdAt).toLocaleDateString("fr-FR", { month: "long", year: "numeric" })} icon={<span className="text-base">📅</span>} />
-          </div>
-        </motion.div>
 
-        {/* Champs modifiables */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          <div className="px-5 py-3 border-b border-slate-50 bg-slate-50">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Modifier mes informations</p>
-          </div>
-          <div className="p-5 space-y-4">
-            <Field
+          <div className="p-4 space-y-4">
+            <FormField
               label="Nom complet"
-              icon={<User className="w-4 h-4 text-slate-400" />}
+              icon={<User size={15} style={{ color: "#0F8A5F" }} />}
               value={fullName}
               onChange={setFullName}
               placeholder="Votre nom complet"
             />
-            <Field
+            <FormField
               label="Email (optionnel)"
-              icon={<Mail className="w-4 h-4 text-slate-400" />}
+              icon={<Mail size={15} style={{ color: "#0F8A5F" }} />}
               value={email}
               onChange={setEmail}
               placeholder="votre@email.com"
               type="email"
             />
             <div>
-              <label className="text-sm font-semibold text-slate-600 mb-2 flex items-center gap-2">
-                <Globe className="w-4 h-4 text-slate-400" /> Pays
+              <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: "#374151" }}>
+                <Globe size={15} style={{ color: "#0F8A5F" }} /> Pays
               </label>
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 font-medium text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-              >
+                className="w-full h-12 px-4 rounded-xl text-gray-800 font-medium text-sm focus:outline-none"
+                style={{
+                  border: "1.5px solid #D4EDDA",
+                  background: "#F5FDF9",
+                  WebkitAppearance: "none",
+                }}>
                 {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
           </div>
         </motion.div>
 
-        {/* Bouton sauvegarder */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+        {/* ── SAVE BUTTON ── */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
           <button
             onClick={handleSave}
             disabled={!isDirty || updateMe.isPending}
-            className="w-full h-14 rounded-full font-extrabold text-base text-white transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full h-14 rounded-2xl font-black text-base text-white transition-all active:scale-95 disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg"
             style={{
-              background: "linear-gradient(135deg, #16a34a, #15803d)",
-              boxShadow: isDirty ? "0 6px 0 #14532d, 0 8px 20px rgba(22,163,74,0.35)" : "none",
+              background: isDirty
+                ? "linear-gradient(135deg, #0F8A5F, #0A5C3A)"
+                : "#CBD5E1",
+              boxShadow: isDirty ? "0 4px 0 #064E2E, 0 6px 18px rgba(15,138,95,0.35)" : "none",
             }}
           >
-            {updateMe.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : saved ? <CheckCircle2 className="w-5 h-5" /> : null}
+            {updateMe.isPending
+              ? <Loader2 className="w-5 h-5 animate-spin" />
+              : saved
+              ? <CheckCircle2 className="w-5 h-5" />
+              : null}
             {saved ? "Sauvegardé !" : "Sauvegarder les modifications"}
           </button>
         </motion.div>
-
       </div>
     </div>
   );
 }
 
-function ReadonlyField({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
+function InfoRow({ icon, label, value, last = false }: {
+  icon: React.ReactNode; label: string; value: string; last?: boolean;
+}) {
   return (
-    <div className="px-5 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-3">
+    <div className="px-4 py-3.5 flex items-center justify-between"
+      style={{ borderBottom: last ? "none" : "1px solid #F0FDF4" }}>
+      <div className="flex items-center gap-2.5">
         {icon}
-        <span className="text-sm text-slate-500">{label}</span>
+        <span className="text-sm text-gray-500">{label}</span>
       </div>
-      <span className="text-sm font-semibold text-slate-700">{value}</span>
+      <span className="text-sm font-bold text-gray-700">{value}</span>
     </div>
   );
 }
 
-function Field({ label, icon, value, onChange, placeholder, type = "text" }: {
+function FormField({ label, icon, value, onChange, placeholder, type = "text" }: {
   label: string; icon: React.ReactNode; value: string;
   onChange: (v: string) => void; placeholder: string; type?: string;
 }) {
   return (
     <div>
-      <label className="text-sm font-semibold text-slate-600 mb-2 flex items-center gap-2">
+      <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: "#374151" }}>
         {icon} {label}
       </label>
       <input
@@ -165,7 +198,14 @@ function Field({ label, icon, value, onChange, placeholder, type = "text" }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 font-medium text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+        className="w-full h-12 px-4 rounded-xl text-gray-800 font-medium text-sm focus:outline-none"
+        style={{
+          border: "1.5px solid #D4EDDA",
+          background: "#F5FDF9",
+          outline: "none",
+        }}
+        onFocus={(e) => { e.target.style.borderColor = "#0F8A5F"; e.target.style.boxShadow = "0 0 0 3px rgba(15,138,95,0.15)"; }}
+        onBlur={(e)  => { e.target.style.borderColor = "#D4EDDA"; e.target.style.boxShadow = "none"; }}
       />
     </div>
   );

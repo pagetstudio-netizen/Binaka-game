@@ -33,6 +33,8 @@ import Account from "@/pages/account";
 import AccountProfile from "@/pages/account-profile";
 import AccountSecurity from "@/pages/account-security";
 import AccountSettings from "@/pages/account-settings";
+import AccountSecurityPassword from "@/pages/account-security-password";
+import AccountSecurityTransaction from "@/pages/account-security-transaction";
 import Referral from "@/pages/referral";
 import Notifications from "@/pages/notifications";
 import Vip from "@/pages/vip";
@@ -69,6 +71,9 @@ function MainRoutes() {
         <Route path="/account" component={Account} />
         <Route path="/account/profile" component={AccountProfile} />
         <Route path="/account/security" component={AccountSecurity} />
+        <Route path="/account/security/password" component={AccountSecurityPassword} />
+        <Route path="/account/security/transaction-password" component={AccountSecurityTransaction} />
+        <Route path="/account/security/personal-info" component={AccountProfile} />
         <Route path="/account/settings" component={AccountSettings} />
         <Route path="/referral" component={Referral} />
         <Route path="/notifications" component={Notifications} />
