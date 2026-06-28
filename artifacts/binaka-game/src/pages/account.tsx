@@ -1,234 +1,198 @@
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useGetBalance, getGetBalanceQueryKey } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import {
-  ChevronRight, Copy, LogOut, Shield, Settings,
-  Gift, Headphones, FileText, Crown, Wallet,
-  ArrowUpRight, Check, Star
+  LogOut, ChevronRight, Gift, Calendar, DollarSign,
+  FolderOpen, CreditCard, Shield, Star, Trophy, Headphones,
+  Eye, EyeOff, RefreshCw, Download, Crown
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import avatarImg from "@assets/1993889-belle-femme-latine-avatar-icone-personnage-gratuit-vec_1782318102114.jpg";
-import rechargeIcon from "@assets/recharge-icon-BZHWSjQZ_(1)_1782317902170.png";
-import withdrawIcon from "@assets/withdraw-icon-DFsum39V_(1)_1782317901916.png";
-import iconRecords  from "@assets/mine-mod-records-DgHXSKa1_1782553297880.png";
-import iconSecurity from "@assets/mine-mod-change-pwd-D4tL_Aft_1782553297920.png";
-import iconBonus    from "@assets/mine-mod-bankcard-CLOhqwHj_1782553297946.png";
-import iconVipMenu  from "@assets/recharge-icon-BZHWSjQZ_1782553297976.png";
-import iconSupport  from "@assets/mine-mod-cs-DtBQ0Sp0_1782553297996.png";
+import iconDeposit  from "@assets/deposit-center.7afea0c9_1782610372010.png";
+import iconWithdraw from "@assets/withdraw.8b8ab6f4_1782610371952.png";
+import iconShare    from "@assets/invite.7d84082f_1782610372040.png";
+import iconSecurity from "@assets/security-center.725cfbe6_1782610372073.png";
 
-const VIP_LEVELS = ["Bronze", "Argent", "Or", "Platine", "Diamant", "Légende"];
-const VIP_EMOJIS = ["🥉", "🥈", "🥇", "💎", "👑", "🏆"];
-const VIP_COLORS = [
-  { from: "#a78bfa", to: "#7c3aed" },
-  { from: "#94a3b8", to: "#475569" },
-  { from: "#fbbf24", to: "#d97706" },
-  { from: "#67e8f9", to: "#0891b2" },
-  { from: "#c084fc", to: "#9333ea" },
-  { from: "#fb923c", to: "#dc2626" },
+const QUICK_ACTIONS = [
+  { img: iconDeposit,  label: "Effectuez un\ndépôt", href: "/deposit" },
+  { img: iconWithdraw, label: "Retirer",              href: "/withdraw" },
+  { img: iconShare,    label: "Partager",             href: "/referral" },
+  { img: iconSecurity, label: "Centre de\nsécurité",  href: "/account/security" },
 ];
 
 const MENU_ITEMS = [
-  { img: iconRecords,  label: "Historique de Solde",   href: "/wallet",           color: "#16a34a" },
-  { img: iconSecurity, label: "Compte & Sécurité",      href: "/account/security", color: "#3b82f6" },
-  { img: iconBonus,    label: "Cadeaux & Bonus",        href: "/promotions",       color: "#f59e0b" },
-  { img: iconVipMenu,  label: "Programme VIP",          href: "/vip",              color: "#9333ea" },
-  { img: iconSupport,  label: "Support en direct",      href: "/support",          color: "#0891b2" },
-  { img: null,         label: "Paramètres",             href: "/account/settings", color: "#64748b" },
+  { icon: Gift,         label: "Récompense",         badge: 5,   href: "/promotions" },
+  { icon: Calendar,     label: "Mission",             badge: 1,   href: "/promotions" },
+  { icon: DollarSign,   label: "Remise manuelle",     badge: 0,   href: "/wallet" },
+  { icon: FolderOpen,   label: "Archives",            badge: 0,   href: "/wallet" },
+  { icon: CreditCard,   label: "Registres de dépôt",  badge: 0,   href: "/wallet" },
+  { icon: Trophy,       label: "Programme VIP",       badge: 0,   href: "/vip" },
+  { icon: Headphones,   label: "Support en direct",   badge: 0,   href: "/support" },
 ];
 
 export default function Account() {
   const { user, logout } = useAuth();
-  const { data: wallet } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
-  const { toast } = useToast();
-  const [copied, setCopied] = useState(false);
-  const [showLogout, setShowLogout] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: wallet, refetch } = useGetBalance({ query: { queryKey: getGetBalanceQueryKey() } });
+  const [showBalance, setShowBalance] = useState(true);
+  const [showLogout, setShowLogout]   = useState(false);
+  const [refreshing, setRefreshing]   = useState(false);
 
   if (!user) return null;
 
   const vipLevel = user.vipLevel ?? 0;
-  const vipColor = VIP_COLORS[Math.min(vipLevel, VIP_COLORS.length - 1)];
-  const balance = wallet?.balance ?? 0;
+  const balance  = wallet?.balance ?? 0;
 
-  const handleCopyId = () => {
-    navigator.clipboard.writeText(String(user.id));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    toast({ title: "ID copié !", className: "bg-green-600 text-white border-none" });
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setTimeout(() => setRefreshing(false), 800);
   };
 
   return (
-    <div className="flex flex-col w-full min-h-full bg-gray-100 pb-24">
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#f2f2f2" }}>
 
-      {/* ── TOP PROFILE SECTION ── */}
-      <div className="bg-white px-4 pt-6 pb-5">
+      {/* ── TOP DARK GREEN PROFILE SECTION ── */}
+      <div style={{ background: "linear-gradient(170deg, #0a4a1e 0%, #1a7a35 60%, #0f5525 100%)" }}
+        className="px-4 pt-5 pb-6">
 
-        {/* Avatar + User info */}
-        <div className="flex items-center gap-4 mb-5">
+        {/* Avatar + Info */}
+        <div className="flex items-center gap-4">
           <div className="relative flex-shrink-0">
-            <div className="w-20 h-20 rounded-full overflow-hidden border-4 shadow-lg"
-              style={{ borderColor: vipColor.from }}>
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30 shadow-xl">
               <img src={avatarImg} alt="Avatar" className="w-full h-full object-cover" />
-            </div>
-            {/* Edit overlay */}
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-green-600 border-2 border-white flex items-center justify-center shadow">
-              <Star size={12} className="text-white fill-white" />
             </div>
           </div>
 
           <div className="flex-1 min-w-0">
-            {/* Name */}
-            <div className="flex items-center gap-1.5 mb-1">
-              <h2 className="font-black text-lg text-gray-900 truncate">{user.fullName}</h2>
-              <span className="text-pink-500 text-sm">♀</span>
+            {/* Username + VIP badge */}
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-black text-white text-base tracking-wide">{user.phone}</span>
+              <div className="flex items-center gap-1 bg-amber-400/20 border border-amber-400/40 rounded-full px-2 py-0.5">
+                <Crown size={10} className="text-amber-300" />
+                <span className="text-amber-300 text-[10px] font-black">VIP{vipLevel}</span>
+              </div>
             </div>
 
-            {/* ID row */}
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-gray-400 text-xs font-bold">ID: {user.id}</span>
-              <motion.button whileTap={{ scale: 0.85 }} onClick={handleCopyId}
-                className="w-5 h-5 rounded flex items-center justify-center bg-gray-100">
-                {copied ? <Check size={11} className="text-green-600" /> : <Copy size={11} className="text-gray-400" />}
+            {/* Balance row */}
+            <div className="flex items-center gap-3">
+              <span className="text-white font-black text-xl tracking-wide">
+                {showBalance
+                  ? `₣${balance.toLocaleString("fr-FR", { minimumFractionDigits: 2 })}`
+                  : "₣ ••••••"}
+              </span>
+              <motion.button
+                whileTap={{ scale: 0.8 }}
+                onClick={handleRefresh}
+                className="opacity-70 active:opacity-100"
+              >
+                <motion.div animate={refreshing ? { rotate: 360 } : {}} transition={{ duration: 0.6 }}>
+                  <RefreshCw size={15} className="text-white" />
+                </motion.div>
               </motion.button>
-            </div>
-
-            {/* Balance pill row */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
-                <span className="text-amber-500 text-xs">💰</span>
-                <span className="text-xs font-black text-amber-700">{balance.toLocaleString("fr-FR")}</span>
-                <span className="text-amber-500 text-xs">🪙</span>
-              </div>
-              {/* VIP badge */}
-              <div className="flex items-center gap-1 rounded-full px-2.5 py-1 text-white text-xs font-black"
-                style={{ background: `linear-gradient(135deg,${vipColor.from},${vipColor.to})` }}>
-                {VIP_EMOJIS[Math.min(vipLevel, VIP_EMOJIS.length - 1)]}
-                <span>VIP {vipLevel}</span>
-              </div>
+              <motion.button whileTap={{ scale: 0.8 }} onClick={() => setShowBalance(v => !v)} className="opacity-70 active:opacity-100">
+                {showBalance ? <Eye size={15} className="text-white" /> : <EyeOff size={15} className="text-white" />}
+              </motion.button>
             </div>
           </div>
         </div>
 
-        {/* ── VIP PROMO BANNER ── */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="w-full rounded-2xl overflow-hidden shadow-md flex items-center justify-between px-4 py-4 gap-3"
-          style={{ background: "linear-gradient(135deg,#16a34a 0%,#22c55e 60%,#16a34a 100%)" }}>
-          <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-            <span className="text-2xl">💎</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-white font-black text-sm leading-snug">
-              {vipLevel === 0 ? "Devenez VIP et profitez des avantages immédiatement" : `Félicitations ! Vous êtes VIP ${vipLevel} — ${VIP_LEVELS[Math.min(vipLevel - 1, VIP_LEVELS.length - 1)]}`}
-            </p>
-          </div>
-          <Link href="/wallet">
-            <motion.div whileTap={{ scale: 0.94 }}
-              className="flex-shrink-0 bg-white rounded-xl px-3 py-2 text-xs font-black"
-              style={{ color: "#16a34a" }}>
-              Dépôt
+        {/* ── TWO FEATURE CARDS ── */}
+        <div className="grid grid-cols-2 gap-3 mt-5">
+          <Link href="/vip">
+            <motion.div whileTap={{ scale: 0.96 }}
+              className="flex items-center gap-3 px-4 py-4 rounded-2xl cursor-pointer"
+              style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)" }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: "linear-gradient(135deg,#f59e0b,#d97706)" }}>
+                <Star size={20} className="text-white fill-white" />
+              </div>
+              <span className="font-black text-white text-sm leading-tight">Privilèges VIP</span>
             </motion.div>
           </Link>
-        </motion.div>
+
+          <motion.div whileTap={{ scale: 0.96 }}
+            className="flex items-center gap-3 px-4 py-4 rounded-2xl cursor-pointer"
+            style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: "linear-gradient(135deg,#3b82f6,#1d4ed8)" }}>
+              <Download size={20} className="text-white" />
+            </div>
+            <span className="font-black text-white text-sm leading-tight">Télécharger l'application</span>
+          </motion.div>
+        </div>
       </div>
 
-      {/* ── TWO ACTION BUTTONS ── */}
-      <div className="grid grid-cols-2 gap-3 px-4 mt-3">
-        <Link href="/wallet">
-          <motion.div whileTap={{ scale: 0.96 }} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
-            className="flex items-center gap-3 px-4 py-4 rounded-2xl shadow-sm cursor-pointer"
-            style={{ background: "linear-gradient(135deg,#e0f2fe,#bfdbfe)" }}>
-            <img src={withdrawIcon} alt="Retrait" className="w-11 h-11 object-contain drop-shadow" />
-            <div>
-              <p className="font-black text-sm text-blue-800">Retrait</p>
-              <p className="text-xs text-blue-500 font-bold">{balance.toLocaleString("fr-FR")} F</p>
-            </div>
-          </motion.div>
-        </Link>
-
-        <Link href="/wallet">
-          <motion.div whileTap={{ scale: 0.96 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-            className="flex items-center gap-3 px-4 py-4 rounded-2xl shadow-sm cursor-pointer"
-            style={{ background: "linear-gradient(135deg,#fef9c3,#fde68a)" }}>
-            <img src={rechargeIcon} alt="Dépôt" className="w-11 h-11 object-contain drop-shadow" />
-            <div>
-              <p className="font-black text-sm text-amber-800">Dépôt</p>
-              <p className="text-xs text-amber-600 font-bold">Min 1 000 F</p>
-            </div>
-          </motion.div>
-        </Link>
+      {/* ── QUICK ACTION CIRCLES ── */}
+      <div className="bg-white px-4 py-5 shadow-sm">
+        <div className="grid grid-cols-4 gap-2">
+          {QUICK_ACTIONS.map((action) => (
+            <Link key={action.href} href={action.href}>
+              <motion.div whileTap={{ scale: 0.93 }} className="flex flex-col items-center gap-2">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-md"
+                  style={{ background: "linear-gradient(135deg,#e8f5e9,#c8e6c9)", border: "1.5px solid #a5d6a7" }}>
+                  <img src={action.img} alt={action.label} className="w-9 h-9 object-contain" />
+                </div>
+                <span className="text-[10px] font-bold text-gray-600 text-center leading-tight whitespace-pre-line">{action.label}</span>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* ── MENU LIST ── */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-        className="mx-4 mt-3 bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="mx-4 mt-3 bg-white rounded-2xl overflow-hidden shadow-sm">
         {MENU_ITEMS.map((item, i) => (
           <Link key={item.href + i} href={item.href}>
             <motion.div whileTap={{ backgroundColor: "#f9fafb" }}
               className="flex items-center justify-between px-4 py-4 cursor-pointer"
               style={{ borderBottom: i < MENU_ITEMS.length - 1 ? "1px solid #f3f4f6" : "none" }}>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{ background: item.color + "18" }}>
-                  {item.img ? (
-                    <img
-                      src={item.img}
-                      alt={item.label}
-                      className="w-5 h-5 object-contain"
-                      style={{ filter: "invert(1) brightness(0)" }}
-                      draggable={false}
-                    />
-                  ) : (
-                    <Settings size={18} style={{ color: item.color }} />
-                  )}
+                  style={{ background: "#f0fdf4" }}>
+                  <item.icon size={18} className="text-green-600" />
                 </div>
                 <span className="text-sm font-bold text-gray-800">{item.label}</span>
               </div>
-              <ChevronRight size={16} className="text-gray-300" />
+              <div className="flex items-center gap-2">
+                {item.badge > 0 && (
+                  <span className="w-5 h-5 bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                    {item.badge}
+                  </span>
+                )}
+                <ChevronRight size={15} className="text-gray-300" />
+              </div>
             </motion.div>
           </Link>
         ))}
 
-        {/* Admin item */}
         {user.isAdmin && (
           <Link href="/admin">
             <motion.div whileTap={{ backgroundColor: "#f9fafb" }}
               className="flex items-center justify-between px-4 py-4 cursor-pointer border-t border-gray-100">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-red-50">
                   <Shield size={18} className="text-red-500" />
                 </div>
-                <div>
+                <div className="flex items-center gap-2">
                   <span className="text-sm font-bold text-gray-800">Dashboard Admin</span>
-                  <span className="ml-2 text-xs font-bold text-white bg-red-500 rounded-full px-2 py-0.5">ADMIN</span>
+                  <span className="text-[10px] font-black text-white bg-red-500 rounded-full px-2 py-0.5">ADMIN</span>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-gray-300" />
+              <ChevronRight size={15} className="text-gray-300" />
             </motion.div>
           </Link>
         )}
-      </motion.div>
-
-      {/* ── PHONE & VERSION INFO ── */}
-      <div className="mx-4 mt-3 bg-white rounded-2xl px-4 py-3 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-400 font-bold">📱 Téléphone</span>
-          <span className="text-xs font-black text-gray-600">{user.phone}</span>
-        </div>
-        <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-gray-400 font-bold">📅 Inscription</span>
-          <span className="text-xs font-bold text-gray-500">
-            {user.createdAt ? new Date(user.createdAt).toLocaleDateString("fr-FR") : "—"}
-          </span>
-        </div>
       </div>
 
       {/* ── LOGOUT BUTTON ── */}
       <div className="px-4 mt-4">
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowLogout(true)}
-          className="w-full h-14 rounded-2xl font-black text-lg text-white shadow-lg flex items-center justify-center gap-2"
+          className="w-full h-13 rounded-2xl font-black text-base text-white shadow flex items-center justify-center gap-2"
           style={{ background: "linear-gradient(135deg,#f97316,#ef4444)" }}>
-          <LogOut size={20} />
+          <LogOut size={18} />
           Déconnexion
         </motion.button>
       </div>
@@ -253,11 +217,11 @@ export default function Account() {
               </div>
               <div className="flex gap-3">
                 <motion.button whileTap={{ scale: 0.96 }} onClick={() => setShowLogout(false)}
-                  className="flex-1 h-13 rounded-2xl border-2 border-gray-200 font-black text-gray-600 text-sm">
+                  className="flex-1 h-12 rounded-2xl border-2 border-gray-200 font-black text-gray-600 text-sm">
                   Annuler
                 </motion.button>
                 <motion.button whileTap={{ scale: 0.96 }} onClick={() => { logout(); setShowLogout(false); }}
-                  className="flex-1 h-13 rounded-2xl font-black text-white text-sm"
+                  className="flex-1 h-12 rounded-2xl font-black text-white text-sm"
                   style={{ background: "linear-gradient(135deg,#f97316,#ef4444)" }}>
                   Déconnecter
                 </motion.button>
