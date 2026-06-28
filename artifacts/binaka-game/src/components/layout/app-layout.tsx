@@ -9,11 +9,11 @@ import {
 } from "@workspace/api-client-react";
 
 import headerBanner from "@assets/20260627_094959_1782553814769.png";
-import iconHome    from "@assets/20260624_150018_1782317841294.png";
-import iconGames   from "@assets/20260624_150106_1782317841320.png";
-import iconWallet  from "@assets/20260624_150241_1782317841340.png";
-import iconGift    from "@assets/20260624_150402_1782317841358.png";
-import iconAccount from "@assets/20260624_150441_1782317841381.png";
+import iconHome    from "@assets/téléchargement_(77)_1782610083217.png";
+import iconGames   from "@assets/invite.7d84082f_1782610083246.png";
+import iconWallet  from "@assets/deposit.6eed4230_1782610083190.png";
+import iconGift    from "@assets/promo.d2428588_1782610083163.png";
+import iconAccount from "@assets/member.b78f1baa_(1)_1782610083125.png";
 
 const WHATSAPP_NUMBER = "22890000000";
 
@@ -300,11 +300,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     <img
                       src={item.icon}
                       alt={item.label}
-                      className="w-6 h-6 object-contain"
+                      className="w-7 h-7 object-contain transition-all duration-200"
                       style={{
-                        filter: isActive
-                          ? "invert(27%) sepia(90%) saturate(600%) hue-rotate(100deg) brightness(0.9)"
-                          : "invert(1) brightness(0.4)",
+                        opacity: isActive ? 1 : 0.5,
+                        transform: isActive ? "scale(1.15)" : "scale(1)",
                       }}
                     />
                     <span
