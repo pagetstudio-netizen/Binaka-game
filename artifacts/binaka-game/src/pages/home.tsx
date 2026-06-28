@@ -144,7 +144,7 @@ export default function Home() {
           {[
             { label: "Dépôt",      icon: iconDeposit,  href: "/wallet",   bg: "#f0fdf4", color: "#16a34a" },
             { label: "Retrait",    icon: iconWithdraw, href: "/wallet",   bg: "#fffbeb", color: "#d97706" },
-            { label: "VIP",        icon: iconVip,      href: "/vip",      bg: "#faf5ff", color: "#9333ea" },
+            { label: "VIP",        icon: iconVip,      href: "/referral", bg: "#faf5ff", color: "#9333ea" },
             { label: "Parrainage", icon: iconReferral, href: "/referral", bg: "#eff6ff", color: "#2563eb" },
           ].map((item) => (
             <Link key={item.label} href={item.href}>
