@@ -52,7 +52,7 @@ export default function Account() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#f2f2f2" }}>
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
 
       {/* ── TOP DARK GREEN PROFILE SECTION ── */}
       <div style={{ background: "linear-gradient(170deg, #0a4a1e 0%, #1a7a35 60%, #0f5525 100%)" }}

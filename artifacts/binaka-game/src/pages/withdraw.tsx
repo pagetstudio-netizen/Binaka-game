@@ -178,7 +178,7 @@ export default function Withdraw() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-[100dvh] bg-gray-50">
+    <div className="flex flex-col w-full min-h-[100dvh]" style={{ background: "#EAF8F2" }}>
 
       {/* ── HEADER ── */}
       <div className="bg-green-700 px-4 pt-10 pb-4 flex items-center relative">

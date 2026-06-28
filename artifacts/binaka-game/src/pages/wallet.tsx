@@ -361,10 +361,10 @@ export default function Wallet() {
 
   /* ════════════════════════════════════════════════════════════ */
   return (
-    <div className="flex flex-col w-full min-h-full bg-gray-100 pb-24">
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
 
       {/* ── GRADIENT HEADER ── */}
-      <div className="bg-gradient-to-br from-green-700 via-green-600 to-emerald-500 px-4 pt-5 pb-6 relative overflow-hidden">
+      <div className="px-4 pt-5 pb-6 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0A5C3A 0%, #0F8A5F 60%, #12A66E 100%)" }}>
         <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -bottom-12 -left-8 w-52 h-52 rounded-full bg-white/10" />
         <div className="relative z-10">
@@ -869,7 +869,7 @@ export default function Wallet() {
               className="fixed inset-0 bg-black/50 z-40" />
             <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="fixed bottom-0 left-0 right-0 z-50 bg-gray-50 rounded-t-3xl pb-10 max-h-[90dvh] overflow-y-auto">
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl pb-10 max-h-[90dvh] overflow-y-auto" style={{ background: "#EAF8F2" }}>
 
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-gray-300" />

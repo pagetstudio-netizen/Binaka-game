@@ -1,5 +1,5 @@
 import { Link, useLocation, Redirect } from "wouter";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { useAuth } from "@/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, ArrowLeft } from "lucide-react";
@@ -7,6 +7,7 @@ import {
   useGetBalance, getGetBalanceQueryKey,
   useGetNotifications, getGetNotificationsQueryKey,
 } from "@workspace/api-client-react";
+import { CategoryProvider, useCategoryCtx, type CategoryId } from "@/lib/category-context";
 
 import headerBanner from "@assets/20260627_094959_1782553814769.png";
 import iconHome    from "@assets/téléchargement_(77)_1782610083217.png";
@@ -37,6 +38,18 @@ const SUB_PAGES: Record<string, { title: string; back: string }> = {
   "/withdraw":          { title: "Retrait", back: "/wallet" },
 };
 
+const CATEGORY_BAR_PAGES = ["/", "/games"];
+
+const CATEGORIES: { id: CategoryId; label: string }[] = [
+  { id: "tous",       label: "⭐ Tous"       },
+  { id: "jackpot",    label: "🎰 Jackpot"    },
+  { id: "roue",       label: "🎡 Roue"       },
+  { id: "grattage",   label: "🎟 Grattage"   },
+  { id: "minijeux",   label: "🎲 Mini-jeux"  },
+  { id: "nouveautes", label: "🏆 Nouveautés" },
+  { id: "populaires", label: "🔥 Populaires" },
+];
+
 /* ── WhatsApp SVG ─────────────────────────────────────────────── */
 const WA_SVG = (
   <svg viewBox="0 0 32 32" fill="white" className="w-6 h-6">
@@ -57,6 +70,53 @@ const GAMEPAD_SVG = (
   </svg>
 );
 
+/* ── Category Bar ─────────────────────────────────────────────── */
+function CategoryBar() {
+  const { activeCategory, setActiveCategory } = useCategoryCtx();
+  const [location, setLocation] = useLocation();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = (id: CategoryId) => {
+    setActiveCategory(id);
+    if (!CATEGORY_BAR_PAGES.includes(location)) {
+      setLocation("/games");
+    }
+  };
+
+  return (
+    <div
+      className="sticky z-[9990] w-full flex-shrink-0"
+      style={{ top: 70, background: "#0A5C3A" }}
+    >
+      <div
+        ref={scrollRef}
+        className="category-bar-scroll flex items-center gap-2 px-3 py-2.5 overflow-x-auto"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {CATEGORIES.map((cat) => {
+          const isActive = activeCategory === cat.id;
+          return (
+            <motion.button
+              key={cat.id}
+              whileTap={{ scale: 0.92 }}
+              onClick={() => handleClick(cat.id)}
+              className="flex-shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-black whitespace-nowrap transition-all duration-200"
+              animate={{
+                background: isActive ? "#F4C430" : "rgba(255,255,255,0.13)",
+                color: isActive ? "#1a3a1a" : "rgba(255,255,255,0.88)",
+                boxShadow: isActive ? "0 2px 8px rgba(244,196,48,0.45)" : "none",
+              }}
+              transition={{ duration: 0.18 }}
+            >
+              {cat.label}
+            </motion.button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 /* ── Global App Header ────────────────────────────────────────── */
 export function AppHeader() {
   const [location, setLocation] = useLocation();
@@ -71,21 +131,22 @@ export function AppHeader() {
 
   return (
     <header
-      className="sticky top-0 left-0 w-full z-[9999] bg-green-50 flex items-center px-4 flex-shrink-0"
+      className="sticky top-0 left-0 w-full z-[9999] flex items-center px-4 flex-shrink-0"
       style={{
         height: 70,
-        borderBottom: "1px solid #bbf7d0",
-        boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
-        transition: "box-shadow 0.2s ease",
+        background: "#FFFFFF",
+        borderBottom: "2px solid #0A5C3A",
+        boxShadow: "0 2px 16px rgba(10,92,58,0.12)",
       }}
     >
       {/* Left — brand logo OR back button */}
       {subPage ? (
         <button
           onClick={() => setLocation(subPage.back)}
-          className="p-2 -ml-1 rounded-full hover:bg-gray-100 active:scale-95 transition-all flex-shrink-0"
+          className="p-2 -ml-1 rounded-full active:scale-95 transition-all flex-shrink-0"
+          style={{ background: "#EAF8F2" }}
         >
-          <ArrowLeft className="w-5 h-5 text-gray-700" />
+          <ArrowLeft className="w-5 h-5" style={{ color: "#0F8A5F" }} />
         </button>
       ) : location === "/" ? (
         <img
@@ -95,12 +156,12 @@ export function AppHeader() {
           draggable={false}
         />
       ) : (
-        <span className="text-green-800 font-black text-lg tracking-wide">BINAKA</span>
+        <span className="font-black text-lg tracking-wide" style={{ color: "#0F8A5F" }}>BINAKA</span>
       )}
 
       {/* Center — page title for sub-pages */}
       {subPage ? (
-        <h1 className="flex-1 text-center text-base font-bold text-gray-800 px-2 truncate">
+        <h1 className="flex-1 text-center text-base font-bold px-2 truncate" style={{ color: "#0A5C3A" }}>
           {subPage.title}
         </h1>
       ) : (
@@ -110,15 +171,15 @@ export function AppHeader() {
       {/* Right — balance + notifications bell */}
       <div className="flex items-center gap-2 flex-shrink-0">
         {wallet !== undefined && (
-          <div className="bg-green-50 border border-green-200 px-3 py-1 rounded-full">
-            <span className="text-green-700 text-xs font-black whitespace-nowrap">
+          <div className="px-3 py-1 rounded-full border" style={{ background: "#EAF8F2", borderColor: "#0F8A5F40" }}>
+            <span className="text-xs font-black whitespace-nowrap" style={{ color: "#0F8A5F" }}>
               {(wallet.balance ?? 0).toLocaleString()} FCFA
             </span>
           </div>
         )}
         <Link href="/notifications">
-          <button className="relative p-2 rounded-full hover:bg-gray-100 transition-colors active:scale-95">
-            <Bell className="w-5 h-5 text-gray-600" />
+          <button className="relative p-2 rounded-full transition-colors active:scale-95" style={{ background: "#EAF8F2" }}>
+            <Bell className="w-5 h-5" style={{ color: "#0F8A5F" }} />
             {unread > 0 && (
               <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                 {unread > 9 ? "9+" : unread}
@@ -134,7 +195,7 @@ export function AppHeader() {
 /* ── Floating Buttons ─────────────────────────────────────────── */
 function FloatingButtons() {
   const [location] = useLocation();
-  const onGame = location.startsWith("/games");
+  const onGame = location.startsWith("/games/");
 
   return (
     <div
@@ -158,8 +219,8 @@ function FloatingButtons() {
               transition={{ delay: 0.6 }}
               className="text-xs font-extrabold text-white px-2.5 py-1 rounded-full pointer-events-none select-none"
               style={{
-                background: "linear-gradient(135deg,#f59e0b,#d97706)",
-                boxShadow: "0 3px 12px rgba(245,158,11,0.5)",
+                background: "linear-gradient(135deg,#F4C430,#D4A017)",
+                boxShadow: "0 3px 12px rgba(244,196,48,0.5)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -178,8 +239,8 @@ function FloatingButtons() {
               whileHover={{ scale: 1.1 }}
               className="relative w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden"
               style={{
-                background: "linear-gradient(135deg,#f59e0b,#d97706)",
-                boxShadow: "0 6px 0 #92400e, 0 10px 28px rgba(245,158,11,0.55)",
+                background: "linear-gradient(135deg,#F4C430,#D4A017)",
+                boxShadow: "0 6px 0 #92400e, 0 10px 28px rgba(244,196,48,0.55)",
               }}
             >
               <motion.div
@@ -248,19 +309,20 @@ function FloatingButtons() {
   );
 }
 
-/* ── AppLayout ────────────────────────────────────────────────── */
-export function AppLayout({ children }: { children: ReactNode }) {
+/* ── AppLayout (inner, needs context) ────────────────────────── */
+function AppLayoutInner({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { user, isLoading } = useAuth();
 
   const isGamePage = /^\/games\/.+/.test(location);
+  const showCategoryBar = CATEGORY_BAR_PAGES.includes(location) && !isGamePage;
 
   if (isLoading) {
     return (
-      <div className="min-h-[100dvh] flex items-center justify-center bg-green-50">
+      <div className="min-h-[100dvh] flex items-center justify-center" style={{ background: "#EAF8F2" }}>
         <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm font-bold text-gray-500">Chargement…</span>
+          <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#0F8A5F", borderTopColor: "transparent" }} />
+          <span className="text-sm font-bold" style={{ color: "#0F8A5F" }}>Chargement…</span>
         </div>
       </div>
     );
@@ -271,17 +333,28 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-green-100">
-      <main className="flex-1 w-full max-w-[430px] mx-auto relative bg-green-50 shadow-2xl overflow-hidden flex flex-col">
+    <div className="min-h-[100dvh] flex flex-col" style={{ background: "#C8EDD8" }}>
+      <main
+        className="flex-1 w-full max-w-[430px] mx-auto relative shadow-2xl overflow-x-hidden flex flex-col"
+        style={{ background: "#EAF8F2" }}
+      >
         {/* Global header — hidden on individual game pages */}
         {!isGamePage && <AppHeader />}
+
+        {/* Category bar — only on home and games list */}
+        {showCategoryBar && <CategoryBar />}
+
         {children}
       </main>
 
       {!isGamePage && (
         <nav
-          className="fixed bottom-0 left-0 right-0 z-50 bg-green-50"
-          style={{ boxShadow: "0 -2px 20px rgba(0,0,0,0.10)", borderTop: "1px solid #bbf7d0" }}
+          className="fixed bottom-0 left-0 right-0 z-50"
+          style={{
+            background: "#FFFFFF",
+            boxShadow: "0 -2px 20px rgba(10,92,58,0.12)",
+            borderTop: "2px solid #0A5C3A",
+          }}
         >
           <div className="flex justify-around items-center h-16 max-w-[430px] mx-auto">
             {NAV_ITEMS.map((item) => {
@@ -296,7 +369,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute -top-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-green-600 rounded-full"
+                        className="absolute -top-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full"
+                        style={{ background: "#F4C430" }}
                       />
                     )}
                     <img
@@ -310,7 +384,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     />
                     <span
                       className="text-[10px] font-bold transition-colors"
-                      style={{ color: isActive ? "#16a34a" : "#9ca3af" }}
+                      style={{ color: isActive ? "#0F8A5F" : "#9ca3af" }}
                     >
                       {item.label}
                     </span>
@@ -321,6 +395,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </nav>
       )}
+
+      {!isGamePage && <FloatingButtons />}
     </div>
+  );
+}
+
+/* ── AppLayout (public, wraps with CategoryProvider) ─────────── */
+export function AppLayout({ children }: { children: ReactNode }) {
+  return (
+    <CategoryProvider>
+      <AppLayoutInner>{children}</AppLayoutInner>
+    </CategoryProvider>
   );
 }

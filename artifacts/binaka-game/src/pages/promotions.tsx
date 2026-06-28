@@ -8,7 +8,7 @@ const BANNERS = [banner1, banner2, banner3];
 
 export default function Promotions() {
   return (
-    <div className="flex flex-col w-full min-h-full bg-gray-100 pb-24">
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
 
       <div className="flex flex-col gap-3 p-3">
         {BANNERS.map((src, i) => (

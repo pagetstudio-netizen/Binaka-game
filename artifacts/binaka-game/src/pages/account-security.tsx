@@ -66,7 +66,7 @@ export default function AccountSecurity() {
   const dashOffset    = circumference * (1 - pct / 100);
 
   return (
-    <div className="flex flex-col w-full min-h-full bg-gray-50 pb-24">
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
 
       {/* ── SECURITY SCORE CARD ── */}
       <div className="bg-white mx-4 mt-4 rounded-2xl shadow-sm overflow-hidden">

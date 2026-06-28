@@ -157,7 +157,7 @@ export default function Referral() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-full bg-gray-50 pb-24">
+    <div className="flex flex-col w-full min-h-full pb-24" style={{ background: "#EAF8F2" }}>
       {/* HEADER GRADIENT */}
       <div className="bg-gradient-to-br from-green-700 via-green-600 to-emerald-500 px-4 pt-4 pb-8 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

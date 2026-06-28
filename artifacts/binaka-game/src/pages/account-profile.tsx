@@ -48,7 +48,7 @@ export default function AccountProfile() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-[100dvh] bg-slate-50">
+    <div className="flex flex-col w-full min-h-[100dvh]" style={{ background: "#EAF8F2" }}>
       <div className="flex-1 px-4 py-6 space-y-6 max-w-md mx-auto w-full">
 
         {/* Avatar */}

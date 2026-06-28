@@ -69,47 +69,51 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 142 30% 94%;
-  --foreground: 222 47% 11%;
+  /* #EAF8F2 light green background */
+  --background: 154 51% 95%;
+  --foreground: 159 40% 10%;
   
-  --border: 142 20% 84%;
-  --input: 142 20% 84%;
-  --ring: 142 76% 36%;
+  --border: 154 30% 86%;
+  --input: 154 30% 86%;
+  --ring: 159 80% 30%;
   
-  --card: 142 30% 97%;
-  --card-foreground: 222 47% 11%;
-  --card-border: 142 20% 87%;
+  /* White cards with subtle green tint */
+  --card: 0 0% 100%;
+  --card-foreground: 159 40% 10%;
+  --card-border: 154 30% 88%;
   
-  --sidebar: 142 30% 94%;
-  --sidebar-foreground: 222 47% 11%;
-  --sidebar-border: 142 20% 84%;
-  --sidebar-primary: 142 76% 36%;
+  --sidebar: 154 51% 95%;
+  --sidebar-foreground: 159 40% 10%;
+  --sidebar-border: 154 30% 86%;
+  --sidebar-primary: 159 80% 30%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 142 30% 90%;
-  --sidebar-accent-foreground: 222 47% 11%;
-  --sidebar-ring: 142 76% 36%;
+  --sidebar-accent: 154 40% 90%;
+  --sidebar-accent-foreground: 159 40% 10%;
+  --sidebar-ring: 159 80% 30%;
   
-  --popover: 142 30% 97%;
-  --popover-foreground: 222 47% 11%;
-  --popover-border: 142 20% 84%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 159 40% 10%;
+  --popover-border: 154 30% 86%;
   
-  --primary: 142 76% 36%;
+  /* #0F8A5F primary green */
+  --primary: 159 80% 30%;
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 38 92% 50%;
-  --secondary-foreground: 0 0% 100%;
+  /* #F4C430 gold secondary */
+  --secondary: 45 90% 57%;
+  --secondary-foreground: 159 40% 10%;
   
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  --muted: 154 30% 94%;
+  --muted-foreground: 159 20% 45%;
   
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --accent: 154 40% 90%;
+  --accent-foreground: 159 40% 10%;
   
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 100%;
   
-  --chart-1: 142 76% 36%;
-  --chart-2: 38 92% 50%;
+  --chart-1: 159 80% 30%;
+  --chart-2: 45 90% 57%;
   --chart-3: 199 89% 48%;
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
@@ -118,37 +122,44 @@
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.75rem;
+
+  /* BINAKA brand tokens */
+  --binaka-green: #0F8A5F;
+  --binaka-green-dark: #0A5C3A;
+  --binaka-green-light: #EAF8F2;
+  --binaka-gold: #F4C430;
+  --binaka-gold-dark: #D4A017;
 }
 
 .dark {
-  --background: 142 40% 8%;
+  --background: 159 40% 8%;
   --foreground: 0 0% 100%;
-  --border: 142 25% 16%;
-  --input: 142 25% 16%;
-  --ring: 142 76% 36%;
+  --border: 159 25% 16%;
+  --input: 159 25% 16%;
+  --ring: 159 80% 30%;
   
-  --card: 142 35% 11%;
+  --card: 159 35% 11%;
   --card-foreground: 0 0% 100%;
-  --card-border: 142 25% 16%;
+  --card-border: 159 25% 16%;
   
-  --sidebar: 142 40% 8%;
+  --sidebar: 159 40% 8%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 142 25% 16%;
-  --sidebar-primary: 142 76% 36%;
+  --sidebar-border: 159 25% 16%;
+  --sidebar-primary: 159 80% 30%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 142 30% 14%;
+  --sidebar-accent: 159 30% 14%;
   --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 142 76% 36%;
+  --sidebar-ring: 159 80% 30%;
   
-  --popover: 142 35% 11%;
+  --popover: 159 35% 11%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 142 25% 16%;
+  --popover-border: 159 25% 16%;
   
-  --primary: 142 76% 36%;
+  --primary: 159 80% 30%;
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 38 92% 50%;
-  --secondary-foreground: 0 0% 100%;
+  --secondary: 45 90% 57%;
+  --secondary-foreground: 159 40% 10%;
   
   --muted: 217 32% 17%;
   --muted-foreground: 215 20% 65%;
@@ -174,4 +185,13 @@
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
+}
+
+/* Category bar smooth horizontal scroll */
+.category-bar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.category-bar-scroll::-webkit-scrollbar {
+  display: none;
 }

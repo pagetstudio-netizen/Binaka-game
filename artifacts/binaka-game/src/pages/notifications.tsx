@@ -31,7 +31,7 @@ export default function Notifications() {
   };
 
   return (
-    <div className="flex flex-col w-full pb-20">
+    <div className="flex flex-col w-full pb-20" style={{ background: "#EAF8F2", minHeight: "100%" }}>
       {data?.unreadCount ? (
         <div className="px-4 pt-3 pb-1 flex justify-end">
           <Button variant="ghost" size="sm" onClick={handleMarkAllRead} className="text-xs">

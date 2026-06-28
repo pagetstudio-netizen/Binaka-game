@@ -10,10 +10,10 @@ const HEURES_EN_LIGNE = "9:00 AM – 7:00 PM";
 
 export default function Support() {
   return (
-    <div className="flex-1 w-full overflow-y-auto flex flex-col bg-white">
+    <div className="flex-1 w-full overflow-y-auto flex flex-col" style={{ background: "#EAF8F2" }}>
 
       {/* ── Bandeau 3 atouts ── */}
-      <div className="bg-gray-50 border-b border-gray-100 px-4 py-5">
+      <div className="px-4 py-5" style={{ background: "#FFFFFF", borderBottom: "1px solid #D4EDDA" }}>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="flex flex-col items-center gap-1.5">
             <div className="w-13 h-13 w-[52px] h-[52px] rounded-full border-2 border-[#16a34a] flex items-center justify-center">
