@@ -40,7 +40,6 @@ import Notifications from "@/pages/notifications";
 import Vip from "@/pages/vip";
 import Support from "@/pages/support";
 import Admin from "@/pages/admin";
-import Demo from "@/pages/_demo";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -94,7 +93,6 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/deposit" component={Deposit} />
       <Route path="/withdraw" component={Withdraw} />
-      <Route path="/_demo" component={Demo} />
       <Route component={MainRoutes} />
     </Switch>
   );

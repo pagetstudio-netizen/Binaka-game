@@ -14,10 +14,10 @@ import iconWithdraw from "@assets/withdraw.8b8ab6f4_1782610371952.png";
 import iconShare    from "@assets/invite.7d84082f_1782639258987.png";
 import iconSecurity from "@assets/security-center.725cfbe6_1782639258892.png";
 
-import iconGift     from "@assets/téléchargement_(67)_1782639311382.png";
+import iconGift     from "@assets/téléchargement_(66)_1782639311360.png";
 import iconMission  from "@assets/téléchargement_(72)_1782639311335.png";
-import iconRemise   from "@assets/téléchargement_(66)_1782639311360.png";
-import iconArchive  from "@assets/téléchargement_(66)_1782639311360.png";
+import iconRemise   from "@assets/téléchargement_(67)_1782639311382.png";
+import iconArchive  from "@assets/téléchargement_(67)_1782639311382.png";
 import iconSupport  from "@assets/mine-mod-cs-DtBQ0Sp0_1782639311404.png";
 import iconSettings from "@assets/mine-mod-change-pwd-D4tL_Aft_1782639311424.png";
 import iconDownload from "@assets/mine-mod-download-B1teb57W_(1)_1782639311307.png";
@@ -43,7 +43,7 @@ const MENU_ITEMS = [
   { img: iconMission,  label: "Mission",              badge: 1, href: "/promotions" },
   { img: iconRemise,   label: "Remise manuelle",      badge: 0, href: "/wallet" },
   { img: iconArchive,  label: "Archives",             badge: 0, href: "/wallet" },
-  { img: iconRemise,   label: "Registres de dépôt",   badge: 0, href: "/wallet" },
+  { img: iconAbout,    label: "Registres de dépôt",   badge: 0, href: "/wallet" },
   { img: iconAbout,    label: "Programme VIP",        badge: 0, href: "/vip" },
   { img: iconSupport,  label: "Support en direct",    badge: 0, href: "/support" },
   { img: iconSettings, label: "Paramètres",           badge: 0, href: "/account/settings" },
